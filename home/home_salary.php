@@ -139,7 +139,6 @@ while ($row = mysqli_fetch_array($query)) {
                     $overtime_hours = $row['overtime_hours'];
                     $bonus = $row['bonus'];
 
-                    $overtime_pay = $overtime_hours * $rate;
 
                     $total_gross_pay = $row['total_gross_pay'];
                     $total_net_pay = $row['total_net_pay'];
@@ -159,13 +158,16 @@ while ($row = mysqli_fetch_array($query)) {
                       </td>
                       <td align="center"><big><b>
                             <?php echo $total_gross_pay ?>
-                          </b></big>.00</td>
+                          </b></big></td>
                       <td align="center"><big><b>
                             <?php echo $benefits_deduction ?>
-                          </b></big>.00</td>
+                          </b></big>
+                        <button type="button" data-toggle="modal" data-target="#deduction_details"
+                          class="btn btn-primary">i
+                      </td>
                       <td align="center"><big><b>
                             <?php echo $total_net_pay ?>
-                          </b></big>.00</td>
+                          </b></big></td>
                     </tr>
                   <?php } ?>
                 </tbody>
@@ -195,6 +197,30 @@ while ($row = mysqli_fetch_array($query)) {
           </div>
         </fieldset>
       </form>
+    </div>
+
+    <!-- this modal is for deduction details -->
+    <div class="modal fade" id="deduction_details" role="dialog">
+      <div class="modal-dialog modal-sm">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header" style="padding:7px 20px;">
+            <button type="button" class="close" data-dismiss="modal" title="Close">&times;</button>
+          </div>
+          <h3 align="center">Deduction Details</h3>
+          <div class="modal-body" style="padding:40px 50px;">
+            <div class="form-group">
+              <label class="col-sm-4 control-label">PhilHealth</label>
+              <div class="col-sm-8">
+                <input disabled type="text" name="philhealth" class="form-control" required="required" value="test">
+              </div>
+            </div>
+
+
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- this modal is for my Colins -->

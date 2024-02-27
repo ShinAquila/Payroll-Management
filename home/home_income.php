@@ -222,12 +222,12 @@ while ($row = mysqli_fetch_array($query)) {
                       </td>
                       <td align="center"><b>
                           <?php echo $bonus ?>
-                        </b><small>.00</small>
+                        </b><small></small>
                         </a>
                       </td>
                       <td align="center"><b>
                           <?php echo $total_gross_pay ?>
-                        </b><small>.00</small>
+                        </b><small></small>
                         </a>
                       </td>
                       <td align="center">

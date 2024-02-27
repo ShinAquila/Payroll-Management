@@ -160,7 +160,7 @@ while ($row = mysqli_fetch_array($query5)) {
       $bonus = $row['bonus'];
       $benefits_deduction = $row['benefits_deduction'];
       $total_gross_pay = $row['total_gross_pay'];
-      $netpay = $total_gross_pay - $benefits_deduction;
+      $netpay = $row['total_net_pay'];
 
 
       ?>
@@ -219,7 +219,7 @@ while ($row = mysqli_fetch_array($query5)) {
         <div class="form-group">
           <label class="col-sm-5 control-label">Current Netpay :</label>
           <div class="col-sm-4">
-            <?php echo $netpay; ?>.00
+            <?php echo $netpay; ?>
           </div>
         </div><br><br>
         <div class="form-group">

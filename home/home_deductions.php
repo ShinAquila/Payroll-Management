@@ -169,6 +169,170 @@ while ($row = mysqli_fetch_array($query5)) {
       </form>
     </div>
 
+    <div class="well bs-component">
+      <form class="form-horizontal">
+        <fieldset>
+          <p align="center"><big><b>List of Taxes</b></big></p>
+          <div class="table-responsive">
+            <form method="post" action="">
+              <table class="table table-bordered table-hover table-condensed" id="myTable">
+                <thead>
+                  <tr class="info">
+                    <th>
+                      <p align="center">Tax Bracket</p>
+                    </th>
+                    <th>
+                      <p align="center">Computation</p>
+                    </th>
+                    <th>
+                      <p align="center">Formula</p>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td align="center">
+                      <p align="center">>= 28,300</p>
+                    </td>
+                    <td align="center">
+                      <p align="center">Monthly</p>
+                    </td>
+                    <td align="center">
+                      <p align="center">(($total_gross_pay - 20,833) * 0.15)</p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td align="center">
+                      <p align="center">>= 33,333</p>
+                    </td>
+                    <td align="center">
+                      <p align="center">Monthly</p>
+                    </td>
+                    <td align="center">
+                      <p align="center">(($total_gross_pay - 33,333) * 0.20) + 1,875</p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td align="center">
+                      <p align="center">>= 66,667</p>
+                    </td>
+                    <td align="center">
+                      <p align="center">Monthly</p>
+                    </td>
+                    <td align="center">
+                      <p align="center">(($total_gross_pay - 66,667) * 0.25) + 8,541.80</p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td align="center">
+                      <p align="center">>= 166,667</p>
+                    </td>
+                    <td align="center">
+                      <p align="center">Monthly</p>
+                    </td>
+                    <td align="center">
+                      <p align="center">(($total_gross_pay - 166,667) * 0.30) + 33,541.80</p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td align="center">
+                      <p align="center">>= 666,667</p>
+                    </td>
+                    <td align="center">
+                      <p align="center">Monthly</p>
+                    </td>
+                    <td align="center">
+                      <p align="center">(($total_gross_pay - 666,667) * 0.35) + 183,541.80</p>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td align="center">
+                      <p align="center"></p>
+                    </td>
+                    <td align="center">
+                      <p align="center"></p>
+                    </td>
+                    <td align="center">
+                      <p align="center"></p>
+                    </td>
+                    
+                  </tr>
+
+                  <tr>
+                    <td align="center">
+                      <p align="center">>= 10,417</p>
+                    </td>
+                    <td align="center">
+                      <p align="center">Semi-Monthly</p>
+                    </td>
+                    <td align="center">
+                      <p align="center">(($total_gross_pay - 10,417) * 0.15)</p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td align="center">
+                      <p align="center">>= 16,667</p>
+                    </td>
+                    <td align="center">
+                      <p align="center">Semi-Monthly</p>
+                    </td>
+                    <td align="center">
+                      <p align="center">(($total_gross_pay - 16,667) * 0.20) + 937.50</p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td align="center">
+                      <p align="center">>= 33,333</p>
+                    </td>
+                    <td align="center">
+                      <p align="center">Semi-Monthly</p>
+                    </td>
+                    <td align="center">
+                      <p align="center">(($total_gross_pay - 33,333) * 0.25) + 4,270.70</p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td align="center">
+                      <p align="center">>= 83,333</p>
+                    </td>
+                    <td align="center">
+                      <p align="center">Semi-Monthly</p>
+                    </td>
+                    <td align="center">
+                      <p align="center">(($total_gross_pay - 83,333) * 0.30) + 16,770.70</p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td align="center">
+                      <p align="center">>= 333,333</p>
+                    </td>
+                    <td align="center">
+                      <p align="center">Semi-Monthly</p>
+                    </td>
+                    <td align="center">
+                      <p align="center">(($total_gross_pay - 333,333) * 0.35) + 91,770.70</p>
+                    </td>
+                  </tr>
+                </tbody>
+                <tr class="info">
+                  <th>
+                    <p align="center">Tax Bracket</p>
+                  </th>
+                  <th>
+                    <p align="center">Computation</p>
+                  </th>
+                  <th>
+                    <p align="center">Formula</p>
+                  </th>
+                </tr>
+              </table>
+            </form>
+          </div>
+        </fieldset>
+      </form>
+    </div>
+
 
 
     <!-- this modal is for update an DEDUCTIONS -->

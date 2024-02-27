@@ -3,17 +3,18 @@
 include("../db.php");
 include("../auth.php");
 
-$id = $_POST['id'];
+$acc_id = $_REQUEST['id'];
 $overtime_hours = $_POST['overtime'];
 $bonus = $_POST['bonus'];
 $deduction_sum = 0;
 
 
-$days_full_day_query = mysqli_query($c, "SELECT * FROM account_info WHERE acc_info_id='$id'");
+
+$days_full_day_query = mysqli_query($c, "SELECT * FROM account_info WHERE acc_info_id='$acc_id'");
 $days_full_day_row = mysqli_fetch_assoc($days_full_day_query);
 $days_full_day = $days_full_day_row['days_full_day'];
 
-$days_half_day_query = mysqli_query($c, "SELECT * FROM account_info WHERE acc_info_id='$id'");
+$days_half_day_query = mysqli_query($c, "SELECT * FROM account_info WHERE acc_info_id='$acc_id'");
 $days_half_day_row = mysqli_fetch_assoc($days_half_day_query);
 $days_half_day = $days_half_day_row['days_half_day'];
 
@@ -27,7 +28,8 @@ $salary_rate = $salary_row['salary_rate'];
 
 $total_gross_pay = ($salary_rate * $days_full_day) + (($salary_rate / 2) * $days_half_day) + $bonus + $overtime;
 
-$sql = mysqli_query($c, "UPDATE account_info SET total_gross_pay = '$total_gross_pay'");
+$sql = mysqli_query($c, "UPDATE account_info SET total_gross_pay = '$total_gross_pay' WHERE acc_info_id = '$acc_id'");
+
 
 
 // 
@@ -58,41 +60,70 @@ while ($row = mysqli_fetch_array($query5)) {
 }
 
 
-$total_deduction = 0;
+
+
+$tax = 0;
+
+
+if ($total_gross_pay >= 666667){
+  $tax = (($total_gross_pay - 666667) * 0.35) + 183541.80;
+} else if ($total_gross_pay >= 166667){
+  $tax = (($total_gross_pay - 166667) * 0.30) + 33541.80;
+} else if ($total_gross_pay >= 66667) {
+  $tax = (($total_gross_pay - 66667) * 0.25) + 8541.80;
+} else if ($total_gross_pay >= 33333) {
+  $tax = (($total_gross_pay - 33333) * 0.20) + 1875;
+} else if ($total_gross_pay >= 20833){
+  $tax = (($total_gross_pay - 20833) * 0.15);
+}
+
+// 
+
+
+
+$philhealth = 0;
+$GSIS = 0;
+$PAGIBIG = 0;
+$SSS = 0;
+
+
+$benefits_deduction = 0;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $selected_deductions = $_POST['deduction_selected'];
 
-  
+
   if (in_array($philhealth_p, $selected_deductions)) {
-    $total_deduction += ($total_gross_pay * ($philhealth_p / 100))/2;
+    $philhealth = ($total_gross_pay * ($philhealth_p / 100)) / 2 ;
+    $benefits_deduction += $philhealth;
   }
   if (in_array($GSIS_p, $selected_deductions)) {
-    $total_deduction += ($total_gross_pay * ($GSIS_p / 100))/2;
+    $GSIS = ($total_gross_pay * ($GSIS_p / 100)) / 2;
+    $benefits_deduction += $GSIS;
   }
   if (in_array($PAGIBIG_p, $selected_deductions)) {
-    $total_deduction += ($total_gross_pay * ($PAGIBIG_p / 100))/2;
+    $PAGIBIG = ($total_gross_pay * ($PAGIBIG_p / 100)) / 2;
+    $benefits_deduction += $PAGIBIG;
   }
   if (in_array($SSS_p, $selected_deductions)) {
-    $total_deduction += ($total_gross_pay * ($SSS_p / 100))/2;
+    $SSS = ($total_gross_pay * ($SSS_p / 100)) / 2;
+    $benefits_deduction += $SSS;
   }
 }
 
-echo $total_deduction;
+$total_deduction = $benefits_deduction + $tax;
+$total_net_pay = $total_gross_pay - $total_deduction;
 
 
-
-
-
-
-
-
-
-
-// $sql = mysqli_query($c, "UPDATE account_info SET benefits_deduction='$deduction_sum', total_gross_pay = '$total_gross_pay', total_net_pay='$new_total_net_pay', overtime_hours='$overtime_hours', bonus='$bonus' WHERE acc_info_id='$id'");
+$sql = mysqli_query($c, "UPDATE account_info SET benefits_deduction = $total_deduction, total_net_pay = $total_net_pay WHERE acc_info_id='$acc_id'");
 
 if ($sql) {
-
+  ?>
+  <script>
+    alert('Employee Income successfully updated.');
+    window.location.href = '../home/home_income.php';
+  </script>
+  <?php
 } else {
   echo "Invalid";
 }
