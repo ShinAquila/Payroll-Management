@@ -29,8 +29,7 @@ while ($row = mysqli_fetch_array($sql)) {
     }
 
     .navbar {
-      padding: 2%
-      width: 100%;
+      padding: 2% width: 100%;
     }
   </style>
 </head>
@@ -79,7 +78,7 @@ while ($row = mysqli_fetch_array($sql)) {
 
     <?php
     $id = $_REQUEST['emp_id'];
-    $query = "SELECT * from employee where emp_id='" . $id . "'";
+    $query = "SELECT * from employee JOIN department ON employee.dept = department.dept_id WHERE emp_id='" . $id . "'";
     $result = mysqli_query($c, $query) or die(mysqli_error());
 
     while ($row = mysqli_fetch_assoc($result)) {
@@ -133,7 +132,9 @@ while ($row = mysqli_fetch_array($sql)) {
           <label class="col-sm-5 control-label">Department :</label>
           <div class="col-sm-4">
             <select name="department" class="form-control" placeholder="Department" required>
-
+              <option value="<?php echo $row['dept_name']; ?>">
+                <?php echo $row['dept_name']; ?>
+              </option>
               <?php
               require_once('../db.php');
 

@@ -13,25 +13,25 @@ if (!$conn) {
 $query1 = mysqli_query($conn, "SELECT * from deductions WHERE deduction_id = 1");
 while ($row = mysqli_fetch_array($query1)) {
   $id = $row['deduction_id'];
-  $philhealth = $row['deduction_amount'];
+  $philhealth = $row['deduction_percent'];
 }
 
 $query3 = mysqli_query($conn, "SELECT * from deductions WHERE deduction_id = 3");
 while ($row = mysqli_fetch_array($query3)) {
   $id = $row['deduction_id'];
-  $GSIS = $row['deduction_amount'];
+  $GSIS = $row['deduction_percent'];
 }
 
 $query4 = mysqli_query($conn, "SELECT * from deductions WHERE deduction_id = 4");
 while ($row = mysqli_fetch_array($query4)) {
   $id = $row['deduction_id'];
-  $PAGIBIG = $row['deduction_amount'];
+  $PAGIBIG = $row['deduction_percent'];
 }
 
 $query5 = mysqli_query($conn, "SELECT * from deductions WHERE deduction_id = 5");
 while ($row = mysqli_fetch_array($query5)) {
   $id = $row['deduction_id'];
-  $SSS = $row['deduction_amount'];
+  $SSS = $row['deduction_percent'];
 }
 
 ?>
@@ -80,6 +80,9 @@ while ($row = mysqli_fetch_array($query5)) {
           </li>
           <li class="nav-item">
             <a class="nav-link" href="home_employee.php">Employee</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="home_attendance.php">Attendance</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="home_departments.php">Department</a>
@@ -136,13 +139,12 @@ while ($row = mysqli_fetch_array($query5)) {
                   while ($row = mysqli_fetch_array($query)) {
                     $deduction_id = $row['deduction_id'];
                     $deduction_name = $row['deduction_name'];
-                    $deduction_amount = $row['deduction_amount'];
                     $deduction_percent = $row['deduction_percent'];
                     ?>
 
                     <tr>
                       <td align="center">
-                        <?php echo $deduction_name ?>%
+                        <?php echo $deduction_name ?>
                       </td>
                       <td align="center">
                         <?php echo $deduction_percent ?>%

@@ -1,11 +1,7 @@
 <?php
 include("../auth.php"); //include auth.php file on all secure pages
-include("../add/add_department.php");
+include("../add/add_attendance.php");
 
-$sql = mysqli_query($conn, "SELECT * from department");
-while ($row = mysqli_fetch_array($sql)) {
-    $dept_name = $row['dept_name'];
-}
 ?>
 
 <!DOCTYPE html>
@@ -53,10 +49,10 @@ while ($row = mysqli_fetch_array($sql)) {
                     <li class="nav-item">
                         <a class="nav-link" href="home_employee.php">Employee</a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item active">
                         <a class="nav-link" href="home_attendance.php">Attendance</a>
                     </li>
-                    <li class="nav-item active">
+                    <li class="nav-item">
                         <a class="nav-link" href="home_departments.php">Department</a>
                     </li>
                     <li class="nav-item">
@@ -79,22 +75,27 @@ while ($row = mysqli_fetch_array($sql)) {
     </nav>
 
     <div class="container">
-
         <br>
         <div class="well bs-component">
             <form class="form-horizontal">
                 <fieldset>
-                    <button type="button" data-toggle="modal" data-target="#addDepartment" class="btn btn-success">Add
+                    <button type="button" data-toggle="modal" data-target="#addAttendance" class="btn btn-success">Add
                         New</button>
-                    <p align="center"><big><b>List of Departments</b></big></p>
-                    <p align="center">Please refer to HR regarding the creation and deletion of Departments</p>
+                    <p align="center"><big><b>List of Attendance</b></big></p>
                     <div class="table-responsive">
                         <form method="post" action="">
                             <table class="table table-bordered table-hover table-condensed" id="myTable">
+                                <!-- <h3><b>Ordinance</b></h3> -->
                                 <thead>
                                     <tr class="info">
                                         <th>
-                                            <p align="center">Department Name</p>
+                                            <p align="center">Name</p>
+                                        </th>
+                                        <th>
+                                            <p align="center">Date</p>
+                                        </th>
+                                        <th>
+                                            <p align="center">Status</p>
                                         </th>
                                         <th>
                                             <p align="center">Action</p>
@@ -111,22 +112,33 @@ while ($row = mysqli_fetch_array($sql)) {
 
 
 
-                                    $query = mysqli_query($conn, "SELECT * from department WHERE NOT dept_id=0 ORDER BY dept_id asc  ") or die(mysqli_error());
+                                    $query = mysqli_query($conn, "SELECT * from attendance JOIN employee ON attendance.employee_id = employee.emp_id ORDER BY emp_id asc") or die(mysqli_error());
                                     while ($row = mysqli_fetch_array($query)) {
-                                        $dept_id = $row['dept_id'];
-                                        $dept_name = $row['dept_name'];
+                                        $lname = $row['lname'];
+                                        $fname = $row['fname'];
+                                        $date = $row['date'];
+                                        $status = $row['status'];
                                         ?>
 
                                         <tr>
                                             <td align="center">
-                                                <?php echo $row['dept_name'] ?>
+                                                <?php echo $row['lname'] ?>,
+                                                <?php echo $row['fname'] ?>
+                                                </a>
                                             </td>
-
+                                            <td align="center">
+                                                <?php echo $date ?>
+                                                </a>
+                                            </td>
+                                            <td align="center">
+                                                <?php echo $status ?>
+                                                </a>
+                                            </td>
                                             <td align="center">
                                                 <a class="btn btn-primary"
-                                                    href="../view/view_department.php?dept_id=<?php echo $row["dept_id"]; ?>">Edit</a>
+                                                    href="../view/view_attendance.php?attendance_id=<?php echo $row["attendance_id"]; ?>">Edit</a>
                                                 <a class="btn btn-danger"
-                                                    href="../delete/delete_department.php?dept_id=<?php echo $row["dept_id"]; ?>">Delete</a>
+                                                    href="../delete/delete.php?emp_id=<?php echo $row["emp_id"]; ?>">Delete</a>
                                             </td>
                                         </tr>
 
@@ -135,7 +147,14 @@ while ($row = mysqli_fetch_array($sql)) {
 
                                 <tr class="info">
                                     <th>
-                                        <p align="center">Department Name</p>
+                                        <p align="center">Name</p>
+                                    </th>
+                                    <th>
+                                        <p align="center">Date</p>
+                                    </th>
+                                    <th>
+                                        <p align="center">Status</p>
+                                    </th>
                                     <th>
                                         <p align="center">Action</p>
                                     </th>
@@ -147,8 +166,8 @@ while ($row = mysqli_fetch_array($sql)) {
             </form>
         </div>
 
-        <!-- this modal is for ADDING an EMPLOYEE -->
-        <div class="modal fade" id="addDepartment" role="dialog">
+        <!-- this modal is for ADDING an attendance -->
+        <div class="modal fade" id="addAttendance" role="dialog">
             <div class="modal-dialog">
 
                 <!-- Modal content-->
@@ -156,18 +175,54 @@ while ($row = mysqli_fetch_array($sql)) {
                     <div class="modal-header" style="padding:7px 20px;">
                         <button type="button" class="close" data-dismiss="modal" title="Close">&times;</button>
                     </div>
-                    <h3 align="center"><b>Add Department</b></h3>
+                    <h3 align="center"><b>Add Attendance</b></h3>
                     <div class="modal-body" style="padding:40px 50px;">
 
                         <form class="form-horizontal" action="#" name="form" method="post">
                             <div class="form-group">
-                                <label class="col-sm-4 control-label">Department</label>
+                                <label class="col-sm-4 control-label">Employee</label>
                                 <div class="col-sm-8">
-                                    <input type="text" name="dept_name" class="form-control" placeholder="Department"
+                                    <select name="employee" class="form-control" placeholder="Employee" required>
+                                        <option value="">Employee</option>
+
+                                        <?php
+                                        require('../db.php');
+
+                                        $sql = "SELECT emp_id, lname, fname FROM employee";
+                                        $result = mysqli_query($c, $sql);
+
+                                        if (!$result) {
+                                            die("Error fetching employees: " . mysqli_error($c));
+                                        }
+
+                                        while ($row = mysqli_fetch_assoc($result)) {
+                                            echo "<option value='" . $row['emp_id'] . "'>" . $row['lname'], ", ", $row['fname'] . "</option>";
+                                        }
+
+                                        mysqli_close($c);
+                                        ?>
+
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label">Date</label>
+                                <div class="col-sm-8">
+                                    <input type="date" name="date" class="form-control" placeholder="Date"
                                         required="required">
                                 </div>
                             </div>
-
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label">Status</label>
+                                <div class="col-sm-8">
+                                    <select name="status" class="form-control" placeholder="Status" required>
+                                        <option value="">Status</option>
+                                        <option value="FULL DAY">FULL DAY</option>
+                                        <option value="HALF DAY">HALF DAY</option>
+                                        <option value="ABSENT">ABSENT</option>
+                                    </select>
+                                </div>
+                            </div>
 
                             <div class="form-group">
                                 <label class="col-sm-4 control-label"></label>

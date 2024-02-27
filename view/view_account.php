@@ -10,25 +10,25 @@ if (!$conn) {
 $query1 = mysqli_query($conn, "SELECT * from deductions WHERE deduction_id = 1");
 while ($row = mysqli_fetch_array($query1)) {
   $id = $row['deduction_id'];
-  $philhealth = $row['deduction_amount'];
+  $philhealth = $row['deduction_percent'];
 }
 
 $query3 = mysqli_query($conn, "SELECT * from deductions WHERE deduction_id = 3");
 while ($row = mysqli_fetch_array($query3)) {
   $id = $row['deduction_id'];
-  $GSIS = $row['deduction_amount'];
+  $GSIS = $row['deduction_percent'];
 }
 
 $query4 = mysqli_query($conn, "SELECT * from deductions WHERE deduction_id = 4");
 while ($row = mysqli_fetch_array($query4)) {
   $id = $row['deduction_id'];
-  $PAGIBIG = $row['deduction_amount'];
+  $PAGIBIG = $row['deduction_percent'];
 }
 
 $query5 = mysqli_query($conn, "SELECT * from deductions WHERE deduction_id = 5");
 while ($row = mysqli_fetch_array($query5)) {
   $id = $row['deduction_id'];
-  $SSS = $row['deduction_amount'];
+  $SSS = $row['deduction_percent'];
 }
 ?>
 
@@ -74,19 +74,22 @@ while ($row = mysqli_fetch_array($query5)) {
             <a class="nav-link" href="../index.php">Home</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="home_employee.php">Employee</a>
+            <a class="nav-link" href="../home/home_employee.php">Employee</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="home_departments.php">Department</a>
+            <a class="nav-link" href="../home/home_attendance.php">Attendance</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="home_deductions.php">Deduction</a>
+            <a class="nav-link" href="../home/home_departments.php">Department</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="home_income.php">Income</a>
+            <a class="nav-link" href="../home/home_deductions.php">Deduction</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="../home/home_income.php">Income</a>
           </li>
           <li class="nav-item active">
-            <a class="nav-link" href="home_salary.php">Report</a>
+            <a class="nav-link" href="../home/home_salary.php">Report</a>
           </li>
         </ul>
         <ul class="navbar-nav ml-auto">
@@ -125,7 +128,7 @@ while ($row = mysqli_fetch_array($query5)) {
       $overtime_hours = $row['overtime_hours'] * $rate;
       $bonus = $row['bonus'];
       $benefits_deduction = $row['benefits_deduction'];
-      $income = $overtime_hours + $bonus + $salary;
+      $income = $row['total_gross_pay'];
       $netpay = $income - $benefits_deduction;
       ?>
 

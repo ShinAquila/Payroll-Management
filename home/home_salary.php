@@ -36,6 +36,7 @@ while ($row = mysqli_fetch_array($query)) {
     body {
       margin-top: -2%;
     }
+
     .navbar {
       padding: 2%;
       width: 100%;
@@ -59,6 +60,9 @@ while ($row = mysqli_fetch_array($query)) {
           </li>
           <li class="nav-item">
             <a class="nav-link" href="home_employee.php">Employee</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="home_attendance.php">Attendance</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="home_departments.php">Department</a>
@@ -108,6 +112,9 @@ while ($row = mysqli_fetch_array($query)) {
                       <p align="center">Gross Pay</p>
                     </th>
                     <th>
+                      <p align="center">Deductions</p>
+                    </th>
+                    <th>
                       <p align="center">Net Pay</p>
                     </th>
                   </tr>
@@ -134,11 +141,9 @@ while ($row = mysqli_fetch_array($query)) {
 
                     $overtime_pay = $overtime_hours * $rate;
 
-                    $total_gross_pay = $overtime_pay + $bonus + $salary_rate;
-                    $total_net_pay = $total_gross_pay - $benefits_deduction;
+                    $total_gross_pay = $row['total_gross_pay'];
+                    $total_net_pay = $row['total_net_pay'];
 
-                    $update_gp_query = mysqli_query($conn, "UPDATE account_info SET total_net_pay = $total_net_pay WHERE employee_id = " . $row['employee_id']);
-                    $update_np_query = mysqli_query($conn, "UPDATE account_info SET total_gross_pay = $total_gross_pay WHERE employee_id = " . $row['employee_id']);
                     ?>
 
                     <tr>
@@ -154,6 +159,9 @@ while ($row = mysqli_fetch_array($query)) {
                       </td>
                       <td align="center"><big><b>
                             <?php echo $total_gross_pay ?>
+                          </b></big>.00</td>
+                      <td align="center"><big><b>
+                            <?php echo $benefits_deduction ?>
                           </b></big>.00</td>
                       <td align="center"><big><b>
                             <?php echo $total_net_pay ?>
@@ -174,6 +182,9 @@ while ($row = mysqli_fetch_array($query)) {
                   </th>
                   <th>
                     <p align="center">Gross Pay</p>
+                  </th>
+                  <th>
+                    <p align="center">Deductions</p>
                   </th>
                   <th>
                     <p align="center">Net Pay</p>

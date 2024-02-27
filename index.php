@@ -56,6 +56,9 @@ if (!$conn) {
             <a class="nav-link" href="home/home_employee.php">Employee</a>
           </li>
           <li class="nav-item">
+            <a class="nav-link" href="home/home_attendance.php">Attendance</a>
+          </li>
+          <li class="nav-item">
             <a class="nav-link" href="home/home_departments.php">Department</a>
           </li>
           <li class="nav-item">

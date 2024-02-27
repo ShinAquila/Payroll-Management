@@ -5,25 +5,25 @@ include("../add/add_income.php");
 $query1 = mysqli_query($conn, "SELECT * from deductions WHERE deduction_id = 1");
 while ($row = mysqli_fetch_array($query1)) {
   $id = $row['deduction_id'];
-  $philhealth = $row['deduction_amount'];
+  $philhealth = $row['deduction_percent'];
 }
 
 $query2 = mysqli_query($conn, "SELECT * from deductions WHERE deduction_id = 2");
 while ($row = mysqli_fetch_array($query2)) {
   $id = $row['deduction_id'];
-  $BIR = $row['deduction_amount'];
+  $BIR = $row['deduction_percent'];
 }
 
 $query3 = mysqli_query($conn, "SELECT * from deductions WHERE deduction_id = 3");
 while ($row = mysqli_fetch_array($query3)) {
   $id = $row['deduction_id'];
-  $GSIS = $row['deduction_amount'];
+  $GSIS = $row['deduction_percent'];
 }
 
 $query4 = mysqli_query($conn, "SELECT * from deductions WHERE deduction_id = 4");
 while ($row = mysqli_fetch_array($query4)) {
   $id = $row['deduction_id'];
-  $PAGIBIG = $row['deduction_amount'];
+  $PAGIBIG = $row['deduction_percent'];
 }
 
 $conn = mysqli_connect('localhost', 'root', '', 'payroll');
@@ -70,7 +70,8 @@ while ($row = mysqli_fetch_array($query)) {
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
     <div class="container">
       <a class="navbar-brand" href="#"><b>Pixel Foundry</b></a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
+        aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
 
@@ -81,6 +82,9 @@ while ($row = mysqli_fetch_array($query)) {
           </li>
           <li class="nav-item">
             <a class="nav-link" href="home_employee.php">Employee</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="home_attendance.php">Attendance</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="home_departments.php">Department</a>
@@ -120,7 +124,7 @@ while ($row = mysqli_fetch_array($query)) {
           <p class="pull-right">Overtime rate per hour: <big><b>
                 <?php echo $rate; ?>.00
               </b></big></p><br>
-          <p class="pull-right">Salary rate: <big><b>
+          <p class="pull-right">Salary rate/day: <big><b>
                 <?php echo $salary; ?>.00
               </b></big></p><br>
           <button type="button" data-toggle="modal" data-target="#addAccountIncome" class="btn btn-success">Add
@@ -142,6 +146,15 @@ while ($row = mysqli_fetch_array($query)) {
                       <p align="center">End Pay Period</p>
                     </th>
                     <th>
+                      <p align="center">Days Full Day</p>
+                    </th>
+                    <th>
+                      <p align="center">Days Half Day</p>
+                    </th>
+                    <th>
+                      <p align="center">Days Absent</p>
+                    </th>
+                    <th>
                       <p align="center">Overtime Hours</p>
                     </th>
                     <th>
@@ -149,12 +162,6 @@ while ($row = mysqli_fetch_array($query)) {
                     </th>
                     <th>
                       <p align="center">Gross Pay</p>
-                    </th>
-                    <th>
-                      <p align="center">Deductions</p>
-                    </th>
-                    <th>
-                      <p align="center">Net Pay</p>
                     </th>
                     <th>
                       <p align="center">Action</p>
@@ -171,17 +178,17 @@ while ($row = mysqli_fetch_array($query)) {
 
                   $query = mysqli_query($conn, "SELECT * FROM employee JOIN account_info ON employee.emp_id = account_info.employee_id ORDER BY emp_id ASC") or die(mysqli_error());
                   while ($row = mysqli_fetch_array($query)) {
-                    $id = $row['emp_id'];
                     $lname = $row['lname'];
                     $fname = $row['fname'];
                     $overtime_hours = $row['overtime_hours'];
+                    $days_full_day = $row['days_full_day'];
+                    $days_half_day = $row['days_half_day'];
+                    $days_absent = $row['days_absent'];
                     $bonus = $row['bonus'];
-                    $benefits_deduction = $row['benefits_deduction'];
                     $total_gross_pay = $row['total_gross_pay'];
-                    $total_net_pay = $row['total_net_pay'];
                     $start_pay_period = $row['start_pay_period'];
                     $end_pay_period = $row['end_pay_period'];
-                  ?>
+                    ?>
 
                     <tr>
                       <td align="center">
@@ -198,6 +205,18 @@ while ($row = mysqli_fetch_array($query)) {
                         </a>
                       </td>
                       <td align="center">
+                        <?php echo $days_full_day ?>
+                        </a>
+                      </td>
+                      <td align="center">
+                        <?php echo $days_half_day ?>
+                        </a>
+                      </td>
+                      <td align="center">
+                        <?php echo $days_absent ?>
+                        </a>
+                      </td>
+                      <td align="center">
                         <?php echo $overtime_hours ?>
                         </a>
                       </td>
@@ -211,19 +230,11 @@ while ($row = mysqli_fetch_array($query)) {
                         </b><small>.00</small>
                         </a>
                       </td>
-                      <td align="center"><b>
-                          <?php echo $benefits_deduction ?>
-                        </b><small>.00</small>
-                        </a>
-                      </td>
-                      <td align="center"><b>
-                          <?php echo $total_net_pay ?>
-                        </b><small>.00</small>
-                        </a>
-                      </td>
                       <td align="center">
-                        <a class="btn btn-primary" href="../view/view_account.php?acc_info_id=<?php echo $row["acc_info_id"]; ?>">Edit</a>
-                        <a class="btn btn-danger" href="../delete/delete_income.php?dept_id=<?php echo $row["acc_info_id"]; ?>">Delete</a>
+                        <a class="btn btn-primary"
+                          href="../view/view_account.php?acc_info_id=<?php echo $row["acc_info_id"]; ?>">Edit</a>
+                        <a class="btn btn-danger"
+                          href="../delete/delete_income.php?acc_info_id=<?php echo $row["acc_info_id"]; ?>">Delete</a>
                       </td>
                     </tr>
 
@@ -241,6 +252,15 @@ while ($row = mysqli_fetch_array($query)) {
                     <p align="center">End Pay Period</p>
                   </th>
                   <th>
+                    <p align="center">Days Full Day</p>
+                  </th>
+                  <th>
+                    <p align="center">Days Half Day</p>
+                  </th>
+                  <th>
+                    <p align="center">Days Absent</p>
+                  </th>
+                  <th>
                     <p align="center">Overtime Hours</p>
                   </th>
                   <th>
@@ -248,12 +268,6 @@ while ($row = mysqli_fetch_array($query)) {
                   </th>
                   <th>
                     <p align="center">Gross Pay</p>
-                  </th>
-                  <th>
-                    <p align="center">Deductions</p>
-                  </th>
-                  <th>
-                    <p align="center">Net Pay</p>
                   </th>
                   <th>
                     <p align="center">Action</p>
@@ -308,19 +322,22 @@ while ($row = mysqli_fetch_array($query)) {
               <div class="form-group">
                 <label class="col-sm-4 control-label">Start Pay Period</label>
                 <div class="col-sm-8">
-                  <input type="date" name="start_pay_period" class="form-control" placeholder="Start Pay Period" required="required">
+                  <input type="date" name="start_pay_period" class="form-control" placeholder="Start Pay Period"
+                    required="required">
                 </div>
               </div>
               <div class="form-group">
                 <label class="col-sm-4 control-label">End Pay Period</label>
                 <div class="col-sm-8">
-                  <input type="date" name="end_pay_period" class="form-control" placeholder="End Pay Period" required="required">
+                  <input type="date" name="end_pay_period" class="form-control" placeholder="End Pay Period"
+                    required="required">
                 </div>
               </div>
               <div class="form-group">
                 <label class="col-sm-4 control-label">Overtime Hours</label>
                 <div class="col-sm-8">
-                  <input type="text" name="overtime_hours" class="form-control" placeholder="Overtime Hours" required="required">
+                  <input type="text" name="overtime_hours" class="form-control" placeholder="Overtime Hours"
+                    required="required">
                 </div>
               </div>
               <div class="form-group">
@@ -385,7 +402,8 @@ while ($row = mysqli_fetch_array($query)) {
 
             <form class="form-horizontal" action="../update/update_salary.php" name="form" method="post">
               <div class="form-group">
-                <input type="text" name="salary_rate" class="form-control" value="<?php echo $salary; ?>" required="required">
+                <input type="text" name="salary_rate" class="form-control" value="<?php echo $salary; ?>"
+                  required="required">
               </div>
 
               <div class="form-group">
@@ -432,7 +450,7 @@ while ($row = mysqli_fetch_array($query)) {
   <!-- FOR DataTable -->
   <script>
     {
-      $(document).ready(function() {
+      $(document).ready(function () {
         $('#myTable').DataTable();
       });
     }
@@ -440,8 +458,8 @@ while ($row = mysqli_fetch_array($query)) {
 
   <!-- this function is for modal -->
   <script>
-    $(document).ready(function() {
-      $("#myBtn").click(function() {
+    $(document).ready(function () {
+      $("#myBtn").click(function () {
         $("#myModal").modal();
       });
     });

@@ -5,25 +5,25 @@ include("../add/add_employee.php");
 $query1 = mysqli_query($conn, "SELECT * from deductions WHERE deduction_id = 1");
 while ($row = mysqli_fetch_array($query1)) {
   $id = $row['deduction_id'];
-  $philhealth = $row['deduction_amount'];
+  $philhealth = $row['deduction_percent'];
 }
 
 $query2 = mysqli_query($conn, "SELECT * from deductions WHERE deduction_id = 2");
 while ($row = mysqli_fetch_array($query2)) {
   $id = $row['deduction_id'];
-  $BIR = $row['deduction_amount'];
+  $BIR = $row['deduction_percent'];
 }
 
 $query3 = mysqli_query($conn, "SELECT * from deductions WHERE deduction_id = 3");
 while ($row = mysqli_fetch_array($query3)) {
   $id = $row['deduction_id'];
-  $GSIS = $row['deduction_amount'];
+  $GSIS = $row['deduction_percent'];
 }
 
 $query4 = mysqli_query($conn, "SELECT * from deductions WHERE deduction_id = 4");
 while ($row = mysqli_fetch_array($query4)) {
   $id = $row['deduction_id'];
-  $PAGIBIG = $row['deduction_amount'];
+  $PAGIBIG = $row['deduction_percent'];
 }
 ?>
 
@@ -71,6 +71,9 @@ while ($row = mysqli_fetch_array($query4)) {
           </li>
           <li class="nav-item active">
             <a class="nav-link" href="home_employee.php">Employee</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="home_attendance.php">Attendance</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="home_departments.php">Department</a>
@@ -146,18 +149,22 @@ while ($row = mysqli_fetch_array($query4)) {
 
                     <tr>
                       <td align="center">
-                          <?php echo $row['lname'] ?>,
-                          <?php echo $row['fname'] ?>
-                        </a></td>
+                        <?php echo $row['lname'] ?>,
+                        <?php echo $row['fname'] ?>
+                        </a>
+                      </td>
                       <td align="center">
-                          <?php echo $row['gender'] ?>
-                        </a></td>
+                        <?php echo $row['gender'] ?>
+                        </a>
+                      </td>
                       <td align="center">
-                          <?php echo $row['email'] ?>
-                        </a></td>
+                        <?php echo $row['email'] ?>
+                        </a>
+                      </td>
                       <td align="center">
-                          <?php echo $row['dept_name'] ?>
-                        </a></td>
+                        <?php echo $row['dept_name'] ?>
+                        </a>
+                      </td>
                       <td align="center">
                         <a class="btn btn-primary"
                           href="../view/view_employee.php?emp_id=<?php echo $row["emp_id"]; ?>">Edit</a>
