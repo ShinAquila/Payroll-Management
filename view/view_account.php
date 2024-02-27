@@ -10,25 +10,25 @@ if (!$conn) {
 $query1 = mysqli_query($conn, "SELECT * from deductions WHERE deduction_id = 1");
 while ($row = mysqli_fetch_array($query1)) {
   $id = $row['deduction_id'];
-  $philhealth = $row['deduction_percent'];
+  $philhealth_p = $row['deduction_percent'];
 }
 
 $query3 = mysqli_query($conn, "SELECT * from deductions WHERE deduction_id = 3");
 while ($row = mysqli_fetch_array($query3)) {
   $id = $row['deduction_id'];
-  $GSIS = $row['deduction_percent'];
+  $GSIS_p = $row['deduction_percent'];
 }
 
 $query4 = mysqli_query($conn, "SELECT * from deductions WHERE deduction_id = 4");
 while ($row = mysqli_fetch_array($query4)) {
   $id = $row['deduction_id'];
-  $PAGIBIG = $row['deduction_percent'];
+  $PAGIBIG_p = $row['deduction_percent'];
 }
 
 $query5 = mysqli_query($conn, "SELECT * from deductions WHERE deduction_id = 5");
 while ($row = mysqli_fetch_array($query5)) {
   $id = $row['deduction_id'];
-  $SSS = $row['deduction_percent'];
+  $SSS_p = $row['deduction_percent'];
 }
 ?>
 
@@ -118,18 +118,51 @@ while ($row = mysqli_fetch_array($query5)) {
     while ($row = mysqli_fetch_array($query)) {
       $rate = $row['rate'];
     }
-
     $query = mysqli_query($c, "SELECT * from salary");
     while ($row = mysqli_fetch_array($query)) {
       $salary = $row['salary_rate'];
     }
 
+    $total_gross_pay_query = mysqli_query($c, "SELECT * from account_info JOIN employee ON account_info.employee_id = employee.emp_id WHERE acc_info_id='" . $id . "'");
+    while ($total_gross_pay_row = mysqli_fetch_array($total_gross_pay_query)) {
+      $total_gross_pay = $total_gross_pay_row['total_gross_pay'];
+    }
+
+    
+
+    $philhealth_deductions_query = mysqli_query($c, "SELECT * from deductions WHERE deduction_id = 1");
+    while ($philhealth_row = mysqli_fetch_array($philhealth_deductions_query)) {
+      $philhealth = ($total_gross_pay * ($philhealth_row['deduction_percent']/100))/2;
+    }
+
+    $gsis_deductions_query = mysqli_query($c, "SELECT * from deductions WHERE deduction_id = 3");
+    while ($gsis_row = mysqli_fetch_array($gsis_deductions_query)) {
+      $gsis = ($total_gross_pay * ($gsis_row['deduction_percent']/100))/2;
+    }
+
+    $pagibig_deductions_query = mysqli_query($c, "SELECT * from deductions WHERE deduction_id = 4");
+    while ($pagibig_row = mysqli_fetch_array($pagibig_deductions_query)) {
+      $pagibig = ($total_gross_pay * ($pagibig_row['deduction_percent']/100))/2;
+    }
+
+    $sss_deductions_query = mysqli_query($c, "SELECT * from deductions WHERE deduction_id = 5");
+    while ($sss_row = mysqli_fetch_array($sss_deductions_query)) {
+      $sss = ($total_gross_pay * ($sss_row['deduction_percent']/100))/2;
+    }
+
+    $deduction_sum = $philhealth+$gsis+$pagibig+$sss;
+
+    $sql = mysqli_query($c, "UPDATE account_info SET benefits_deduction='$deduction_sum' WHERE acc_info_id='$id'");
+
+
     while ($row = mysqli_fetch_assoc($result)) {
       $overtime_hours = $row['overtime_hours'] * $rate;
       $bonus = $row['bonus'];
       $benefits_deduction = $row['benefits_deduction'];
-      $income = $row['total_gross_pay'];
-      $netpay = $income - $benefits_deduction;
+      $total_gross_pay = $row['total_gross_pay'];
+      $netpay = $total_gross_pay - $benefits_deduction;
+
+
       ?>
 
       <form class="form-horizontal" action="../update/update_account.php" method="post" name="form">
@@ -148,24 +181,24 @@ while ($row = mysqli_fetch_array($query5)) {
           <label class="col-sm-5 control-label">Deductions:</label>
           <div class="col-sm-4">
             <div class="form-check">
-              <input type="checkbox" class="form-check-input" name="benefits_deduction[]"
-                value="<?php echo $philhealth; ?>" >
-              <label class="form-check-label" for="deduction_philhealth" style="padding-left:6%">PhilHealth</label>
+              <input type="checkbox" class="form-check-input" name="deduction_selected[]"
+                value="<?php echo $philhealth_p; ?>" >
+              <label class="form-check-label" for="deduction_philhealth" style="padding-left:6%">PhilHealth (<?php echo $philhealth; ?>)</label>
             </div>
             <div class="form-check">
-              <input type="checkbox" class="form-check-input" name="benefits_deduction[]" value="<?php echo $GSIS; ?>"
+              <input type="checkbox" class="form-check-input" name="deduction_selected[]" value="<?php echo $GSIS_p; ?>"
                 >
-              <label class="form-check-label" for="deduction_gsis" style="padding-left:6%">GSIS</label>
+              <label class="form-check-label" for="deduction_gsis" style="padding-left:6%">GSIS (<?php echo $gsis; ?>)</label>
             </div>
             <div class="form-check">
-              <input type="checkbox" class="form-check-input" name="benefits_deduction[]" value="<?php echo $PAGIBIG; ?>"
+              <input type="checkbox" class="form-check-input" name="deduction_selected[]" value="<?php echo $PAGIBIG_p; ?>"
                 >
-              <label class="form-check-label" for="deduction_pagibig" style="padding-left:6%">PAG-IBIG</label>
+              <label class="form-check-label" for="deduction_pagibig" style="padding-left:6%">PAG-IBIG (<?php echo $pagibig; ?>)</label>
             </div>
             <div class="form-check">
-              <input type="checkbox" class="form-check-input" name="benefits_deduction[]" value="<?php echo $SSS; ?>"
+              <input type="checkbox" class="form-check-input" name="deduction_selected[]" value="<?php echo $SSS_p; ?>"
                 >
-              <label class="form-check-label" for="deduction_pagibig" style="padding-left:6%">SSS</label>
+              <label class="form-check-label" for="deduction_pagibig" style="padding-left:6%">SSS (<?php echo $sss; ?>)</label>
             </div>
           </div>
         </div>
