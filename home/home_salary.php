@@ -211,9 +211,33 @@ while ($row = mysqli_fetch_array($query)) {
           <h3 align="center">Deduction Details</h3>
           <div class="modal-body" style="padding:40px 50px;">
             <div class="form-group">
-              <label class="col-sm-4 control-label">PhilHealth</label>
+              <label class="col-sm-4 control-label" style="margin-left: -20px;">PhilHealth</label>
               <div class="col-sm-8">
-                <input disabled type="text" name="philhealth" class="form-control" required="required" value="test">
+                <input style="margin-left: 20px;" disabled type="text" name="philhealth" class="form-control" required="required" value="test">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-4 control-label" style="margin-left: -20px;">GSIS</label>
+              <div class="col-sm-8">
+                <input style="margin-left: 20px;" disabled type="text" name="gsis" class="form-control" required="required" value="test">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-4 control-label" style="margin-left: -20px;">PAGIBIG</label>
+              <div class="col-sm-8">
+                <input style="margin-left: 20px;" disabled type="text" name="pagibig" class="form-control" required="required" value="test">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-4 control-label" style="margin-left: -20px;">SSS</label>
+              <div class="col-sm-8">
+                <input style="margin-left: 20px;" disabled type="text" name="sss" class="form-control" required="required" value="test">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-4 control-label" style="margin-left: -20px;">Tax</label>
+              <div class="col-sm-8">
+                <input style="margin-left: 20px;" disabled type="text" name="tax" class="form-control" required="required" value="test">
               </div>
             </div>
 
