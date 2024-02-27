@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.1
+-- version 5.1.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 26, 2024 at 10:03 AM
--- Server version: 10.4.28-MariaDB
--- PHP Version: 8.0.28
+-- Generation Time: Feb 27, 2024 at 04:56 AM
+-- Server version: 10.4.21-MariaDB
+-- PHP Version: 7.3.31
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -30,6 +30,9 @@ SET time_zone = "+00:00";
 CREATE TABLE `account_info` (
   `acc_info_id` int(11) NOT NULL,
   `employee_id` int(11) NOT NULL,
+  `days_full_day` int(11) NOT NULL,
+  `days_half_day` int(11) NOT NULL,
+  `days_absent` int(11) NOT NULL,
   `overtime_hours` int(11) NOT NULL,
   `bonus` int(11) NOT NULL,
   `benefits_deduction` int(11) NOT NULL,
@@ -37,18 +40,59 @@ CREATE TABLE `account_info` (
   `total_net_pay` int(11) NOT NULL,
   `start_pay_period` date NOT NULL,
   `end_pay_period` date NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `account_info`
 --
 
-INSERT INTO `account_info` (`acc_info_id`, `employee_id`, `overtime_hours`, `bonus`, `benefits_deduction`, `total_gross_pay`, `total_net_pay`, `start_pay_period`, `end_pay_period`) VALUES
-(1, 15, 2, 300, 2850, 16300, 13450, '2024-02-01', '2024-02-29'),
-(5, 14, 5, 250, 3000, 17750, 14750, '2023-12-01', '2023-12-31'),
-(6, 20, 3, 250, 2850, 16750, 13900, '2024-02-01', '2024-02-29'),
-(7, 29, 6, 1000, 2400, 19000, 16600, '2024-01-01', '2024-01-31'),
-(8, 18, 3, 550, 1650, 17050, 15400, '2024-02-01', '2024-02-29');
+INSERT INTO `account_info` (`acc_info_id`, `employee_id`, `days_full_day`, `days_half_day`, `days_absent`, `overtime_hours`, `bonus`, `benefits_deduction`, `total_gross_pay`, `total_net_pay`, `start_pay_period`, `end_pay_period`) VALUES
+(23, 32, 20, 2, 3, 2, 500, 0, 11300, 0, '2024-02-01', '2024-02-29'),
+(24, 32, 10, 1, 2, 1, 250, 0, 5650, 0, '2024-02-01', '2024-02-15');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `attendance`
+--
+
+CREATE TABLE `attendance` (
+  `attendance_id` int(11) NOT NULL,
+  `employee_id` int(11) NOT NULL,
+  `date` date NOT NULL,
+  `status` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `attendance`
+--
+
+INSERT INTO `attendance` (`attendance_id`, `employee_id`, `date`, `status`) VALUES
+(1, 32, '2024-02-01', 'FULL DAY'),
+(5, 32, '2024-02-02', 'HALF DAY'),
+(6, 32, '2024-02-03', 'FULL DAY'),
+(8, 32, '2024-02-05', 'ABSENT'),
+(9, 32, '2024-02-06', 'FULL DAY'),
+(10, 32, '2024-02-07', 'FULL DAY'),
+(11, 32, '2024-02-08', 'ABSENT'),
+(12, 32, '2024-02-09', 'FULL DAY'),
+(13, 32, '2024-02-10', 'FULL DAY'),
+(15, 32, '2024-02-12', 'FULL DAY'),
+(16, 32, '2024-02-13', 'FULL DAY'),
+(17, 32, '2024-02-14', 'FULL DAY'),
+(18, 32, '2024-02-15', 'FULL DAY'),
+(19, 32, '2024-02-16', 'FULL DAY'),
+(20, 32, '2024-02-17', 'FULL DAY'),
+(22, 32, '2024-02-19', 'ABSENT'),
+(23, 32, '2024-02-20', 'FULL DAY'),
+(24, 32, '2024-02-21', 'FULL DAY'),
+(25, 32, '2024-02-22', 'FULL DAY'),
+(26, 32, '2024-02-23', 'FULL DAY'),
+(27, 32, '2024-02-24', 'FULL DAY'),
+(28, 32, '2024-02-26', 'FULL DAY'),
+(29, 32, '2024-02-27', 'HALF DAY'),
+(30, 32, '2024-02-28', 'FULL DAY'),
+(31, 32, '2024-02-29', 'FULL DAY');
 
 -- --------------------------------------------------------
 
@@ -60,7 +104,7 @@ CREATE TABLE `deductions` (
   `deduction_id` int(5) NOT NULL,
   `deduction_name` varchar(100) NOT NULL,
   `deduction_percent` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `deductions`
@@ -81,7 +125,7 @@ INSERT INTO `deductions` (`deduction_id`, `deduction_name`, `deduction_percent`)
 CREATE TABLE `department` (
   `dept_id` int(11) NOT NULL,
   `dept_name` varchar(250) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `department`
@@ -109,7 +153,7 @@ CREATE TABLE `employee` (
   `gender` varchar(6) NOT NULL,
   `email` varchar(100) NOT NULL,
   `dept` int(30) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `employee`
@@ -148,14 +192,14 @@ CREATE TABLE `overtime` (
   `ot_id` int(10) NOT NULL,
   `rate` int(10) NOT NULL,
   `none` int(2) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `overtime`
 --
 
 INSERT INTO `overtime` (`ot_id`, `rate`, `none`) VALUES
-(1, 500, 0);
+(1, 150, 0);
 
 -- --------------------------------------------------------
 
@@ -167,14 +211,14 @@ CREATE TABLE `salary` (
   `salary_id` int(10) NOT NULL,
   `salary_rate` int(10) NOT NULL,
   `none` int(10) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `salary`
 --
 
 INSERT INTO `salary` (`salary_id`, `salary_rate`, `none`) VALUES
-(1, 15000, 0);
+(1, 500, 0);
 
 -- --------------------------------------------------------
 
@@ -186,7 +230,7 @@ CREATE TABLE `user` (
   `id` int(5) NOT NULL,
   `username` varchar(20) NOT NULL,
   `password` varchar(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `user`
@@ -205,6 +249,13 @@ INSERT INTO `user` (`id`, `username`, `password`) VALUES
 --
 ALTER TABLE `account_info`
   ADD PRIMARY KEY (`acc_info_id`),
+  ADD KEY `employee_id` (`employee_id`);
+
+--
+-- Indexes for table `attendance`
+--
+ALTER TABLE `attendance`
+  ADD PRIMARY KEY (`attendance_id`),
   ADD KEY `employee_id` (`employee_id`);
 
 --
@@ -252,7 +303,13 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `account_info`
 --
 ALTER TABLE `account_info`
-  MODIFY `acc_info_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `acc_info_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+
+--
+-- AUTO_INCREMENT for table `attendance`
+--
+ALTER TABLE `attendance`
+  MODIFY `attendance_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 
 --
 -- AUTO_INCREMENT for table `deductions`
@@ -299,6 +356,12 @@ ALTER TABLE `user`
 --
 ALTER TABLE `account_info`
   ADD CONSTRAINT `account_info_ibfk_1` FOREIGN KEY (`employee_id`) REFERENCES `employee` (`emp_id`);
+
+--
+-- Constraints for table `attendance`
+--
+ALTER TABLE `attendance`
+  ADD CONSTRAINT `attendance_ibfk_1` FOREIGN KEY (`employee_id`) REFERENCES `employee` (`emp_id`);
 
 --
 -- Constraints for table `employee`
