@@ -80,7 +80,6 @@ if ($total_gross_pay >= 666667){
 // 
 
 
-
 $philhealth = 0;
 $GSIS = 0;
 $PAGIBIG = 0;
@@ -115,7 +114,7 @@ $total_deduction = $benefits_deduction + $tax;
 $total_net_pay = $total_gross_pay - $total_deduction;
 
 
-$sql = mysqli_query($c, "UPDATE account_info SET benefits_deduction = $total_deduction, total_net_pay = $total_net_pay WHERE acc_info_id='$acc_id'");
+$sql = mysqli_query($c, "UPDATE account_info SET total_deductions = $total_deduction, benefits_deductions = $benefits_deduction, tax_deductions = $tax, total_net_pay = $total_net_pay WHERE acc_info_id='$acc_id'");
 
 if ($sql) {
   ?>

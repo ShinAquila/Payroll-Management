@@ -150,15 +150,12 @@ while ($row = mysqli_fetch_array($query5)) {
       $sss = ($total_gross_pay * ($sss_row['deduction_percent']/100))/2;
     }
 
-    $deduction_sum = $philhealth+$gsis+$pagibig+$sss;
-
-    $sql = mysqli_query($c, "UPDATE account_info SET benefits_deduction='$deduction_sum' WHERE acc_info_id='$id'");
 
 
     while ($row = mysqli_fetch_assoc($result)) {
       $overtime_hours = $row['overtime_hours'] * $rate;
       $bonus = $row['bonus'];
-      $benefits_deduction = $row['benefits_deduction'];
+      $benefits_deduction = $row['benefits_deductions'];
       $total_gross_pay = $row['total_gross_pay'];
       $netpay = $row['total_net_pay'];
 

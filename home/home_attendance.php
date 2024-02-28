@@ -112,7 +112,7 @@ include("../add/add_attendance.php");
 
 
 
-                                    $query = mysqli_query($conn, "SELECT * from attendance JOIN employee ON attendance.employee_id = employee.emp_id ORDER BY emp_id asc") or die(mysqli_error());
+                                    $query = mysqli_query($conn, "SELECT * from attendance JOIN employee ON attendance.employee_id = employee.emp_id ORDER BY date asc") or die(mysqli_error());
                                     while ($row = mysqli_fetch_array($query)) {
                                         $lname = $row['lname'];
                                         $fname = $row['fname'];
@@ -137,10 +137,41 @@ include("../add/add_attendance.php");
                                             <td align="center">
                                                 <a class="btn btn-primary"
                                                     href="../view/view_attendance.php?attendance_id=<?php echo $row["attendance_id"]; ?>">Edit</a>
-                                                <a class="btn btn-danger"
-                                                    href="../delete/delete.php?emp_id=<?php echo $row["emp_id"]; ?>">Delete</a>
+
+                                                <button type="button" class="btn btn-danger" data-toggle="modal"
+                                                    data-target="#delete_attendance_<?php echo $row["attendance_id"]; ?>">Delete</button>
+
+
                                             </td>
                                         </tr>
+
+
+                                        <!-- this modal is for deleting an EMPLOYEE attendance -->
+                                        <div class="modal fade" id="delete_attendance_<?php echo $row["attendance_id"]; ?>"
+                                            role="dialog">
+                                            <div class="modal-dialog modal-sm">
+
+                                                <!-- Modal content-->
+                                                <div class="modal-content">
+                                                    <div class="modal-header" style="padding:7px 20px;">
+                                                        <button type="button" class="close" data-dismiss="modal"
+                                                            title="Close">&times;</button>
+                                                    </div>
+                                                    <h3 align="center">You are about to delete:</h3><br><br>
+                                                    <h4 align="center">The <?php echo $row["date"]; ?> attendance of</h4>
+                                                    <b align="center">
+                                                        <?php echo $row['lname'] ?>,
+                                                        <?php echo $row['fname'] ?>
+                                                    </b>
+                                                    <div class="modal-body" style="padding:40px 50px;">
+                                                        <div align="center">
+                                                            <a class="btn btn-danger"
+                                                                href="../delete/delete_attendance.php?attendance_id=<?php echo $row["attendance_id"]; ?>">Delete</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
 
                                     <?php } ?>
                                 </tbody>

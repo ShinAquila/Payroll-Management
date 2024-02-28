@@ -125,10 +125,36 @@ while ($row = mysqli_fetch_array($sql)) {
                                             <td align="center">
                                                 <a class="btn btn-primary"
                                                     href="../view/view_department.php?dept_id=<?php echo $row["dept_id"]; ?>">Edit</a>
-                                                <a class="btn btn-danger"
-                                                    href="../delete/delete_department.php?dept_id=<?php echo $row["dept_id"]; ?>">Delete</a>
+
+                                                <button type="button" class="btn btn-danger" data-toggle="modal"
+                                                    data-target="#delete_dept_<?php echo $row["dept_id"]; ?>">Delete</button>
                                             </td>
                                         </tr>
+
+                                        <!-- this modal is for deleting an EMPLOYEE -->
+                                        <div class="modal fade" id="delete_dept_<?php echo $row["dept_id"]; ?>"
+                                            role="dialog">
+                                            <div class="modal-dialog modal-sm">
+
+                                                <!-- Modal content-->
+                                                <div class="modal-content">
+                                                    <div class="modal-header" style="padding:7px 20px;">
+                                                        <button type="button" class="close" data-dismiss="modal"
+                                                            title="Close">&times;</button>
+                                                    </div>
+                                                    <h3 align="center">You are about to delete:</h3><br>
+                                                    <b align="center">
+                                                        <?php echo $row['dept_name'] ?>
+                                                    </b>
+                                                    <div class="modal-body" style="padding:40px 50px;">
+                                                        <div align="center">
+                                                            <a class="btn btn-danger"
+                                                                href="../delete/delete_department.php?dept_id=<?php echo $row["dept_id"]; ?>">Delete</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
 
                                     <?php } ?>
                                 </tbody>

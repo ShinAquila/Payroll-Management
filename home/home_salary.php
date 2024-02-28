@@ -41,6 +41,22 @@ while ($row = mysqli_fetch_array($query)) {
       padding: 2%;
       width: 100%;
     }
+
+    .circular-button {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background-color: #007bff;
+      color: white;
+      font-size: 16px;
+      border: none;
+      cursor: pointer;
+      margin-left: 10px;
+    }
+
+    .circular-button:hover {
+      background-color: #0056b3;
+    }
   </style>
 </head>
 
@@ -96,7 +112,6 @@ while ($row = mysqli_fetch_array($query)) {
           <div class="table-responsive">
             <form method="post" action="">
               <table class="table table-bordered table-hover table-condensed" id="myTable">
-                <!-- <h3><b>Ordinance</b></h3> -->
                 <thead>
                   <tr class="info">
                     <th>
@@ -121,28 +136,16 @@ while ($row = mysqli_fetch_array($query)) {
                 </thead>
                 <tbody>
                   <?php
-                  $query = mysqli_query($conn, "SELECT * from overtime");
-                  while ($row = mysqli_fetch_array($query)) {
-                    $rate = $row['rate'];
-                  }
-
-                  $query = mysqli_query($conn, "SELECT * from salary");
-                  while ($row = mysqli_fetch_array($query)) {
-                    $salary_rate = $row['salary_rate'];
-                  }
-
-                  $query = mysqli_query($conn, "SELECT * from account_info JOIN employee ON account_info.employee_id = employee.emp_id ");
+                  $query = mysqli_query($conn, "SELECT * from account_info JOIN employee ON account_info.employee_id = employee.emp_id");
                   while ($row = mysqli_fetch_array($query)) {
                     $lname = $row['lname'];
                     $fname = $row['fname'];
-                    $benefits_deduction = $row['benefits_deduction'];
-                    $overtime_hours = $row['overtime_hours'];
-                    $bonus = $row['bonus'];
-
-
+                    $benefits_deductions = $row['benefits_deductions'];
+                    $tax_deductions = $row['tax_deductions'];
+                    $total_deductions = $row['total_deductions'];
+                    $acc_info_id = $row['acc_info_id'];
                     $total_gross_pay = $row['total_gross_pay'];
                     $total_net_pay = $row['total_net_pay'];
-
                     ?>
 
                     <tr>
@@ -159,114 +162,80 @@ while ($row = mysqli_fetch_array($query)) {
                       <td align="center"><big><b>
                             <?php echo $total_gross_pay ?>
                           </b></big></td>
-                      <td align="center"><big><b>
-                            <?php echo $benefits_deduction ?>
+                      <td align="center">
+                        <big><b>
+                            <?php echo $total_deductions ?>
                           </b></big>
-                        <button type="button" data-toggle="modal" data-target="#deduction_details"
-                          class="btn btn-primary">i
+                        <button type="button" class="circular-button" data-toggle="modal"
+                          data-target="#deduction_details_<?php echo $acc_info_id ?>">i</button>
                       </td>
                       <td align="center"><big><b>
                             <?php echo $total_net_pay ?>
                           </b></big></td>
                     </tr>
+
+                    <!-- Deduction Details Modal -->
+                    <div class="modal fade" id="deduction_details_<?php echo $acc_info_id ?>" role="dialog">
+                      <div class="modal-dialog modal-sm">
+                        <div class="modal-content">
+                          <div class="modal-header" style="padding:7px 20px;">
+                            <button type="button" class="close" data-dismiss="modal" title="Close">&times;</button>
+                          </div>
+                          <h3 align="center">Deduction Details</h3>
+                          <div class="modal-body" style="padding:40px 50px;">
+                            <div class="form-group">
+                              <label class="col-sm-4 control-label" for="benefits">Benefits:</label>
+                              <span id="benefits" style="display: inline-block; margin-left: 20px;">
+                                <?php echo $benefits_deductions; ?>
+                              </span>
+                            </div>
+                            <div class="form-group">
+                              <label class="col-sm-4 control-label" for="tax">Tax:</label>
+                              <span id="tax" style="display: inline-block; margin-left: 20px;">
+                                <?php echo $tax_deductions; ?>
+                              </span>
+                            </div>
+                            <div class="form-group">
+                              <label class="col-sm-4 control-label" for="total_deductions">Total:</label>
+                              <span id="total_deductions" style="display: inline-block; margin-left: 20px;">
+                                <?php echo $total_deductions; ?>
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   <?php } ?>
                 </tbody>
-
-                <tr class="info">
-                  <th>
-                    <p align="center">Name</p>
-                  </th>
-                  <th>
-                    <p align="center">Start Pay Period</p>
-                  </th>
-                  <th>
-                    <p align="center">End Pay Period</p>
-                  </th>
-                  <th>
-                    <p align="center">Gross Pay</p>
-                  </th>
-                  <th>
-                    <p align="center">Deductions</p>
-                  </th>
-                  <th>
-                    <p align="center">Net Pay</p>
-                  </th>
-                </tr>
               </table>
             </form>
           </div>
         </fieldset>
       </form>
     </div>
-
-    <!-- this modal is for deduction details -->
-    <div class="modal fade" id="deduction_details" role="dialog">
-      <div class="modal-dialog modal-sm">
-
-        <!-- Modal content-->
-        <div class="modal-content">
-          <div class="modal-header" style="padding:7px 20px;">
-            <button type="button" class="close" data-dismiss="modal" title="Close">&times;</button>
-          </div>
-          <h3 align="center">Deduction Details</h3>
-          <div class="modal-body" style="padding:40px 50px;">
-            <div class="form-group">
-              <label class="col-sm-4 control-label" style="margin-left: -20px;">PhilHealth</label>
-              <div class="col-sm-8">
-                <input style="margin-left: 20px;" disabled type="text" name="philhealth" class="form-control" required="required" value="test">
-              </div>
-            </div>
-            <div class="form-group">
-              <label class="col-sm-4 control-label" style="margin-left: -20px;">GSIS</label>
-              <div class="col-sm-8">
-                <input style="margin-left: 20px;" disabled type="text" name="gsis" class="form-control" required="required" value="test">
-              </div>
-            </div>
-            <div class="form-group">
-              <label class="col-sm-4 control-label" style="margin-left: -20px;">PAGIBIG</label>
-              <div class="col-sm-8">
-                <input style="margin-left: 20px;" disabled type="text" name="pagibig" class="form-control" required="required" value="test">
-              </div>
-            </div>
-            <div class="form-group">
-              <label class="col-sm-4 control-label" style="margin-left: -20px;">SSS</label>
-              <div class="col-sm-8">
-                <input style="margin-left: 20px;" disabled type="text" name="sss" class="form-control" required="required" value="test">
-              </div>
-            </div>
-            <div class="form-group">
-              <label class="col-sm-4 control-label" style="margin-left: -20px;">Tax</label>
-              <div class="col-sm-8">
-                <input style="margin-left: 20px;" disabled type="text" name="tax" class="form-control" required="required" value="test">
-              </div>
-            </div>
+  </div>
 
 
+  <!-- this modal is for my Colins -->
+  <div class="modal fade" id="colins" role="dialog">
+    <div class="modal-dialog modal-sm">
+
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header" style="padding:20px 50px;">
+          <button type="button" class="close" data-dismiss="modal" title="Close">&times;</button>
+          <h3 align="center">You are logged in as <b>
+              <?php echo $_SESSION['username']; ?>
+            </b></h3>
+        </div>
+        <div class="modal-body" style="padding:40px 50px;">
+          <div align="center">
+            <a href="../logout.php" class="btn btn-block btn-danger">Logout</a>
           </div>
         </div>
       </div>
     </div>
-
-    <!-- this modal is for my Colins -->
-    <div class="modal fade" id="colins" role="dialog">
-      <div class="modal-dialog modal-sm">
-
-        <!-- Modal content-->
-        <div class="modal-content">
-          <div class="modal-header" style="padding:20px 50px;">
-            <button type="button" class="close" data-dismiss="modal" title="Close">&times;</button>
-            <h3 align="center">You are logged in as <b>
-                <?php echo $_SESSION['username']; ?>
-              </b></h3>
-          </div>
-          <div class="modal-body" style="padding:40px 50px;">
-            <div align="center">
-              <a href="../logout.php" class="btn btn-block btn-danger">Logout</a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+  </div>
 
   </div>
 
