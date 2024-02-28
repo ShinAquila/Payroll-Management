@@ -256,7 +256,7 @@ while ($row = mysqli_fetch_array($query5)) {
                     <td align="center">
                       <p align="center"></p>
                     </td>
-                    
+
                   </tr>
 
                   <tr>
@@ -335,59 +335,44 @@ while ($row = mysqli_fetch_array($query5)) {
 
 
 
-    <!-- this modal is for update an DEDUCTIONS -->
     <div class="modal fade" id="deductions" role="dialog">
-      <div class="modal-dialog">
-
+      <div class="modal-dialog" style="max-width: 300px;">
         <!-- Modal content-->
         <div class="modal-content">
           <div class="modal-header" style="padding:7px 20px;">
             <button type="button" class="close" data-dismiss="modal" title="Close">&times;</button>
           </div>
-          <h3 align="center"><b>Deduction</b></h3>
-
+          <h3 class="modal-title" align="center" style="padding:10px;"><b>Deduction</b></h3>
           <div class="modal-body" style="padding:40px 50px;">
-
             <form class="form-horizontal" action="../add/add_deductions.php" name="form" method="post">
               <div class="form-group">
-                <label class="col-sm-4 control-label">PhilHealth</label>
-                <div class="col-sm-8">
-                  <input type="text" name="philhealth" class="form-control" required="required"
-                    value="<?php echo $philhealth; ?>">
-                </div>
+                <label>PhilHealth</label>
+                <input type="text" name="philhealth" class="form-control" required="required"
+                  value="<?php echo $philhealth; ?>">
               </div>
               <div class="form-group">
-                <label class="col-sm-4 control-label">GSIS</label>
-                <div class="col-sm-8">
-                  <input type="text" name="gsis" class="form-control" value="<?php echo $GSIS; ?>" required="required">
-                </div>
+                <label>GSIS</label>
+                <input type="text" name="gsis" class="form-control" value="<?php echo $GSIS; ?>" required="required">
               </div>
               <div class="form-group">
-                <label class="col-sm-4 control-label">PAG-IBIG</label>
-                <div class="col-sm-8">
-                  <input type="text" name="pag_ibig" class="form-control" value="<?php echo $PAGIBIG; ?>"
-                    required="required">
-                </div>
+                <label>PAG-IBIG</label>
+                <input type="text" name="pag_ibig" class="form-control" value="<?php echo $PAGIBIG; ?>"
+                  required="required">
               </div>
               <div class="form-group">
-                <label class="col-sm-4 control-label">SSS</label>
-                <div class="col-sm-8">
-                  <input type="text" name="sss" class="form-control" value="<?php echo $SSS; ?>" required="required">
-                </div>
+                <label>SSS</label>
+                <input type="text" name="sss" class="form-control" value="<?php echo $SSS; ?>" required="required">
               </div>
-
-              <div class="form-group">
-                <label class="col-sm-4 control-label"></label>
-                <div class="col-sm-8">
-                  <input type="submit" name="submit" class="btn btn-success" value="Submit">
-                </div>
+              <div class="form-group text-center"> <!-- Added class for text-center -->
+                <input type="submit" name="submit" class="btn btn-success" value="Submit">
               </div>
             </form>
-
           </div>
         </div>
       </div>
     </div>
+
+
 
     <!-- this modal is for my Colins -->
     <div class="modal fade" id="colins" role="dialog">

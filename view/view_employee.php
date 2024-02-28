@@ -77,11 +77,11 @@ while ($row = mysqli_fetch_array($sql)) {
     <br><br>
 
     <?php
-    $id = $_REQUEST['emp_id'];
-    $query = "SELECT * from employee JOIN department ON employee.dept = department.dept_id WHERE emp_id='" . $id . "'";
-    $result = mysqli_query($c, $query) or die(mysqli_error());
+    // $id = $_REQUEST['emp_id'];
+    // $query = "SELECT * from employee JOIN department ON employee.dept = department.dept_id WHERE emp_id='" . $id . "'";
+    // $result = mysqli_query($c, $query) or die(mysqli_error());
 
-    while ($row = mysqli_fetch_assoc($result)) {
+    // while ($row = mysqli_fetch_assoc($result)) {
 
       ?>
 
@@ -166,7 +166,7 @@ while ($row = mysqli_fetch_array($sql)) {
         </div>
       </form>
       <?php
-    }
+    // }
     ?>
 
     <!-- this modal is for my Colins -->
