@@ -27,6 +27,9 @@ while ($row = mysqli_fetch_array($query)) {
 
   <title>Pixel Foundry - Income</title>
   <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
   <link href="../assets/css/justified-nav.css" rel="stylesheet">
   <link href="../assets/css/bootstrap.min.css" rel="stylesheet">
   <link href="../assets/css/search.css" rel="stylesheet">
@@ -162,12 +165,13 @@ while ($row = mysqli_fetch_array($query)) {
                       <td align="center"><big><b>
                             <?php echo $total_gross_pay ?>
                           </b></big></td>
-                      <td align="center">
+                      <td style="position:relative; display:flex; justify-content: center;">
                         <big><b>
                             <?php echo $total_deductions ?>
                           </b></big>
-                        <button type="button" class="circular-button" data-toggle="modal"
-                          data-target="#deduction_details_<?php echo $acc_info_id ?>">i</button>
+                          <i style="position: absolute; right: 1rem; margin-block: 1%; color: #2d76c4; cursor: pointer; font-size:2rem" class="fa-solid fa-circle-info" data-toggle="modal"
+                          data-target="#deduction_details_<?php echo $acc_info_id ?>"></i>
+                        <!-- <button style="float:right;" type="button" class="btn rounded-circle" ></button> -->
                       </td>
                       <td align="center"><big><b>
                             <?php echo $total_net_pay ?>
@@ -175,29 +179,34 @@ while ($row = mysqli_fetch_array($query)) {
                     </tr>
 
                     <!-- Deduction Details Modal -->
-                    <div class="modal fade" id="deduction_details_<?php echo $acc_info_id ?>" role="dialog">
-                      <div class="modal-dialog modal-sm">
+                    <div  class=" modal fade" id="deduction_details_<?php echo $acc_info_id ?>" role="dialog">
+                      <div class="modal-dialog modal-sm" style="min-width: 400px"> 
                         <div class="modal-content">
                           <div class="modal-header" style="padding:7px 20px;">
                             <button type="button" class="close" data-dismiss="modal" title="Close">&times;</button>
                           </div>
-                          <h3 align="center">Deduction Details</h3>
-                          <div class="modal-body" style="padding:40px 50px;">
-                            <div class="form-group">
-                              <label class="col-sm-4 control-label" for="benefits">Benefits:</label>
-                              <span id="benefits" style="display: inline-block; margin-left: 20px;">
+                          <h2 align="center"><b>Deduction Details</b></h3>
+                          
+
+
+                          <div class="modal-body" style="padding:40px 140px;">
+                            <div style="position: relative;" class="form-group s">
+                              <label class="" for="benefits">Benefits:</label>
+                              <span style="position:absolute; right: 0;" id="benefits">
                                 <?php echo $benefits_deductions; ?>
                               </span>
                             </div>
-                            <div class="form-group">
-                              <label class="col-sm-4 control-label" for="tax">Tax:</label>
-                              <span id="tax" style="display: inline-block; margin-left: 20px;">
+
+                            <div style="position: relative;" class="form-group">
+                              <label class="" for="tax">Tax:</label>
+                              <span style="position:absolute; right: 0;" id="tax">
                                 <?php echo $tax_deductions; ?>
                               </span>
                             </div>
-                            <div class="form-group">
-                              <label class="col-sm-4 control-label" for="total_deductions">Total:</label>
-                              <span id="total_deductions" style="display: inline-block; margin-left: 20px;">
+
+                            <div style="position: relative;" class="form-group">
+                              <label class="" for="total_deductions">Total:</label>
+                              <span style="position:absolute; right: 0;" id="total_deductions">
                                 <?php echo $total_deductions; ?>
                               </span>
                             </div>

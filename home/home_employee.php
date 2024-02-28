@@ -38,6 +38,9 @@ while ($row = mysqli_fetch_array($query4)) {
 
   <title>Pixel Foundry - Income</title>
   <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
   <link href="../assets/css/justified-nav.css" rel="stylesheet">
   <link href="../assets/css/bootstrap.min.css" rel="stylesheet">
   <link href="../assets/css/search.css" rel="stylesheet">
@@ -162,10 +165,10 @@ while ($row = mysqli_fetch_array($query4)) {
                       </td>
                       <td align="center">
                         <button type="button" class="btn btn-primary" data-toggle="modal"
-                          data-target="#update_employee_<?php echo $row["emp_id"]; ?>">Edit</button>
+                          data-target="#update_employee_<?php echo $row["emp_id"]; ?>"><i class="fa-solid fa-pen-to-square"></i></button>
 
                         <button type="button" class="btn btn-danger" data-toggle="modal"
-                          data-target="#delete_employee_<?php echo $row["emp_id"]; ?>">Delete</button>
+                          data-target="#delete_employee_<?php echo $row["emp_id"]; ?>"><i class="fa-solid fa-trash"></i></button>
                       </td>
                     </tr>
 
