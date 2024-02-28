@@ -355,7 +355,7 @@ while ($row = mysqli_fetch_array($query4)) {
                   ?>
                 </select>
               </div>
-              <div class="form-group">
+              <div class="form-group" align="center">
                 <button type="submit" name="submit" class="btn btn-success">Submit</button>
                 <button type="reset" name="" class="btn btn-danger">Clear Fields</button>
               </div>

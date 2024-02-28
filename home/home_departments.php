@@ -40,8 +40,7 @@ while ($row = mysqli_fetch_array($sql)) {
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
         <div class="container">
             <a class="navbar-brand" href="#"><b>Pixel Foundry</b></a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
-                aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
 
@@ -111,11 +110,11 @@ while ($row = mysqli_fetch_array($sql)) {
 
 
 
-                                    $query = mysqli_query($conn, "SELECT * from department WHERE NOT dept_id=0 ORDER BY dept_id asc  ") or die(mysqli_error());
+                                    $query = mysqli_query($conn, "SELECT * from department WHERE NOT dept_id=0 ORDER BY dept_id asc") or die(mysqli_error());
                                     while ($row = mysqli_fetch_array($query)) {
                                         $dept_id = $row['dept_id'];
                                         $dept_name = $row['dept_name'];
-                                        ?>
+                                    ?>
 
                                         <tr>
                                             <td align="center">
@@ -123,39 +122,10 @@ while ($row = mysqli_fetch_array($sql)) {
                                             </td>
 
                                             <td align="center">
-                                                <a class="btn btn-primary"
-                                                    href="../view/view_department.php?dept_id=<?php echo $row["dept_id"]; ?>">Edit</a>
-
-                                                <button type="button" class="btn btn-danger" data-toggle="modal"
-                                                    data-target="#delete_dept_<?php echo $row["dept_id"]; ?>">Delete</button>
+                                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#update_department_<?php echo $row["dept_id"]; ?>">Edit</button>
+                                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#delete_department_<?php echo $row["dept_id"]; ?>">Delete</button>
                                             </td>
                                         </tr>
-
-                                        <!-- this modal is for deleting an EMPLOYEE -->
-                                        <div class="modal fade" id="delete_dept_<?php echo $row["dept_id"]; ?>"
-                                            role="dialog">
-                                            <div class="modal-dialog modal-sm">
-
-                                                <!-- Modal content-->
-                                                <div class="modal-content">
-                                                    <div class="modal-header" style="padding:7px 20px;">
-                                                        <button type="button" class="close" data-dismiss="modal"
-                                                            title="Close">&times;</button>
-                                                    </div>
-                                                    <h3 align="center">You are about to delete:</h3><br>
-                                                    <b align="center">
-                                                        <?php echo $row['dept_name'] ?>
-                                                    </b>
-                                                    <div class="modal-body" style="padding:40px 50px;">
-                                                        <div align="center">
-                                                            <a class="btn btn-danger"
-                                                                href="../delete/delete_department.php?dept_id=<?php echo $row["dept_id"]; ?>">Delete</a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
                                     <?php } ?>
                                 </tbody>
 
@@ -173,41 +143,104 @@ while ($row = mysqli_fetch_array($sql)) {
             </form>
         </div>
 
-        <!-- this modal is for ADDING an EMPLOYEE -->
+        <!-- this modal is for ADDING a department -->
         <div class="modal fade" id="addDepartment" role="dialog">
-            <div class="modal-dialog">
+            <div class="modal-dialog" style="max-width: 400px;">
 
                 <!-- Modal content-->
                 <div class="modal-content">
                     <div class="modal-header" style="padding:7px 20px;">
-                        <button type="button" class="close" data-dismiss="modal" title="Close">&times;</button>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
                     </div>
-                    <h3 align="center"><b>Add Department</b></h3>
-                    <div class="modal-body" style="padding:40px 50px;">
-
+                    <h3 class="modal-title" align="center" style="padding:10px"><b>Add Department</b></h3>
+                    <div class="modal-body" style="padding:20px 30px;">
                         <form class="form-horizontal" action="#" name="form" method="post">
                             <div class="form-group">
-                                <label class="col-sm-4 control-label">Department</label>
-                                <div class="col-sm-8">
-                                    <input type="text" name="dept_name" class="form-control" placeholder="Department"
-                                        required="required">
-                                </div>
+                                <label>Department:</label>
+                                <input type="text" name="dept_name" class="form-control" placeholder="Department" required="required">
                             </div>
-
-
-                            <div class="form-group">
-                                <label class="col-sm-4 control-label"></label>
-                                <div class="col-sm-8">
-                                    <input type="submit" name="submit" class="btn btn-success" value="Submit">
-                                    <input type="reset" name="" class="btn btn-danger" value="Clear Fields">
-                                </div>
+                            <div class="form-group" align="center">
+                                <input type="submit" name="submit" class="btn btn-success" value="Submit">
+                                <input type="reset" name="" class="btn btn-danger" value="Clear Fields">
                             </div>
                         </form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Update department Modals -->
+        <?php
+        $query = mysqli_query($conn, "SELECT * from department WHERE NOT dept_id=0 ORDER BY dept_id asc") or die(mysqli_error());
+        while ($row = mysqli_fetch_array($query)) {
+        ?>
+            <div class="modal fade" id="update_department_<?php echo $row["dept_id"]; ?>" role="dialog">
+                <div class="modal-dialog" style="max-width: 400px;">
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header" style="padding:7px 20px;">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+                        <h3 class="modal-title" align="center" style="padding:10px"><b>Edit Department</b></h3>
+                        <h3 align="center">
+                            <?php echo $row['dept_name']; ?>
+                        </h3>
+                        <div class="modal-body" style="padding:20px 30px;">
+
+                            <form action="../update/update_department.php" method="post">
+                                <input type="hidden" name="new" value="1" />
+                                <input type="hidden" name="id" value="<?php echo $row['dept_id']; ?>" />
+                                <div class="form-group">
+                                    <label>Department Name :</label>
+                                    <input type="text" name="dept_name" class="form-control" value="<?php echo $row['dept_name']; ?>" required="required">
+                                </div>
+                                <div class="form-group" align="center">
+                                    <button type="submit" class="btn btn-success">Submit</button>
+                                </div>
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <?php } ?>
+
+        <!-- Delete department Modals -->
+        <?php
+        $query = mysqli_query($conn, "SELECT * from department WHERE NOT dept_id=0 ORDER BY dept_id asc") or die(mysqli_error());
+        while ($row = mysqli_fetch_array($query)) {
+        ?>
+
+            <div class="modal fade" id="delete_department_<?php echo $row["dept_id"]; ?>" role="dialog">
+                <div class="modal-dialog modal-sm">
+
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header" style="padding:7px 20px;">
+                            <button type="button" class="close" data-dismiss="modal" title="Close">&times;</button>
+                        </div>
+
+                        <h3 class="modal-title" align="center" style="padding:10px"><b>Delete Department</b></h3>
+                        <div class="modal-body">
+                            <p align="center">You are about to delete:</p>
+                            <p align="center">
+                                <?php echo $row['dept_name'] ?>
+                            </p>
+                            <p align="center" style="padding:20px">Are you sure you want to proceed?</p>
+                            <div align="center">
+                                <a class="btn btn-danger" href="../delete/delete_department.php?dept_id=<?php echo $row["dept_id"]; ?>">Delete</a>
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                            </div>
+                        </div>
+
+
 
                     </div>
                 </div>
             </div>
-        </div>
+
+        <?php } ?>
 
         <!-- this modal is for my Colins -->
         <div class="modal fade" id="colins" role="dialog">
@@ -243,7 +276,7 @@ while ($row = mysqli_fetch_array($sql)) {
     <!-- FOR DataTable -->
     <script>
         {
-            $(document).ready(function () {
+            $(document).ready(function() {
                 $('#myTable').DataTable();
             });
         }
@@ -251,8 +284,8 @@ while ($row = mysqli_fetch_array($sql)) {
 
     <!-- this function is for modal -->
     <script>
-        $(document).ready(function () {
-            $("#myBtn").click(function () {
+        $(document).ready(function() {
+            $("#myBtn").click(function() {
                 $("#myModal").modal();
             });
         });

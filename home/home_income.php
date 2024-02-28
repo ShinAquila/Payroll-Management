@@ -27,11 +27,11 @@ while ($row = mysqli_fetch_array($query4)) {
 }
 
 $conn = mysqli_connect('localhost', 'root', '', 'payroll');
+
 $query = mysqli_query($conn, "SELECT * from overtime");
 while ($row = mysqli_fetch_array($query)) {
-  @$rate = $row['rate'];
+  $rate = $row['rate'];
 }
-
 $query = mysqli_query($conn, "SELECT * from salary");
 while ($row = mysqli_fetch_array($query)) {
   @$salary = $row['salary_rate'];
@@ -70,8 +70,7 @@ while ($row = mysqli_fetch_array($query)) {
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
     <div class="container">
       <a class="navbar-brand" href="#"><b>Pixel Foundry</b></a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
-        aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
 
@@ -133,7 +132,6 @@ while ($row = mysqli_fetch_array($query)) {
           <div class="table-responsive">
             <form method="post" action="">
               <table class="table table-bordered table-hover table-condensed" id="myTable">
-                <!-- <h3><b>Ordinance</b></h3> -->
                 <thead>
                   <tr class="info">
                     <th>
@@ -188,7 +186,7 @@ while ($row = mysqli_fetch_array($query)) {
                     $total_gross_pay = $row['total_gross_pay'];
                     $start_pay_period = $row['start_pay_period'];
                     $end_pay_period = $row['end_pay_period'];
-                    ?>
+                  ?>
 
                     <tr>
                       <td align="center">
@@ -231,38 +229,12 @@ while ($row = mysqli_fetch_array($query)) {
                         </a>
                       </td>
                       <td align="center">
-                        <a class="btn btn-primary"
-                          href="../view/view_account.php?acc_info_id=<?php echo $row["acc_info_id"]; ?>">Edit</a>
-                        <button type="button" class="btn btn-danger" data-toggle="modal"
-                          data-target="#delete_income_<?php echo $row["acc_info_id"]; ?>">Delete</button>
 
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#update_income_<?php echo $row["acc_info_id"]; ?>">Edit</button>
+                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#delete_income_<?php echo $row["acc_info_id"]; ?>">Delete</button>
                       </td>
                     </tr>
 
-                    <!-- this modal is for deleting an employee income -->
-                    <div class="modal fade" id="delete_income_<?php echo $row["acc_info_id"]; ?>" role="dialog">
-                      <div class="modal-dialog modal-sm">
-
-                        <!-- Modal content-->
-                        <div class="modal-content">
-                          <div class="modal-header" style="padding:7px 20px;">
-                            <button type="button" class="close" data-dismiss="modal" title="Close">&times;</button>
-                          </div>
-                          <h3 align="center">You are about to delete:</h3><br><br>
-                          <h4 align="center">The account income of</h4>
-                          <b align="center">
-                            <?php echo $row['lname'] ?>,
-                            <?php echo $row['fname'] ?>
-                          </b>
-                          <div class="modal-body" style="padding:40px 50px;">
-                            <div align="center">
-                            <a class="btn btn-danger"
-                          href="../delete/delete_income.php?acc_info_id=<?php echo $row["acc_info_id"]; ?>">Delete</a>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
 
                   <?php } ?>
                 </tbody>
@@ -306,86 +278,168 @@ while ($row = mysqli_fetch_array($query)) {
       </form>
     </div>
 
-    <!-- this modal is for ADDING an AccountIncome -->
+    <!-- this modal is for ADDING an income -->
     <div class="modal fade" id="addAccountIncome" role="dialog">
-      <div class="modal-dialog">
+      <div class="modal-dialog" style="max-width: 400px;">
 
         <!-- Modal content-->
         <div class="modal-content">
           <div class="modal-header" style="padding:7px 20px;">
-            <button type="button" class="close" data-dismiss="modal" title="Close">&times;</button>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
           </div>
-          <h3 align="center"><b>Add Account Income</b></h3>
-          <div class="modal-body" style="padding:40px 50px;">
-
+          <h3 class="modal-title" align="center" style="padding:10px"><b>Add Account Income</b></h3>
+          <div class="modal-body" style="padding:20px 30px;">
             <form class="form-horizontal" action="#" name="form" method="post">
               <div class="form-group">
-                <label class="col-sm-4 control-label">Employee</label>
-                <div class="col-sm-8">
-                  <select name="employee" class="form-control" placeholder="Employee" required>
-                    <option value="">Employee</option>
+                <label>Employee:</label>
+                <select name="employee" class="form-control" placeholder="Employee" required>
+                  <option value="">Employee</option>
 
-                    <?php
-                    require_once('../db.php');
+                  <?php
+                  require('../db.php');
 
-                    $sql = "SELECT emp_id, lname, fname FROM employee";
-                    $result = mysqli_query($c, $sql);
+                  $sql = "SELECT emp_id, lname, fname FROM employee";
+                  $result = mysqli_query($c, $sql);
 
-                    if (!$result) {
-                      die("Error fetching employees: " . mysqli_error($c));
-                    }
+                  if (!$result) {
+                    die("Error fetching employees: " . mysqli_error($c));
+                  }
 
-                    while ($row = mysqli_fetch_assoc($result)) {
-                      echo "<option value='" . $row['emp_id'] . "'>" . $row['lname'], ", ", $row['fname'] . "</option>";
-                    }
+                  while ($row = mysqli_fetch_assoc($result)) {
+                    echo "<option value='" . $row['emp_id'] . "'>" . $row['lname'], ", ", $row['fname'] . "</option>";
+                  }
 
-                    mysqli_close($c);
-                    ?>
+                  mysqli_close($c);
+                  ?>
 
-                  </select>
-                </div>
+                </select>
               </div>
               <div class="form-group">
-                <label class="col-sm-4 control-label">Start Pay Period</label>
-                <div class="col-sm-8">
-                  <input type="date" name="start_pay_period" class="form-control" placeholder="Start Pay Period"
-                    required="required">
-                </div>
+                <label>Start Pay Period</label>
+                <input type="date" name="start_pay_period" class="form-control" placeholder="Start Pay Period" required="required">
               </div>
               <div class="form-group">
-                <label class="col-sm-4 control-label">End Pay Period</label>
-                <div class="col-sm-8">
-                  <input type="date" name="end_pay_period" class="form-control" placeholder="End Pay Period"
-                    required="required">
-                </div>
+                <label>End Pay Period</label>
+                <input type="date" name="end_pay_period" class="form-control" placeholder="End Pay Period" required="required">
               </div>
               <div class="form-group">
-                <label class="col-sm-4 control-label">Overtime Hours</label>
-                <div class="col-sm-8">
-                  <input type="text" name="overtime_hours" class="form-control" placeholder="Overtime Hours"
-                    required="required">
-                </div>
+                <label>Overtime Hours</label>
+                <input type="text" name="overtime_hours" class="form-control" placeholder="Overtime Hours" required="required">
               </div>
               <div class="form-group">
-                <label class="col-sm-4 control-label">Bonus</label>
-                <div class="col-sm-8">
-                  <input type="text" name="bonus" class="form-control" placeholder="Bonus" required="required">
-                </div>
+                <label>Bonus</label>
+                <input type="text" name="bonus" class="form-control" placeholder="Bonus" required="required">
               </div>
 
-              <div class="form-group">
-                <label class="col-sm-4 control-label"></label>
-                <div class="col-sm-8">
-                  <input type="submit" name="submit" class="btn btn-success" value="Submit">
-                  <input type="reset" name="" class="btn btn-danger" value="Clear Fields">
-                </div>
+
+              <div class="form-group" align="center">
+                <input type="submit" name="submit" class="btn btn-success" value="Submit">
+                <input type="reset" name="" class="btn btn-danger" value="Clear Fields">
               </div>
             </form>
-
           </div>
         </div>
       </div>
     </div>
+
+    
+
+    <!-- Update income Modals -->
+    <?php
+    $query = mysqli_query($conn, "SELECT * FROM account_info JOIN employee ON account_info.employee_id = employee.emp_id") or die(mysqli_error());
+    while ($row = mysqli_fetch_array($query)) {
+
+      // i fix pa a income diri
+      
+    ?>
+      <div class="modal fade" id="update_income_<?php echo $row["acc_info_id"]; ?>" role="dialog">
+        <div class="modal-dialog" style="max-width: 400px;">
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header" style="padding:7px 20px;">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <h3 class="modal-title" align="center" style="padding:10px"><b>Edit Account Income</b></h3>
+            <h3 align="center">
+              <?php echo $row['lname']; ?>,
+              <?php echo $row['fname']; ?>
+            </h3>
+            <h4 align="center">
+              <?php echo $row['total_gross_pay']; ?>
+            </h4>
+            <div class="modal-body" style="padding:20px 30px;">
+
+              <form action="../update/update_income.php" method="post">
+                <input type="hidden" name="new" value="1" />
+                <input type="hidden" name="id" value="<?php echo $row['acc_info_id']; ?>" />
+                <div class="form-group">
+                  <label class="col-sm-5 control-label">Deductions:</label>
+                  <div class="col-sm-4">
+                    <div class="form-check">
+                      <input type="checkbox" class="form-check-input" name="deduction_selected[]" value="<?php echo $philhealth_p; ?>">
+                      <label class="form-check-label" for="deduction_philhealth" style="padding-left:6%">PhilHealth (<?php echo $philhealth; ?>)</label>
+                    </div>
+                    <div class="form-check">
+                      <input type="checkbox" class="form-check-input" name="deduction_selected[]" value="<?php echo $GSIS_p; ?>">
+                      <label class="form-check-label" for="deduction_gsis" style="padding-left:6%">GSIS (<?php echo $gsis; ?>)</label>
+                    </div>
+                    <div class="form-check">
+                      <input type="checkbox" class="form-check-input" name="deduction_selected[]" value="<?php echo $PAGIBIG_p; ?>">
+                      <label class="form-check-label" for="deduction_pagibig" style="padding-left:6%">PAG-IBIG (<?php echo $pagibig; ?>)</label>
+                    </div>
+                    <div class="form-check">
+                      <input type="checkbox" class="form-check-input" name="deduction_selected[]" value="<?php echo $SSS_p; ?>">
+                      <label class="form-check-label" for="deduction_pagibig" style="padding-left:6%">SSS (<?php echo $sss; ?>)</label>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group" align="center">
+                  <button type="submit" class="btn btn-success">Submit</button>
+                </div>
+
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    <?php } ?>
+
+    <!-- Delete department Modals -->
+    <?php
+    $query = mysqli_query($conn, "SELECT * FROM employee JOIN account_info ON employee.emp_id = account_info.employee_id ORDER BY emp_id ASC") or die(mysqli_error());
+    while ($row = mysqli_fetch_array($query)) {
+    ?>
+
+      <div class="modal fade" id="delete_income_<?php echo $row["acc_info_id"]; ?>" role="dialog">
+        <div class="modal-dialog modal-sm">
+
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header" style="padding:7px 20px;">
+              <button type="button" class="close" data-dismiss="modal" title="Close">&times;</button>
+            </div>
+
+            <h3 class="modal-title" align="center" style="padding:10px"><b>Delete Income</b></h3>
+            <div class="modal-body">
+              <p align="center">You are about to delete:</p>
+              <p align="center">The account info of</p>
+              <p align="center">
+                <?php echo $row['lname'] ?>,
+                <?php echo $row['fname'] ?>
+              </p>
+              <p align="center" style="padding:20px">Are you sure you want to proceed?</p>
+              <div align="center">
+                <a class="btn btn-danger" href="../delete/delete_income.php?acc_info_id=<?php echo $row["acc_info_id"]; ?>">Delete</a>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    <?php } ?>
+
+
 
     <!-- this modal is for OVERTIME -->
     <div class="modal fade" id="overtime" role="dialog">
@@ -404,7 +458,7 @@ while ($row = mysqli_fetch_array($query)) {
                 <input type="text" name="rate" class="form-control" value="<?php echo $rate; ?>" required="required">
               </div>
 
-              <div class="form-group">
+              <div class="form-group" align="center">
                 <input type="submit" name="submit" class="btn btn-success" value="Submit">
               </div>
             </form>
@@ -428,11 +482,10 @@ while ($row = mysqli_fetch_array($query)) {
 
             <form class="form-horizontal" action="../update/update_salary.php" name="form" method="post">
               <div class="form-group">
-                <input type="text" name="salary_rate" class="form-control" value="<?php echo $salary; ?>"
-                  required="required">
+                <input type="text" name="salary_rate" class="form-control" value="<?php echo $salary; ?>" required="required">
               </div>
 
-              <div class="form-group">
+              <div class="form-group" align="center">
                 <input type="submit" name="submit" class="btn btn-success" value="Submit">
               </div>
             </form>
@@ -476,7 +529,7 @@ while ($row = mysqli_fetch_array($query)) {
   <!-- FOR DataTable -->
   <script>
     {
-      $(document).ready(function () {
+      $(document).ready(function() {
         $('#myTable').DataTable();
       });
     }
@@ -484,8 +537,8 @@ while ($row = mysqli_fetch_array($query)) {
 
   <!-- this function is for modal -->
   <script>
-    $(document).ready(function () {
-      $("#myBtn").click(function () {
+    $(document).ready(function() {
+      $("#myBtn").click(function() {
         $("#myModal").modal();
       });
     });
