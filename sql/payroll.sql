@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 02, 2024 at 02:31 AM
+-- Generation Time: Mar 02, 2024 at 09:02 AM
 -- Server version: 10.4.21-MariaDB
 -- PHP Version: 7.3.31
 
@@ -53,8 +53,8 @@ CREATE TABLE `account_info` (
 --
 
 INSERT INTO `account_info` (`acc_info_id`, `employee_id`, `days_full_day`, `days_half_day`, `days_absent`, `overtime_hours`, `bonus`, `philhealth_check`, `gsis_check`, `pagibig_check`, `sss_check`, `benefits_deductions`, `tax_deductions`, `total_deductions`, `total_gross_pay`, `total_net_pay`, `start_pay_period`, `end_pay_period`) VALUES
-(35, 32, 20, 2, 3, 2, '500.00', '0', '1', '1', '0', '3520.00', '8008.40', '11528.40', '64000.00', '52471.60', '2024-02-01', '2024-02-29'),
-(36, 6, 18, 4, 3, 4, '250.00', '1', '0', '0', '1', '5818.75', '7458.40', '13277.15', '61250.00', '47972.85', '2024-02-01', '2024-02-29');
+(52, 32, 20, 2, 3, 2, '500.00', '1', '0', '1', '1', '8925.00', '13125.05', '22050.05', '85000.00', '62949.95', '2024-02-01', '2024-02-29'),
+(53, 6, 18, 4, 3, 3, '450.00', '1', '0', '0', '1', '9614.00', '17175.05', '26789.05', '101200.00', '74410.95', '2024-02-01', '2024-02-29');
 
 -- --------------------------------------------------------
 
@@ -123,8 +123,7 @@ INSERT INTO `attendance` (`attendance_id`, `employee_id`, `date`, `status`) VALU
 (55, 6, '2024-02-26', 'ABSENT'),
 (56, 6, '2024-02-27', 'FULL DAY'),
 (57, 6, '2024-02-28', 'FULL DAY'),
-(58, 6, '2024-02-29', 'HALF DAY'),
-(59, 37, '2024-03-01', 'FULL DAY');
+(58, 6, '2024-02-29', 'HALF DAY');
 
 -- --------------------------------------------------------
 
@@ -156,21 +155,22 @@ INSERT INTO `deductions` (`deduction_id`, `deduction_name`, `deduction_percent`)
 
 CREATE TABLE `department` (
   `dept_id` int(11) NOT NULL,
-  `dept_name` varchar(250) DEFAULT NULL
+  `dept_name` varchar(250) DEFAULT NULL,
+  `dept_salary_rate` decimal(11,2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `department`
 --
 
-INSERT INTO `department` (`dept_id`, `dept_name`) VALUES
-(0, 'NOT SET'),
-(2, 'UX Designer'),
-(7, 'Software Developer'),
-(8, 'Mobile Developer'),
-(9, 'Database Manager'),
-(10, 'Web Developer'),
-(18, 'IT Technician');
+INSERT INTO `department` (`dept_id`, `dept_name`, `dept_salary_rate`) VALUES
+(0, 'NOT SET', '0.00'),
+(2, 'UX Designer', '4000.00'),
+(7, 'Software Developer', '5000.00'),
+(8, 'Mobile Developer', '2000.00'),
+(9, 'Database Manager', '2500.00'),
+(10, 'Web Developer', '4500.00'),
+(18, 'IT Technician', '2500.00');
 
 -- --------------------------------------------------------
 
@@ -250,7 +250,7 @@ CREATE TABLE `salary` (
 --
 
 INSERT INTO `salary` (`salary_id`, `salary_rate`, `none`) VALUES
-(1, 3000, 0);
+(1, 2000, 0);
 
 -- --------------------------------------------------------
 
@@ -335,7 +335,7 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `account_info`
 --
 ALTER TABLE `account_info`
-  MODIFY `acc_info_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
+  MODIFY `acc_info_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=54;
 
 --
 -- AUTO_INCREMENT for table `attendance`
@@ -353,7 +353,7 @@ ALTER TABLE `deductions`
 -- AUTO_INCREMENT for table `department`
 --
 ALTER TABLE `department`
-  MODIFY `dept_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `dept_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT for table `employee`
