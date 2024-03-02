@@ -5,8 +5,9 @@ if (!$conn) {
 }
 if (isset($_POST['submit']) != "") {
     $dept_name = $_POST['dept_name'];
+    $dept_salary_rate = $_POST['dept_salary_rate'];
 
-    $sql = mysqli_query($conn, "INSERT into department(dept_name)VALUES('$dept_name')");
+    $sql = mysqli_query($conn, "INSERT into department(dept_name,dept_salary_rate)VALUES('$dept_name','$dept_salary_rate')");
 
     if ($sql) {
         ?>

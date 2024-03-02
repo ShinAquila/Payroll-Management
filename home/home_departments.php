@@ -17,11 +17,11 @@ while ($row = mysqli_fetch_array($sql)) {
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description">
 
-    <title>Pixel Foundry - Income</title>
+    <title>Pixel Foundry - Departments</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
-    integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
-    crossorigin="anonymous" referrerpolicy="no-referrer" />
+        integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link href="../assets/css/justified-nav.css" rel="stylesheet">
     <link href="../assets/css/bootstrap.min.css" rel="stylesheet">
     <link href="../assets/css/search.css" rel="stylesheet">
@@ -43,7 +43,8 @@ while ($row = mysqli_fetch_array($sql)) {
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
         <div class="container">
             <a class="navbar-brand" href="#"><b>Pixel Foundry</b></a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
+                aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
 
@@ -99,6 +100,9 @@ while ($row = mysqli_fetch_array($sql)) {
                                             <p align="center">Department Name</p>
                                         </th>
                                         <th>
+                                            <p align="center">Salary Rate</p>
+                                        </th>
+                                        <th>
                                             <p align="center">Action</p>
                                         </th>
                                     </tr>
@@ -111,22 +115,27 @@ while ($row = mysqli_fetch_array($sql)) {
                                         die("Database Connection Failed" . mysqli_error());
                                     }
 
-
-
                                     $query = mysqli_query($conn, "SELECT * from department WHERE NOT dept_id=0 ORDER BY dept_id asc") or die(mysqli_error());
                                     while ($row = mysqli_fetch_array($query)) {
                                         $dept_id = $row['dept_id'];
                                         $dept_name = $row['dept_name'];
-                                    ?>
+                                        $dept_salary_rate = $row['dept_salary_rate'];
+                                        ?>
 
                                         <tr>
                                             <td align="center">
-                                                <?php echo $row['dept_name'] ?>
+                                                <?php echo $dept_name ?>
                                             </td>
-
                                             <td align="center">
-                                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#update_department_<?php echo $row["dept_id"]; ?>"><i class="fa-solid fa-pen-to-square"></i></button>
-                                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#delete_department_<?php echo $row["dept_id"]; ?>"><i class="fa-solid fa-trash"></i></button>
+                                                <?php echo $dept_salary_rate ?>
+                                            </td>
+                                            <td align="center">
+                                                <button type="button" class="btn btn-primary" data-toggle="modal"
+                                                    data-target="#update_department_<?php echo $row["dept_id"]; ?>"><i
+                                                        class="fa-solid fa-pen-to-square"></i></button>
+                                                <button type="button" class="btn btn-danger" data-toggle="modal"
+                                                    data-target="#delete_department_<?php echo $row["dept_id"]; ?>"><i
+                                                        class="fa-solid fa-trash"></i></button>
                                             </td>
                                         </tr>
                                     <?php } ?>
@@ -135,6 +144,10 @@ while ($row = mysqli_fetch_array($sql)) {
                                 <tr class="info">
                                     <th>
                                         <p align="center">Department Name</p>
+                                    </th>
+                                    <th>
+                                        <p align="center">Salary Rate</p>
+                                    </th>
                                     <th>
                                         <p align="center">Action</p>
                                     </th>
@@ -160,8 +173,15 @@ while ($row = mysqli_fetch_array($sql)) {
                         <form class="form-horizontal" action="#" name="form" method="post">
                             <div class="form-group">
                                 <label>Department:</label>
-                                <input type="text" name="dept_name" class="form-control" placeholder="Department" required="required">
+                                <input type="text" name="dept_name" class="form-control" placeholder="Department"
+                                    required="required">
                             </div>
+                            <div class="form-group">
+                                <label>Salary Rate:</label>
+                                <input type="text" name="dept_salary_rate" class="form-control" placeholder="Salary Rate"
+                                    required="required">
+                            </div>
+
                             <div class="form-group" align="center">
                                 <input type="submit" name="submit" class="btn btn-success" value="Submit">
                                 <input type="reset" name="" class="btn btn-danger" value="Clear Fields">
@@ -177,7 +197,7 @@ while ($row = mysqli_fetch_array($sql)) {
         <?php
         $query = mysqli_query($conn, "SELECT * from department WHERE NOT dept_id=0 ORDER BY dept_id asc") or die(mysqli_error());
         while ($row = mysqli_fetch_array($query)) {
-        ?>
+            ?>
             <div class="modal fade" id="update_department_<?php echo $row["dept_id"]; ?>" role="dialog">
                 <div class="modal-dialog" style="max-width: 400px;">
                     <!-- Modal content-->
@@ -196,7 +216,13 @@ while ($row = mysqli_fetch_array($sql)) {
                                 <input type="hidden" name="id" value="<?php echo $row['dept_id']; ?>" />
                                 <div class="form-group">
                                     <label>Department Name :</label>
-                                    <input type="text" name="dept_name" class="form-control" value="<?php echo $row['dept_name']; ?>" required="required">
+                                    <input type="text" name="dept_name" class="form-control"
+                                        value="<?php echo $row['dept_name']; ?>" required="required">
+                                </div>
+                                <div class="form-group">
+                                    <label>Salary Rate :</label>
+                                    <input type="text" name="dept_salary_rate" class="form-control"
+                                        value="<?php echo $row['dept_salary_rate']; ?>" required="required">
                                 </div>
                                 <div class="form-group" align="center">
                                     <button type="submit" class="btn btn-success">Submit</button>
@@ -213,7 +239,7 @@ while ($row = mysqli_fetch_array($sql)) {
         <?php
         $query = mysqli_query($conn, "SELECT * from department WHERE NOT dept_id=0 ORDER BY dept_id asc") or die(mysqli_error());
         while ($row = mysqli_fetch_array($query)) {
-        ?>
+            ?>
 
             <div class="modal fade" id="delete_department_<?php echo $row["dept_id"]; ?>" role="dialog">
                 <div class="modal-dialog modal-sm">
@@ -232,7 +258,8 @@ while ($row = mysqli_fetch_array($sql)) {
                             </p>
                             <p align="center" style="padding:20px">Are you sure you want to proceed?</p>
                             <div align="center">
-                                <a class="btn btn-danger" href="../delete/delete_department.php?dept_id=<?php echo $row["dept_id"]; ?>">Delete</a>
+                                <a class="btn btn-danger"
+                                    href="../delete/delete_department.php?dept_id=<?php echo $row["dept_id"]; ?>">Delete</a>
                                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
                             </div>
                         </div>
@@ -279,7 +306,7 @@ while ($row = mysqli_fetch_array($sql)) {
     <!-- FOR DataTable -->
     <script>
         {
-            $(document).ready(function() {
+            $(document).ready(function () {
                 $('#myTable').DataTable();
             });
         }
@@ -287,8 +314,8 @@ while ($row = mysqli_fetch_array($sql)) {
 
     <!-- this function is for modal -->
     <script>
-        $(document).ready(function() {
-            $("#myBtn").click(function() {
+        $(document).ready(function () {
+            $("#myBtn").click(function () {
                 $("#myModal").modal();
             });
         });

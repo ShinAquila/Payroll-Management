@@ -5,37 +5,39 @@ include("../add/add_income.php");
 $query1 = mysqli_query($conn, "SELECT * from deductions WHERE deduction_id = 1");
 while ($row = mysqli_fetch_array($query1)) {
   $id = $row['deduction_id'];
-  $philhealth = $row['deduction_percent'];
-}
-
-$query2 = mysqli_query($conn, "SELECT * from deductions WHERE deduction_id = 2");
-while ($row = mysqli_fetch_array($query2)) {
-  $id = $row['deduction_id'];
-  $BIR = $row['deduction_percent'];
+  $philhealth_p = $row['deduction_percent'];
 }
 
 $query3 = mysqli_query($conn, "SELECT * from deductions WHERE deduction_id = 3");
 while ($row = mysqli_fetch_array($query3)) {
   $id = $row['deduction_id'];
-  $GSIS = $row['deduction_percent'];
+  $GSIS_p = $row['deduction_percent'];
 }
 
 $query4 = mysqli_query($conn, "SELECT * from deductions WHERE deduction_id = 4");
 while ($row = mysqli_fetch_array($query4)) {
   $id = $row['deduction_id'];
-  $PAGIBIG = $row['deduction_percent'];
+  $PAGIBIG_p = $row['deduction_percent'];
 }
 
-$conn = mysqli_connect('localhost', 'root', '', 'payroll');
+$query5 = mysqli_query($conn, "SELECT * from deductions WHERE deduction_id = 5");
+while ($row = mysqli_fetch_array($query5)) {
+  $id = $row['deduction_id'];
+  $SSS_p = $row['deduction_percent'];
+}
+
+
+
+// $conn = mysqli_connect('localhost', 'root', '', 'payroll');
 $query = mysqli_query($conn, "SELECT * from overtime");
 while ($row = mysqli_fetch_array($query)) {
   @$rate = $row['rate'];
 }
 
-$query = mysqli_query($conn, "SELECT * from salary");
-while ($row = mysqli_fetch_array($query)) {
-  @$salary = $row['salary_rate'];
-}
+// $query = mysqli_query($conn, "SELECT * from salary");
+// while ($row = mysqli_fetch_array($query)) {
+//   @$salary = $row['salary_rate'];
+// }
 ?>
 
 <!DOCTYPE html>
@@ -65,6 +67,10 @@ while ($row = mysqli_fetch_array($query)) {
     .navbar {
       padding: 2%;
       width: 100%;
+    }
+
+    .checkbox-label-padding {
+      padding-left: 6%;
     }
   </style>
 </head>
@@ -119,19 +125,18 @@ while ($row = mysqli_fetch_array($query)) {
     <div class="well bs-component">
       <form class="form-horizontal">
         <fieldset>
+          <div style="justify-content: space-between;">
+            <button type="button" data-toggle="modal" data-target="#addAccountIncome" class="btn btn-success">Add
+              New</button>
+            <div style="display: flex; flex-direction: column; align-items: flex-end;">
+              <button type="button" data-toggle="modal" data-target="#overtime" class="btn btn-primary">Modify</button>
+              <p>Overtime rate per hour: <big><b>
+                    <?php echo $rate; ?>.00
+                  </b></big></p>
+            </div>
+          </div>
 
-          <button type="button" data-toggle="modal" data-target="#overtime" class="btn btn-primary">Modify Overtime
-            Rate</button>
-          <button type="button" data-toggle="modal" data-target="#salary" class="btn btn-primary">Modify Salary
-            Rate</button>
-          <p class="pull-right">Overtime rate per hour: <big><b>
-                <?php echo $rate; ?>.00
-              </b></big></p><br>
-          <p class="pull-right">Salary rate/day: <big><b>
-                <?php echo $salary; ?>.00
-              </b></big></p><br>
-          <button type="button" data-toggle="modal" data-target="#addAccountIncome" class="btn btn-success">Add
-            New</button>
+
           <p align="center"><big><b>Employee Income Info</b></big></p>
           <div class="table-responsive">
             <form method="post" action="">
@@ -149,13 +154,10 @@ while ($row = mysqli_fetch_array($query)) {
                       <p align="center">End Pay Period</p>
                     </th>
                     <th>
-                      <p align="center">Days Full Day</p>
+                      <p align="center">Working Days</p>
                     </th>
                     <th>
-                      <p align="center">Days Half Day</p>
-                    </th>
-                    <th>
-                      <p align="center">Days Absent</p>
+                      <p align="center">Salary Rate</p>
                     </th>
                     <th>
                       <p align="center">Overtime Hours</p>
@@ -184,63 +186,58 @@ while ($row = mysqli_fetch_array($query)) {
                     $lname = $row['lname'];
                     $fname = $row['fname'];
                     $overtime_hours = $row['overtime_hours'];
-                    $days_full_day = $row['days_full_day'];
-                    $days_half_day = $row['days_half_day'];
-                    $days_absent = $row['days_absent'];
                     $bonus = $row['bonus'];
                     $total_gross_pay = $row['total_gross_pay'];
                     $start_pay_period = $row['start_pay_period'];
                     $end_pay_period = $row['end_pay_period'];
+
+                    $salary_query = mysqli_query($conn, "SELECT * FROM department JOIN employee ON department.dept_id=employee.dept WHERE employee.emp_id = $row[emp_id]");
+                    $salary_row = mysqli_fetch_assoc($salary_query);
+                    $salary_rate = $salary_row['dept_salary_rate'];
                     ?>
 
                     <tr>
                       <td align="center">
                         <?php echo $row['lname'] ?>,
                         <?php echo $row['fname'] ?>
-                        </a>
                       </td>
                       <td align="center">
                         <?php echo $start_pay_period ?>
-                        </a>
                       </td>
                       <td align="center">
                         <?php echo $end_pay_period ?>
-                        </a>
                       </td>
                       <td align="center">
-                        <?php echo $days_full_day ?>
-                        </a>
+                        <i style="margin-block: 1%; color: #2d76c4; cursor: pointer; font-size:2rem"
+                          class="fa-solid fa-circle-info" data-toggle="modal"
+                          data-target="#work_days_details_<?php echo $row['acc_info_id'] ?>"></i>
                       </td>
                       <td align="center">
-                        <?php echo $days_half_day ?>
-                        </a>
-                      </td>
-                      <td align="center">
-                        <?php echo $days_absent ?>
-                        </a>
+                        <?php echo $salary_rate ?>
                       </td>
                       <td align="center">
                         <?php echo $overtime_hours ?>
-                        </a>
                       </td>
-                      <td align="center"><b>
+                      <td align="center">
                           <?php echo $bonus ?>
-                        </b><small></small>
-                        </a>
                       </td>
                       <td align="center"><b>
                           <?php echo $total_gross_pay ?>
-                        </b><small></small>
-                        </a>
+                        </b>
                       </td>
                       <td align="center">
-                        <a class="btn btn-primary mb-2"
-                          href="../view/view_account.php?acc_info_id=<?php echo $row["acc_info_id"]; ?>"><i class="fa-solid fa-pen-to-square"></i></a>
+                        <button type="button" class="btn btn-primary mb-2" data-toggle="modal"
+                          data-target="#update_income_<?php echo $row["acc_info_id"]; ?>"><i
+                            class="fa-solid fa-pen-to-square"></i></button>
+
                         <button type="button" class="btn btn-danger" data-toggle="modal"
-                          data-target="#delete_income_<?php echo $row["acc_info_id"]; ?>"><i class="fa-solid fa-trash"></i></button>
+                          data-target="#delete_income_<?php echo $row["acc_info_id"]; ?>"><i
+                            class="fa-solid fa-trash"></i></button>
 
                       </td>
                     </tr>
+
+
 
 
 
@@ -258,13 +255,10 @@ while ($row = mysqli_fetch_array($query)) {
                     <p align="center">End Pay Period</p>
                   </th>
                   <th>
-                    <p align="center">Days Full Day</p>
+                    <p align="center">Working Days</p>
                   </th>
                   <th>
-                    <p align="center">Days Half Day</p>
-                  </th>
-                  <th>
-                    <p align="center">Days Absent</p>
+                    <p align="center">Salary Rate</p>
                   </th>
                   <th>
                     <p align="center">Overtime Hours</p>
@@ -353,6 +347,124 @@ while ($row = mysqli_fetch_array($query)) {
       </div>
     </div>
 
+    <!-- Working Days Details Modal -->
+    <?php
+    $query = mysqli_query($conn, "SELECT * FROM employee JOIN account_info ON employee.emp_id = account_info.employee_id ORDER BY emp_id ASC") or die(mysqli_error());
+    while ($row = mysqli_fetch_array($query)) {
+      $days_full_day = $row['days_full_day'];
+      $days_half_day = $row['days_half_day'];
+      $days_absent = $row['days_absent'];
+      ?>
+      <div class="modal fade" id="work_days_details_<?php echo $row['acc_info_id'] ?>" role="dialog">
+        <div class="modal-dialog" style="max-width: 400px;">
+
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header" style="padding:7px 20px;">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <h3 class="modal-title" align="center" style="padding:10px"><b>Working Days Details</b></h3>
+            <div class="modal-body" style="padding:20px 30px;">
+
+              <div class="modal-body" style="padding:40px 90px;">
+                <div style="position: relative;" class="form-group s">
+                  <label class="" for="benefits">Days Full Day:</label>
+                  <span style="position:absolute; right: 0;" id="benefits">
+                    <?php echo $days_full_day; ?>
+                  </span>
+                </div>
+
+                <div style="position: relative;" class="form-group">
+                  <label class="" for="tax">Days Half Day:</label>
+                  <span style="position:absolute; right: 0;" id="tax">
+                    <?php echo $days_half_day; ?>
+                  </span>
+                </div>
+
+                <div style="position: relative;" class="form-group">
+                  <label class="" for="total_deductions">Days Absent:</label>
+                  <span style="position:absolute; right: 0;" id="total_deductions">
+                    <?php echo $days_absent; ?>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    <?php } ?>
+
+    <!-- Update income Modals -->
+    <?php
+    $query = mysqli_query($conn, "SELECT * FROM employee JOIN account_info ON employee.emp_id = account_info.employee_id ORDER BY emp_id ASC") or die(mysqli_error());
+    while ($row = mysqli_fetch_array($query)) {
+      ?>
+      <div class="modal fade" id="update_income_<?php echo $row["acc_info_id"]; ?>" role="dialog">
+        <div class="modal-dialog" style="max-width: 400px;">
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header" style="padding:7px 20px;">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <h3 class="modal-title" align="center" style="padding:10px"><b>Edit Account Income</b></h3>
+            <h3 align="center">
+              <?php echo $row['lname']; ?>,
+              <?php echo $row['fname']; ?>
+            </h3>
+            <div class="modal-body" style="padding:20px 30px;">
+
+              <form action="../update/update_account.php" method="post" name="form">
+                <input type="hidden" name="new" value="1" />
+                <input name="id" type="hidden" value="<?php echo $row['acc_info_id']; ?>" />
+
+
+                <div class="form-group">
+                  <label>Deductions</label>
+
+                  <div class="form-check">
+                    <input type="checkbox" class="form-check-input" name="deduction_selected[]"
+                      value="<?php echo $philhealth_p; ?>">
+                    <label class="form-check-label" for="deduction_philhealth" style="padding-left:6%">PhilHealth
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <input type="checkbox" class="form-check-input" name="deduction_selected[]"
+                      value="<?php echo $GSIS_p; ?>">
+                    <label class="form-check-label" for="deduction_gsis" style="padding-left:6%">GSIS
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <input type="checkbox" class="form-check-input" name="deduction_selected[]"
+                      value="<?php echo $PAGIBIG_p; ?>">
+                    <label class="form-check-label" for="deduction_pagibig" style="padding-left:6%">PAG-IBIG
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <input type="checkbox" class="form-check-input" name="deduction_selected[]"
+                      value="<?php echo $SSS_p; ?>">
+                    <label class="form-check-label" for="deduction_pagibig" style="padding-left:6%">SSS
+                    </label>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label>Overtime</label>
+                  <input type="text" name="overtime" class="form-control" value="<?php echo $row['overtime_hours']; ?>"
+                    required="required">
+                </div>
+                <div class="form-group">
+                  <label>Bonus</label>
+                  <input type="text" name="bonus" class="form-control" value="<?php echo $row['bonus']; ?>"
+                    required="required">
+                </div><br>
+
+                <button type="submit" class="btn btn-success">Submit</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    <?php } ?>
 
 
 
@@ -420,33 +532,7 @@ while ($row = mysqli_fetch_array($query)) {
       </div>
     </div>
 
-    <!-- this modal is for SALARY -->
-    <div class="modal fade" id="salary" role="dialog">
-      <div class="modal-dialog modal-sm">
 
-        <!-- Modal content-->
-        <div class="modal-content">
-          <div class="modal-header" style="padding:7px 20px;">
-            <button type="button" class="close" data-dismiss="modal" title="Close">&times;</button>
-          </div>
-          <h3 align="center">Enter the amount of <big><b>Salary</b></big> rate.</h3>
-          <div class="modal-body" style="padding:40px 50px;">
-
-            <form class="form-horizontal" action="../update/update_salary.php" name="form" method="post">
-              <div class="form-group">
-                <input type="text" name="salary_rate" class="form-control" value="<?php echo $salary; ?>"
-                  required="required">
-              </div>
-
-              <div class="form-group">
-                <input type="submit" name="submit" class="btn btn-success" value="Submit">
-              </div>
-            </form>
-
-          </div>
-        </div>
-      </div>
-    </div>
 
     <!-- this modal is for my Colins -->
     <div class="modal fade" id="colins" role="dialog">

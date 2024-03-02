@@ -41,11 +41,17 @@ $salary_rate = $salary_row['salary_rate'];
 
 
 
+
+
 // Update account_info for all rows
 $account_query = mysqli_query($c, "SELECT * FROM account_info");
 while ($row = mysqli_fetch_assoc($account_query)) {
     $days_full_day = $row['days_full_day'];
     $days_half_day = $row['days_half_day'];
+
+    $salary_query = mysqli_query($conn, "SELECT * FROM department JOIN employee ON department.dept_id=employee.dept WHERE employee_id='{$row['employee_id']}'");
+    $salary_row = mysqli_fetch_assoc($salary_query);
+    $salary_rate = $salary_row['dept_salary_rate'];
 
     $total_gross_pay = ($salary_rate * $days_full_day) + (($salary_rate / 2) * $days_half_day) + $row['bonus'] + ($row['overtime_hours'] * $overtime_rate);
 

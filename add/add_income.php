@@ -12,7 +12,7 @@ if (isset($_POST['submit']) != "") {
   FROM attendance a
   JOIN employee e ON a.employee_id = e.emp_id
   WHERE a.date BETWEEN '$start_pay_period' AND '$end_pay_period'
-    AND a.status = 'FULL DAY'
+    AND a.status = 'FULL DAY' AND emp_id='$selected_employee'
   GROUP BY e.emp_id;
   ");
   $days_full_day = mysqli_fetch_assoc($days_full_day_query)['full_count'];
@@ -21,7 +21,7 @@ if (isset($_POST['submit']) != "") {
   FROM attendance a
   JOIN employee e ON a.employee_id = e.emp_id
   WHERE a.date BETWEEN '$start_pay_period' AND '$end_pay_period'
-    AND a.status = 'HALF DAY'
+    AND a.status = 'HALF DAY' AND emp_id='$selected_employee'
   GROUP BY e.emp_id;
   ");
   $days_half_day = mysqli_fetch_assoc($days_half_day_query)['half_count'];
@@ -30,10 +30,13 @@ if (isset($_POST['submit']) != "") {
   FROM attendance a
   JOIN employee e ON a.employee_id = e.emp_id
   WHERE a.date BETWEEN '$start_pay_period' AND '$end_pay_period'
-    AND a.status = 'ABSENT'
+    AND a.status = 'ABSENT' AND emp_id='$selected_employee'
   GROUP BY e.emp_id;
   ");
   $days_absent = mysqli_fetch_assoc($days_absent_query)['absent_count'];
+
+
+
 
   $overtime_query = mysqli_query($conn, "SELECT * FROM overtime WHERE ot_id='1'");
   $overtime_row = mysqli_fetch_assoc($overtime_query);
@@ -42,16 +45,18 @@ if (isset($_POST['submit']) != "") {
 
   $bonus = $_POST['bonus'];
 
-  $salary_query = mysqli_query($conn, "SELECT * FROM salary WHERE salary_id='1'");
+  $salary_query = mysqli_query($conn, "SELECT * FROM department JOIN employee ON department.dept_id=employee.dept WHERE emp_id='$selected_employee'");
   $salary_row = mysqli_fetch_assoc($salary_query);
-  $salary_rate = $salary_row['salary_rate'];
+  $salary_rate = $salary_row['dept_salary_rate'];
+
+  
 
   $total_gross_pay = ($salary_rate * $days_full_day) + (($salary_rate / 2) * $days_half_day) + $bonus + $overtime;
 
   $sql = mysqli_query($conn, "INSERT INTO account_info(employee_id, days_full_day, days_half_day, days_absent, overtime_hours, bonus, start_pay_period, end_pay_period, total_gross_pay)VALUES('$selected_employee', '$days_full_day','$days_half_day','$days_absent','$overtime_hours','$bonus', '$start_pay_period', '$end_pay_period','$total_gross_pay')");
 
   if ($sql) {
-
+    // echo $salary_rate;
   } else {
 
   }
