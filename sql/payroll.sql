@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 28, 2024 at 04:53 AM
+-- Generation Time: Mar 02, 2024 at 02:31 AM
 -- Server version: 10.4.21-MariaDB
 -- PHP Version: 7.3.31
 
@@ -35,6 +35,10 @@ CREATE TABLE `account_info` (
   `days_absent` int(11) NOT NULL,
   `overtime_hours` int(11) NOT NULL,
   `bonus` decimal(11,2) NOT NULL,
+  `philhealth_check` varchar(20) NOT NULL,
+  `gsis_check` varchar(20) NOT NULL,
+  `pagibig_check` varchar(20) NOT NULL,
+  `sss_check` varchar(20) NOT NULL,
   `benefits_deductions` decimal(11,2) NOT NULL,
   `tax_deductions` decimal(11,2) NOT NULL,
   `total_deductions` decimal(11,2) NOT NULL,
@@ -48,9 +52,9 @@ CREATE TABLE `account_info` (
 -- Dumping data for table `account_info`
 --
 
-INSERT INTO `account_info` (`acc_info_id`, `employee_id`, `days_full_day`, `days_half_day`, `days_absent`, `overtime_hours`, `bonus`, `benefits_deductions`, `tax_deductions`, `total_deductions`, `total_gross_pay`, `total_net_pay`, `start_pay_period`, `end_pay_period`) VALUES
-(35, 32, 20, 2, 3, 2, '500.00', '6420.00', '3768.40', '10188.40', '42800.00', '32611.60', '2024-02-01', '2024-02-29'),
-(36, 6, 18, 4, 3, 4, '250.00', '3880.75', '3378.40', '7259.15', '40850.00', '33590.85', '2024-02-01', '2024-02-29');
+INSERT INTO `account_info` (`acc_info_id`, `employee_id`, `days_full_day`, `days_half_day`, `days_absent`, `overtime_hours`, `bonus`, `philhealth_check`, `gsis_check`, `pagibig_check`, `sss_check`, `benefits_deductions`, `tax_deductions`, `total_deductions`, `total_gross_pay`, `total_net_pay`, `start_pay_period`, `end_pay_period`) VALUES
+(35, 32, 20, 2, 3, 2, '500.00', '0', '1', '1', '0', '3520.00', '8008.40', '11528.40', '64000.00', '52471.60', '2024-02-01', '2024-02-29'),
+(36, 6, 18, 4, 3, 4, '250.00', '1', '0', '0', '1', '5818.75', '7458.40', '13277.15', '61250.00', '47972.85', '2024-02-01', '2024-02-29');
 
 -- --------------------------------------------------------
 
@@ -119,7 +123,8 @@ INSERT INTO `attendance` (`attendance_id`, `employee_id`, `date`, `status`) VALU
 (55, 6, '2024-02-26', 'ABSENT'),
 (56, 6, '2024-02-27', 'FULL DAY'),
 (57, 6, '2024-02-28', 'FULL DAY'),
-(58, 6, '2024-02-29', 'HALF DAY');
+(58, 6, '2024-02-29', 'HALF DAY'),
+(59, 37, '2024-03-01', 'FULL DAY');
 
 -- --------------------------------------------------------
 
@@ -206,7 +211,8 @@ INSERT INTO `employee` (`emp_id`, `lname`, `fname`, `gender`, `email`, `dept`) V
 (27, 'Corn', 'Dog', 'Other', 'corndog@gmail.com', 10),
 (28, 'Rojin', 'Carl', 'Male', 'carlrojin@gmail.com', 18),
 (31, 'Penduko', 'Pedro', 'Male', 'penduko@gmail.com', 8),
-(32, 'Bravo', 'Johnny', 'Male', 'fafa@gmail.com', 2);
+(32, 'Bravo', 'Johnny', 'Male', 'fafa@gmail.com', 2),
+(37, 'Bravo', 'S', 'Other', 's@gmail.com', 7);
 
 -- --------------------------------------------------------
 
@@ -225,7 +231,7 @@ CREATE TABLE `overtime` (
 --
 
 INSERT INTO `overtime` (`ot_id`, `rate`, `none`) VALUES
-(1, 150, 0);
+(1, 250, 0);
 
 -- --------------------------------------------------------
 
@@ -244,7 +250,7 @@ CREATE TABLE `salary` (
 --
 
 INSERT INTO `salary` (`salary_id`, `salary_rate`, `none`) VALUES
-(1, 2000, 0);
+(1, 3000, 0);
 
 -- --------------------------------------------------------
 
@@ -335,7 +341,7 @@ ALTER TABLE `account_info`
 -- AUTO_INCREMENT for table `attendance`
 --
 ALTER TABLE `attendance`
-  MODIFY `attendance_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=59;
+  MODIFY `attendance_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=60;
 
 --
 -- AUTO_INCREMENT for table `deductions`
@@ -347,13 +353,13 @@ ALTER TABLE `deductions`
 -- AUTO_INCREMENT for table `department`
 --
 ALTER TABLE `department`
-  MODIFY `dept_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `dept_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT for table `employee`
 --
 ALTER TABLE `employee`
-  MODIFY `emp_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
+  MODIFY `emp_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
 
 --
 -- AUTO_INCREMENT for table `overtime`
