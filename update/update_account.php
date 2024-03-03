@@ -14,6 +14,8 @@ $work_day_query = mysqli_query($c, "SELECT * FROM account_info JOIN employee ON 
 $work_day_row = mysqli_fetch_assoc($work_day_query);
 $days_full_day = $work_day_row['days_full_day'];
 $days_half_day = $work_day_row['days_half_day'];
+$days_absent = $work_day_row['days_absent'];
+$worked_days = $days_full_day+$days_half_day+$days_absent;
 $selected_employee = $work_day_row['emp_id'];
 
 $overtime_query = mysqli_query($c, "SELECT * FROM overtime WHERE ot_id='1'");
@@ -59,27 +61,38 @@ while ($row = mysqli_fetch_array($query5)) {
 
 
 $tax = 0;
-if ($total_gross_pay >= 666667) {
-  $tax = (($total_gross_pay - 666667) * 0.35) + 183541.80;
-} else if ($total_gross_pay >= 166667) {
-  $tax = (($total_gross_pay - 166667) * 0.30) + 33541.80;
-} else if ($total_gross_pay >= 66667) {
-  $tax = (($total_gross_pay - 66667) * 0.25) + 8541.80;
-} else if ($total_gross_pay >= 33333) {
-  $tax = (($total_gross_pay - 33333) * 0.20) + 1875;
-} else if ($total_gross_pay >= 20833) {
-  $tax = (($total_gross_pay - 20833) * 0.15);
+if ($worked_days > 15) {
+  if ($total_gross_pay >= 666667) {
+      $tax = (($total_gross_pay - 666667) * 0.35) + 183541.80;
+  } else if ($total_gross_pay >= 166667) {
+      $tax = (($total_gross_pay - 166667) * 0.30) + 33541.80;
+  } else if ($total_gross_pay >= 66667) {
+      $tax = (($total_gross_pay - 66667) * 0.25) + 8541.80;
+  } else if ($total_gross_pay >= 33333) {
+      $tax = (($total_gross_pay - 33333) * 0.20) + 1875;
+  } else if ($total_gross_pay >= 20833) {
+      $tax = (($total_gross_pay - 20833) * 0.15);
+  }
+} else if ($worked_days <= 15) {
+  if ($total_gross_pay >= 333333) {
+      $tax = (($total_gross_pay - 333333) * 0.35) + 91770.70;
+  } else if ($total_gross_pay >= 83333) {
+      $tax = (($total_gross_pay - 83333) * 0.30) + 16770.70;
+  } else if ($total_gross_pay >= 33333) {
+      $tax = (($total_gross_pay - 33333) * 0.25) + 4270.70;
+  } else if ($total_gross_pay >= 16667) {
+      $tax = (($total_gross_pay - 16667) * 0.20) + 937.50;
+  } else if ($total_gross_pay >= 10417) {
+      $tax = (($total_gross_pay - 10417) * 0.15);
+  }
 }
 
 // 
 
-
-$check_query = mysqli_query($c, "SELECT * FROM account_info WHERE acc_info_id='$acc_id'");
-$check_row = mysqli_fetch_assoc($check_query);
-$philhealth_check = $check_row['philhealth_check'];
-$gsis_check = $check_row['gsis_check'];
-$pagibig_check = $check_row['pagibig_check'];
-$sss_check = $check_row['sss_check'];
+$philhealth_check = 0;
+$gsis_check = 0;
+$pagibig_check = 0;
+$sss_check = 0;
 
 $philhealth = 0;
 $GSIS = 0;
@@ -90,6 +103,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $selected_deductions = $_POST['deduction_selected'];
   if (in_array($philhealth_p, $selected_deductions)) {
     $philhealth = ($total_gross_pay * ($philhealth_p / 100)) / 2;
+    if($worked_days<=15){
+      $philhealth = $philhealth/2;
+    }
     $benefits_deduction += $philhealth;
     $philhealth_check = "1";
   } else {
@@ -99,6 +115,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
   if (in_array($GSIS_p, $selected_deductions)) {
     $GSIS = ($total_gross_pay * ($GSIS_p / 100)) / 2;
+    if($worked_days<=15){
+      $GSIS = $GSIS/2;
+    }
     $benefits_deduction += $GSIS;
     $gsis_check = "1";
   } else {
@@ -107,6 +126,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
   if (in_array($PAGIBIG_p, $selected_deductions)) {
     $PAGIBIG = ($total_gross_pay * ($PAGIBIG_p / 100)) / 2;
+    if($worked_days<=15){
+      $PAGIBIG = $PAGIBIG/2;
+    }
     $benefits_deduction += $PAGIBIG;
     $pagibig_check = "1";
   } else {
@@ -115,6 +137,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
   if (in_array($SSS_p, $selected_deductions)) {
     $SSS = ($total_gross_pay * ($SSS_p / 100)) / 2;
+    if($worked_days<=15){
+      $SSS = $SSS/2;
+    }
     $benefits_deduction += $SSS;
     $sss_check = "1";
   } else {
@@ -125,8 +150,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 $total_deduction = $benefits_deduction + $tax;
 $total_net_pay = $total_gross_pay - $total_deduction;
 
-$sql = mysqli_query($c, "UPDATE account_info SET philhealth_check = $philhealth_check, gsis_check = $gsis_check, pagibig_check = $pagibig_check, sss_check = $sss_check WHERE acc_info_id='$acc_id'");
-$sql = mysqli_query($c, "UPDATE account_info SET total_deductions = $total_deduction, benefits_deductions = $benefits_deduction, tax_deductions = $tax, total_net_pay = $total_net_pay WHERE acc_info_id='$acc_id'");
+
+
+$sql = mysqli_query($c, "UPDATE account_info SET philhealth_check=$philhealth_check, gsis_check=$gsis_check, pagibig_check=$pagibig_check, sss_check=$sss_check, total_deductions = $total_deduction, benefits_deductions = $benefits_deduction, tax_deductions = $tax, total_net_pay = $total_net_pay WHERE acc_info_id='$acc_id'");
 
 if ($sql) {
   ?>
@@ -136,7 +162,12 @@ if ($sql) {
   </script>
   <?php
 } else {
-  echo "Invalid";
+  ?>
+  <script>
+    alert('Employee Income failed to update.');
+    window.location.href = '../home/home_income.php';
+  </script>
+  <?php
 }
 
 ?>

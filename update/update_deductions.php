@@ -10,11 +10,6 @@ while ($row = mysqli_fetch_array($query1)) {
   $philhealth = $_POST['philhealth'];
 }
 
-$query2 = mysqli_query($conn, "SELECT * from deductions WHERE deduction_id = 2");
-while ($row = mysqli_fetch_array($query2)) {
-  $id = $row['deduction_id'];
-  $BIR = $_POST['bir'];
-}
 
 $query3 = mysqli_query($conn, "SELECT * from deductions WHERE deduction_id = 3");
 while ($row = mysqli_fetch_array($query3)) {
@@ -35,12 +30,11 @@ while ($row = mysqli_fetch_array($query5)) {
 }
 
 $sql1 = mysqli_query($c, "UPDATE deductions SET deduction_amount='$philhealth' WHERE deduction_id = 1");
-$sql2 = mysqli_query($c, "UPDATE deductions SET deduction_amount='$BIR' WHERE deduction_id = 2");
 $sql3 = mysqli_query($c, "UPDATE deductions SET deduction_amount='$GSIS' WHERE deduction_id = 3");
 $sql4 = mysqli_query($c, "UPDATE deductions SET deduction_amount='$PAGIBIG' WHERE deduction_id = 4");
 $sql5 = mysqli_query($c, "UPDATE deductions SET deduction_amount='$SSS' WHERE deduction_id = 5");
 
-if ($sql1 && $sql2 && $sql3 && $sql4 && $sql5) {
+if ($sql1 && $sql3 && $sql4 && $sql5) {
 	?>
 	<script>
 		alert('Deductions successfully updated...');

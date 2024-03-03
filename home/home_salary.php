@@ -10,10 +10,6 @@ while ($row = mysqli_fetch_array($query)) {
   @$rate = $row['rate'];
 }
 
-$query = mysqli_query($conn, "SELECT * from salary");
-while ($row = mysqli_fetch_array($query)) {
-  @$salary = $row['salary_rate'];
-}
 ?>
 
 <!DOCTYPE html>

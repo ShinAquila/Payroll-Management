@@ -344,7 +344,7 @@ while ($row = mysqli_fetch_array($query5)) {
           </div>
           <h3 class="modal-title" align="center" style="padding:10px;"><b>Deduction</b></h3>
           <div class="modal-body" style="padding:40px 50px;">
-            <form class="form-horizontal" action="../add/add_deductions.php" name="form" method="post">
+            <form class="form-horizontal" action="../update/update_deductions.php" name="form" method="post">
               <div class="form-group">
                 <label>PhilHealth</label>
                 <input type="text" name="philhealth" class="form-control" required="required"

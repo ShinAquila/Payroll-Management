@@ -90,7 +90,6 @@ while ($row = mysqli_fetch_array($sql)) {
                     <button type="button" data-toggle="modal" data-target="#addDepartment" class="btn btn-success">Add
                         New</button>
                     <p align="center"><big><b>List of Departments</b></big></p>
-                    <p align="center">Please refer to HR regarding the creation and deletion of Departments</p>
                     <div class="table-responsive">
                         <form method="post" action="">
                             <table class="table table-bordered table-hover table-condensed" id="myTable">

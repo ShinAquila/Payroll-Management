@@ -165,10 +165,12 @@ while ($row = mysqli_fetch_array($query4)) {
                       </td>
                       <td align="center">
                         <button type="button" class="btn btn-primary" data-toggle="modal"
-                          data-target="#update_employee_<?php echo $row["emp_id"]; ?>"><i class="fa-solid fa-pen-to-square"></i></button>
+                          data-target="#update_employee_<?php echo $row["emp_id"]; ?>"><i
+                            class="fa-solid fa-pen-to-square"></i></button>
 
                         <button type="button" class="btn btn-danger" data-toggle="modal"
-                          data-target="#delete_employee_<?php echo $row["emp_id"]; ?>"><i class="fa-solid fa-trash"></i></button>
+                          data-target="#delete_employee_<?php echo $row["emp_id"]; ?>"><i
+                            class="fa-solid fa-trash"></i></button>
                       </td>
                     </tr>
 
@@ -370,6 +372,14 @@ while ($row = mysqli_fetch_array($query4)) {
     </div>
 
 
+
+
+
+
+
+
+
+
     <!-- this modal is for my Colins -->
     <div class="modal fade" id="colins" role="dialog">
       <div class="modal-dialog modal-sm">
@@ -400,6 +410,10 @@ while ($row = mysqli_fetch_array($query4)) {
   <script src="../assets/js/bootstrap.min.js"></script>
   <script src="../assets/js/search.js"></script>
   <script type="text/javascript" charset="utf-8" language="javascript" src="../assets/js/dataTables.min.js"></script>
+
+
+
+
 
   <!-- FOR DataTable -->
   <script>
