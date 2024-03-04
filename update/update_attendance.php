@@ -7,8 +7,9 @@ include("../auth.php");
 $id = $_POST['id'];
 $date = $_POST['date'];
 $status = $_POST['status'];
+$overtime_hrs = $_POST['overtime_hrs'];
 
-$sql = mysqli_query($c, "UPDATE attendance SET date='$date', status='$status' WHERE attendance_id='$id'");
+$sql = mysqli_query($c, "UPDATE attendance SET date='$date', status='$status', overtime_hrs='$overtime_hrs' WHERE attendance_id='$id'");
 
 if ($sql) {
     ?>

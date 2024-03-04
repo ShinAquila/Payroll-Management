@@ -185,7 +185,7 @@ while ($row = mysqli_fetch_array($query)) {
                   while ($row = mysqli_fetch_array($query)) {
                     $lname = $row['lname'];
                     $fname = $row['fname'];
-                    $overtime_hours = $row['overtime_hours'];
+                    $total_overtime_hours = $row['total_overtime_hours'];
                     $bonus = $row['bonus'];
                     $total_gross_pay = $row['total_gross_pay'];
                     $start_pay_period = $row['start_pay_period'];
@@ -216,7 +216,7 @@ while ($row = mysqli_fetch_array($query)) {
                         <?php echo $salary_rate ?>
                       </td>
                       <td align="center">
-                        <?php echo $overtime_hours ?>
+                        <?php echo $total_overtime_hours ?>
                       </td>
                       <td align="center">
                           <?php echo $bonus ?>
@@ -324,11 +324,6 @@ while ($row = mysqli_fetch_array($query)) {
               <div class="form-group">
                 <label>End Pay Period</label>
                 <input type="date" name="end_pay_period" class="form-control" placeholder="End Pay Period"
-                  required="required">
-              </div>
-              <div class="form-group">
-                <label>Overtime Hours</label>
-                <input type="text" name="overtime_hours" class="form-control" placeholder="Overtime Hours"
                   required="required">
               </div>
               <div class="form-group">
@@ -446,11 +441,6 @@ while ($row = mysqli_fetch_array($query)) {
                     <label class="form-check-label" for="deduction_pagibig" style="padding-left:6%">SSS
                     </label>
                   </div>
-                </div>
-                <div class="form-group">
-                  <label>Overtime</label>
-                  <input type="text" name="overtime" class="form-control" value="<?php echo $row['overtime_hours']; ?>"
-                    required="required">
                 </div>
                 <div class="form-group">
                   <label>Bonus</label>

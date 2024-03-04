@@ -57,7 +57,7 @@ while ($row = mysqli_fetch_assoc($account_query)) {
 
     echo "Salary Rate: ", $salary_rate, "     - ";
 
-    $total_gross_pay = ($salary_rate * $days_full_day) + (($salary_rate / 2) * $days_half_day) + $row['bonus'] + ($row['overtime_hours'] * $overtime_rate);
+    $total_gross_pay = ($salary_rate * $days_full_day) + (($salary_rate / 2) * $days_half_day) + $row['bonus'] + ($row['total_overtime_hours'] * $overtime_rate);
 
     $tax = 0;
     if ($worked_days > 15) {

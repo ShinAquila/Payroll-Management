@@ -16,8 +16,8 @@ include("../add/add_attendance.php");
     <title>Pixel Foundry - Income</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
-    integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
-    crossorigin="anonymous" referrerpolicy="no-referrer" />
+        integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link href="../assets/css/justified-nav.css" rel="stylesheet">
     <link href="../assets/css/bootstrap.min.css" rel="stylesheet">
     <link href="../assets/css/search.css" rel="stylesheet">
@@ -39,7 +39,8 @@ include("../add/add_attendance.php");
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
         <div class="container">
             <a class="navbar-brand" href="#"><b>Pixel Foundry</b></a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
+                aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
 
@@ -100,6 +101,9 @@ include("../add/add_attendance.php");
                                             <p align="center">Status</p>
                                         </th>
                                         <th>
+                                            <p align="center">Overtime (hrs)</p>
+                                        </th>
+                                        <th>
                                             <p align="center">Action</p>
                                         </th>
                                     </tr>
@@ -119,8 +123,9 @@ include("../add/add_attendance.php");
                                         $lname = $row['lname'];
                                         $fname = $row['fname'];
                                         $date = $row['date'];
+                                        $overtime_hrs = $row['overtime_hrs'];
                                         $status = $row['status'];
-                                    ?>
+                                        ?>
 
                                         <tr>
                                             <td align="center">
@@ -137,8 +142,16 @@ include("../add/add_attendance.php");
                                                 </a>
                                             </td>
                                             <td align="center">
-                                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#update_attendance_<?php echo $row["attendance_id"]; ?>"><i class="fa-solid fa-pen-to-square"></i></button>
-                                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#delete_attendance_<?php echo $row["attendance_id"]; ?>"><i class="fa-solid fa-trash"></i></button>
+                                                <?php echo $overtime_hrs ?>
+                                                </a>
+                                            </td>
+                                            <td align="center">
+                                                <button type="button" class="btn btn-primary" data-toggle="modal"
+                                                    data-target="#update_attendance_<?php echo $row["attendance_id"]; ?>"><i
+                                                        class="fa-solid fa-pen-to-square"></i></button>
+                                                <button type="button" class="btn btn-danger" data-toggle="modal"
+                                                    data-target="#delete_attendance_<?php echo $row["attendance_id"]; ?>"><i
+                                                        class="fa-solid fa-trash"></i></button>
 
 
                                             </td>
@@ -159,6 +172,9 @@ include("../add/add_attendance.php");
                                     </th>
                                     <th>
                                         <p align="center">Status</p>
+                                    </th>
+                                    <th>
+                                        <p align="center">Overtime (hrs)</p>
                                     </th>
                                     <th>
                                         <p align="center">Action</p>
@@ -211,7 +227,8 @@ include("../add/add_attendance.php");
                             </div>
                             <div class="form-group">
                                 <label>Date</label>
-                                <input type="date" name="date" class="form-control" placeholder="Date" required="required">
+                                <input type="date" name="date" class="form-control" placeholder="Date"
+                                    required="required">
                             </div>
                             <div class="form-group">
                                 <label>Status</label>
@@ -221,6 +238,11 @@ include("../add/add_attendance.php");
                                     <option value="HALF DAY">HALF DAY</option>
                                     <option value="ABSENT">ABSENT</option>
                                 </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Overtime (hrs)</label>
+                                <input type="text" name="overtime_hrs" class="form-control" placeholder="Overtime (hrs)"
+                                    required="required">
                             </div>
 
                             <div class="form-group" align="center">
@@ -239,7 +261,7 @@ include("../add/add_attendance.php");
         <?php
         $query = mysqli_query($conn, "SELECT * from attendance JOIN employee ON attendance.employee_id = employee.emp_id ORDER BY date asc") or die(mysqli_error());
         while ($row = mysqli_fetch_array($query)) {
-        ?>
+            ?>
             <div class="modal fade" id="update_attendance_<?php echo $row["attendance_id"]; ?>" role="dialog">
                 <div class="modal-dialog" style="max-width: 400px;">
                     <!-- Modal content-->
@@ -259,20 +281,24 @@ include("../add/add_attendance.php");
                                 <input type="hidden" name="id" value="<?php echo $row['attendance_id']; ?>" />
                                 <div class="form-group">
                                     <label>Date :</label>
-                                    <input type="date" name="date" class="form-control" value="<?php echo $row['date']; ?>" required="required">
+                                    <input type="date" name="date" class="form-control" value="<?php echo $row['date']; ?>"
+                                        required="required">
                                 </div>
                                 <div class="form-group">
                                     <label>Status :</label>
                                     <select class="form-control" id="status" name="status" required>
                                         <option value="FULL DAY" <?php if ($row['status'] == 'FULL DAY')
-                                                                        echo 'selected'; ?>>FULL DAY</option>
+                                            echo 'selected'; ?>>FULL DAY</option>
                                         <option value="HALF DAY" <?php if ($row['status'] == 'HALF DAY')
-                                                                        echo 'selected'; ?>>HALF DAY</option>
+                                            echo 'selected'; ?>>HALF DAY</option>
                                         <option value="ABSENT" <?php if ($row['status'] == 'ABSENT')
-                                                                    echo 'selected'; ?>>ABSENT</option>
+                                            echo 'selected'; ?>>ABSENT</option>
                                     </select>
-
-
+                                </div>
+                                <div class="form-group">
+                                    <label>Overtime (hrs)</label>
+                                    <input type="text" name="overtime_hrs" class="form-control" placeholder="Overtime (hrs)"
+                                        required="required">
                                 </div>
 
                                 <button type="submit" class="btn btn-success">Submit</button>
@@ -288,7 +314,7 @@ include("../add/add_attendance.php");
         <?php
         $query = mysqli_query($conn, "SELECT * from attendance JOIN employee ON attendance.employee_id = employee.emp_id ORDER BY date asc") or die(mysqli_error());
         while ($row = mysqli_fetch_array($query)) {
-        ?>
+            ?>
 
             <div class="modal fade" id="delete_attendance_<?php echo $row["attendance_id"]; ?>" role="dialog">
                 <div class="modal-dialog modal-sm">
@@ -310,7 +336,8 @@ include("../add/add_attendance.php");
                             </p>
                             <p align="center" style="padding:20px">Are you sure you want to proceed?</p>
                             <div align="center">
-                                <a class="btn btn-danger" href="../delete/delete_attendance.php?attendance_id=<?php echo $row["attendance_id"]; ?>">Delete</a>
+                                <a class="btn btn-danger"
+                                    href="../delete/delete_attendance.php?attendance_id=<?php echo $row["attendance_id"]; ?>">Delete</a>
                                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
                             </div>
                         </div>
@@ -357,7 +384,7 @@ include("../add/add_attendance.php");
     <!-- FOR DataTable -->
     <script>
         {
-            $(document).ready(function() {
+            $(document).ready(function () {
                 $('#myTable').DataTable();
             });
         }
@@ -365,8 +392,8 @@ include("../add/add_attendance.php");
 
     <!-- this function is for modal -->
     <script>
-        $(document).ready(function() {
-            $("#myBtn").click(function() {
+        $(document).ready(function () {
+            $("#myBtn").click(function () {
                 $("#myModal").modal();
             });
         });

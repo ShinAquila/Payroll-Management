@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 02, 2024 at 09:02 AM
+-- Generation Time: Mar 04, 2024 at 03:32 AM
 -- Server version: 10.4.21-MariaDB
 -- PHP Version: 7.3.31
 
@@ -33,12 +33,12 @@ CREATE TABLE `account_info` (
   `days_full_day` int(11) NOT NULL,
   `days_half_day` int(11) NOT NULL,
   `days_absent` int(11) NOT NULL,
-  `overtime_hours` int(11) NOT NULL,
+  `total_overtime_hours` int(11) NOT NULL,
   `bonus` decimal(11,2) NOT NULL,
-  `philhealth_check` varchar(20) NOT NULL,
-  `gsis_check` varchar(20) NOT NULL,
-  `pagibig_check` varchar(20) NOT NULL,
-  `sss_check` varchar(20) NOT NULL,
+  `philhealth_check` int(11) NOT NULL,
+  `gsis_check` int(11) NOT NULL,
+  `pagibig_check` int(11) NOT NULL,
+  `sss_check` int(11) NOT NULL,
   `benefits_deductions` decimal(11,2) NOT NULL,
   `tax_deductions` decimal(11,2) NOT NULL,
   `total_deductions` decimal(11,2) NOT NULL,
@@ -52,9 +52,10 @@ CREATE TABLE `account_info` (
 -- Dumping data for table `account_info`
 --
 
-INSERT INTO `account_info` (`acc_info_id`, `employee_id`, `days_full_day`, `days_half_day`, `days_absent`, `overtime_hours`, `bonus`, `philhealth_check`, `gsis_check`, `pagibig_check`, `sss_check`, `benefits_deductions`, `tax_deductions`, `total_deductions`, `total_gross_pay`, `total_net_pay`, `start_pay_period`, `end_pay_period`) VALUES
-(52, 32, 20, 2, 3, 2, '500.00', '1', '0', '1', '1', '8925.00', '13125.05', '22050.05', '85000.00', '62949.95', '2024-02-01', '2024-02-29'),
-(53, 6, 18, 4, 3, 3, '450.00', '1', '0', '0', '1', '9614.00', '17175.05', '26789.05', '101200.00', '74410.95', '2024-02-01', '2024-02-29');
+INSERT INTO `account_info` (`acc_info_id`, `employee_id`, `days_full_day`, `days_half_day`, `days_absent`, `total_overtime_hours`, `bonus`, `philhealth_check`, `gsis_check`, `pagibig_check`, `sss_check`, `benefits_deductions`, `tax_deductions`, `total_deductions`, `total_gross_pay`, `total_net_pay`, `start_pay_period`, `end_pay_period`) VALUES
+(102, 6, 9, 2, 2, 5, '500.00', 1, 0, 0, 1, '1496.25', '3904.10', '5400.35', '31500.00', '26099.65', '2024-02-01', '2024-02-15'),
+(105, 6, 9, 2, 1, 2, '500.00', 1, 0, 0, 1, '1467.75', '3784.10', '5251.85', '30900.00', '25648.15', '2024-02-16', '2024-02-29'),
+(106, 6, 18, 4, 3, 7, '1000.00', 1, 0, 0, 1, '5928.00', '7688.40', '13616.40', '62400.00', '48783.60', '2024-02-01', '2024-02-29');
 
 -- --------------------------------------------------------
 
@@ -66,64 +67,92 @@ CREATE TABLE `attendance` (
   `attendance_id` int(11) NOT NULL,
   `employee_id` int(11) NOT NULL,
   `date` date NOT NULL,
-  `status` varchar(50) NOT NULL
+  `status` varchar(50) NOT NULL,
+  `overtime_hrs` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `attendance`
 --
 
-INSERT INTO `attendance` (`attendance_id`, `employee_id`, `date`, `status`) VALUES
-(1, 32, '2024-02-01', 'FULL DAY'),
-(5, 32, '2024-02-02', 'HALF DAY'),
-(6, 32, '2024-02-03', 'FULL DAY'),
-(8, 32, '2024-02-05', 'ABSENT'),
-(9, 32, '2024-02-06', 'FULL DAY'),
-(10, 32, '2024-02-07', 'FULL DAY'),
-(11, 32, '2024-02-08', 'ABSENT'),
-(12, 32, '2024-02-09', 'FULL DAY'),
-(13, 32, '2024-02-10', 'FULL DAY'),
-(15, 32, '2024-02-12', 'FULL DAY'),
-(16, 32, '2024-02-13', 'FULL DAY'),
-(17, 32, '2024-02-14', 'FULL DAY'),
-(18, 32, '2024-02-15', 'FULL DAY'),
-(19, 32, '2024-02-16', 'FULL DAY'),
-(20, 32, '2024-02-17', 'FULL DAY'),
-(22, 32, '2024-02-19', 'ABSENT'),
-(23, 32, '2024-02-20', 'FULL DAY'),
-(24, 32, '2024-02-21', 'FULL DAY'),
-(25, 32, '2024-02-22', 'FULL DAY'),
-(26, 32, '2024-02-23', 'FULL DAY'),
-(27, 32, '2024-02-24', 'FULL DAY'),
-(28, 32, '2024-02-26', 'FULL DAY'),
-(29, 32, '2024-02-27', 'HALF DAY'),
-(30, 32, '2024-02-28', 'FULL DAY'),
-(31, 32, '2024-02-29', 'FULL DAY'),
-(32, 6, '2024-02-01', 'FULL DAY'),
-(33, 6, '2024-02-02', 'FULL DAY'),
-(34, 6, '2024-02-03', 'FULL DAY'),
-(37, 6, '2024-02-05', 'FULL DAY'),
-(38, 6, '2024-02-06', 'HALF DAY'),
-(39, 6, '2024-02-07', 'FULL DAY'),
-(40, 6, '2024-02-08', 'ABSENT'),
-(41, 6, '2024-02-09', 'FULL DAY'),
-(42, 6, '2024-02-10', 'FULL DAY'),
-(43, 6, '2024-02-12', 'HALF DAY'),
-(44, 6, '2024-02-13', 'FULL DAY'),
-(45, 6, '2024-02-14', 'ABSENT'),
-(46, 6, '2024-02-15', 'FULL DAY'),
-(47, 6, '2024-02-16', 'FULL DAY'),
-(48, 6, '2024-02-17', 'FULL DAY'),
-(49, 6, '2024-02-19', 'FULL DAY'),
-(50, 6, '2024-02-20', 'FULL DAY'),
-(51, 6, '2024-02-21', 'FULL DAY'),
-(52, 6, '2024-02-22', 'HALF DAY'),
-(53, 6, '2024-02-23', 'FULL DAY'),
-(54, 6, '2024-02-24', 'FULL DAY'),
-(55, 6, '2024-02-26', 'ABSENT'),
-(56, 6, '2024-02-27', 'FULL DAY'),
-(57, 6, '2024-02-28', 'FULL DAY'),
-(58, 6, '2024-02-29', 'HALF DAY');
+INSERT INTO `attendance` (`attendance_id`, `employee_id`, `date`, `status`, `overtime_hrs`) VALUES
+(1, 32, '2024-02-01', 'FULL DAY', 2),
+(5, 32, '2024-02-02', 'HALF DAY', 0),
+(6, 32, '2024-02-03', 'FULL DAY', 0),
+(8, 32, '2024-02-05', 'ABSENT', 0),
+(9, 32, '2024-02-06', 'FULL DAY', 1),
+(10, 32, '2024-02-07', 'FULL DAY', 0),
+(11, 32, '2024-02-08', 'ABSENT', 0),
+(12, 32, '2024-02-09', 'FULL DAY', 0),
+(13, 32, '2024-02-10', 'FULL DAY', 0),
+(15, 32, '2024-02-12', 'FULL DAY', 0),
+(16, 32, '2024-02-13', 'FULL DAY', 0),
+(17, 32, '2024-02-14', 'FULL DAY', 0),
+(18, 32, '2024-02-15', 'FULL DAY', 0),
+(19, 32, '2024-02-16', 'FULL DAY', 0),
+(20, 32, '2024-02-17', 'FULL DAY', 3),
+(22, 32, '2024-02-19', 'ABSENT', 0),
+(23, 32, '2024-02-20', 'FULL DAY', 0),
+(24, 32, '2024-02-21', 'FULL DAY', 0),
+(25, 32, '2024-02-22', 'FULL DAY', 0),
+(26, 32, '2024-02-23', 'FULL DAY', 0),
+(27, 32, '2024-02-24', 'FULL DAY', 0),
+(28, 32, '2024-02-26', 'FULL DAY', 1),
+(29, 32, '2024-02-27', 'HALF DAY', 0),
+(30, 32, '2024-02-28', 'FULL DAY', 0),
+(31, 32, '2024-02-29', 'FULL DAY', 0),
+(32, 6, '2024-02-01', 'FULL DAY', 0),
+(33, 6, '2024-02-02', 'FULL DAY', 0),
+(34, 6, '2024-02-03', 'FULL DAY', 0),
+(37, 6, '2024-02-05', 'FULL DAY', 5),
+(38, 6, '2024-02-06', 'HALF DAY', 0),
+(39, 6, '2024-02-07', 'FULL DAY', 0),
+(40, 6, '2024-02-08', 'ABSENT', 0),
+(41, 6, '2024-02-09', 'FULL DAY', 0),
+(42, 6, '2024-02-10', 'FULL DAY', 0),
+(43, 6, '2024-02-12', 'HALF DAY', 0),
+(44, 6, '2024-02-13', 'FULL DAY', 0),
+(45, 6, '2024-02-14', 'ABSENT', 0),
+(46, 6, '2024-02-15', 'FULL DAY', 0),
+(47, 6, '2024-02-16', 'FULL DAY', 0),
+(48, 6, '2024-02-17', 'FULL DAY', 0),
+(49, 6, '2024-02-19', 'FULL DAY', 0),
+(50, 6, '2024-02-20', 'FULL DAY', 0),
+(51, 6, '2024-02-21', 'FULL DAY', 0),
+(52, 6, '2024-02-22', 'HALF DAY', 0),
+(53, 6, '2024-02-23', 'FULL DAY', 0),
+(54, 6, '2024-02-24', 'FULL DAY', 0),
+(55, 6, '2024-02-26', 'ABSENT', 0),
+(56, 6, '2024-02-27', 'FULL DAY', 2),
+(57, 6, '2024-02-28', 'FULL DAY', 0),
+(58, 6, '2024-02-29', 'HALF DAY', 0),
+(60, 9, '2024-03-01', 'FULL DAY', 0),
+(61, 9, '2024-03-02', 'FULL DAY', 0),
+(62, 9, '2024-03-04', 'FULL DAY', 0),
+(63, 9, '2024-03-05', 'FULL DAY', 3),
+(64, 9, '2024-03-06', 'HALF DAY', 0),
+(65, 9, '2024-03-07', 'FULL DAY', 0),
+(66, 9, '2024-03-08', 'FULL DAY', 0),
+(67, 9, '2024-03-09', 'ABSENT', 0),
+(68, 9, '2024-03-11', 'FULL DAY', 0),
+(69, 9, '2024-03-12', 'FULL DAY', 0),
+(70, 9, '2024-03-13', 'ABSENT', 0),
+(71, 9, '2024-03-14', 'FULL DAY', 2),
+(72, 9, '2024-03-15', 'FULL DAY', 0),
+(73, 9, '2024-03-16', 'ABSENT', 0),
+(74, 9, '2024-03-18', 'HALF DAY', 0),
+(75, 9, '2024-03-19', 'FULL DAY', 0),
+(76, 9, '2024-03-20', 'FULL DAY', 0),
+(77, 9, '2024-03-21', 'FULL DAY', 0),
+(78, 9, '2024-03-22', 'HALF DAY', 0),
+(79, 9, '2024-03-23', 'FULL DAY', 0),
+(80, 9, '2024-03-25', 'FULL DAY', 0),
+(81, 9, '2024-03-25', 'FULL DAY', 0),
+(82, 9, '2024-03-26', 'FULL DAY', 0),
+(83, 9, '2024-03-27', 'FULL DAY', 0),
+(84, 9, '2024-03-28', 'FULL DAY', 0),
+(85, 9, '2024-03-29', 'FULL DAY', 0),
+(86, 9, '2024-03-30', 'FULL DAY', 0);
 
 -- --------------------------------------------------------
 
@@ -165,11 +194,11 @@ CREATE TABLE `department` (
 
 INSERT INTO `department` (`dept_id`, `dept_name`, `dept_salary_rate`) VALUES
 (0, 'NOT SET', '0.00'),
-(2, 'UX Designer', '4000.00'),
-(7, 'Software Developer', '5000.00'),
-(8, 'Mobile Developer', '2000.00'),
-(9, 'Database Manager', '2500.00'),
-(10, 'Web Developer', '4500.00'),
+(2, 'UX Designer', '2000.00'),
+(7, 'Software Developer', '3000.00'),
+(8, 'Mobile Developer', '2750.00'),
+(9, 'Database Manager', '2250.00'),
+(10, 'Web Developer', '3250.00'),
 (18, 'IT Technician', '2500.00');
 
 -- --------------------------------------------------------
@@ -211,7 +240,7 @@ INSERT INTO `employee` (`emp_id`, `lname`, `fname`, `gender`, `email`, `dept`) V
 (27, 'Corn', 'Dog', 'Other', 'corndog@gmail.com', 10),
 (28, 'Rojin', 'Carl', 'Male', 'carlrojin@gmail.com', 18),
 (31, 'Penduko', 'Pedro', 'Male', 'penduko@gmail.com', 8),
-(32, 'Bravo', 'Johnny', 'Male', 'fafa@gmail.com', 2),
+(32, 'Bravo', 'Johnny', 'Male', 'fafa@gmail.com', 8),
 (37, 'Bravo', 'S', 'Other', 's@gmail.com', 7);
 
 -- --------------------------------------------------------
@@ -231,26 +260,7 @@ CREATE TABLE `overtime` (
 --
 
 INSERT INTO `overtime` (`ot_id`, `rate`, `none`) VALUES
-(1, 250, 0);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `salary`
---
-
-CREATE TABLE `salary` (
-  `salary_id` int(10) NOT NULL,
-  `salary_rate` int(10) NOT NULL,
-  `none` int(10) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `salary`
---
-
-INSERT INTO `salary` (`salary_id`, `salary_rate`, `none`) VALUES
-(1, 2000, 0);
+(1, 200, 0);
 
 -- --------------------------------------------------------
 
@@ -316,12 +326,6 @@ ALTER TABLE `overtime`
   ADD PRIMARY KEY (`ot_id`);
 
 --
--- Indexes for table `salary`
---
-ALTER TABLE `salary`
-  ADD PRIMARY KEY (`salary_id`);
-
---
 -- Indexes for table `user`
 --
 ALTER TABLE `user`
@@ -335,13 +339,13 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `account_info`
 --
 ALTER TABLE `account_info`
-  MODIFY `acc_info_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=54;
+  MODIFY `acc_info_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=107;
 
 --
 -- AUTO_INCREMENT for table `attendance`
 --
 ALTER TABLE `attendance`
-  MODIFY `attendance_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=60;
+  MODIFY `attendance_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=87;
 
 --
 -- AUTO_INCREMENT for table `deductions`
@@ -359,19 +363,13 @@ ALTER TABLE `department`
 -- AUTO_INCREMENT for table `employee`
 --
 ALTER TABLE `employee`
-  MODIFY `emp_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
+  MODIFY `emp_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
 
 --
 -- AUTO_INCREMENT for table `overtime`
 --
 ALTER TABLE `overtime`
   MODIFY `ot_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
---
--- AUTO_INCREMENT for table `salary`
---
-ALTER TABLE `salary`
-  MODIFY `salary_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `user`

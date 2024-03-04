@@ -7,6 +7,7 @@ if (isset($_POST['submit']) && !empty($_POST['employee']) && !empty($_POST['date
   $selected_employee = $_POST['employee'];
   $date = $_POST['date'];
   $status = $_POST['status'];
+  $overtime_hrs = $_POST['overtime_hrs'];
 
   // Check if attendance already exists for the selected employee on the chosen date
   $check_query = mysqli_query($conn, "SELECT * FROM attendance WHERE employee_id='$selected_employee' AND date='$date'");
@@ -33,7 +34,7 @@ if (isset($_POST['submit']) && !empty($_POST['employee']) && !empty($_POST['date
   }
 
   // If attendance can be added, insert the record
-  $sql = mysqli_query($conn, "INSERT into attendance(employee_id, date, status) VALUES('$selected_employee','$date','$status')");
+  $sql = mysqli_query($conn, "INSERT into attendance(employee_id, date, status, overtime_hrs) VALUES('$selected_employee','$date','$status','$overtime_hrs')");
 
   if ($sql) {
     ?>
