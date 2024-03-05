@@ -19,7 +19,7 @@ if ($sql) {
 } else {
     ?>
     <script>
-        alert('Invalid action.');
+        alert('Department failed to update.');
         window.location.href = '../home/home_departments.php';
     </script>
     <?php

@@ -47,7 +47,7 @@ if (isset($_POST['submit']) && !empty($_POST['employee']) && !empty($_POST['date
     ?>
     <script>
       alert('Invalid.');
-      window.location.href = '../index.php';
+      window.location.href = '../home/home_attendance.php';
     </script>
     <?php
   }

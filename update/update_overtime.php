@@ -92,7 +92,7 @@ while ($row = mysqli_fetch_assoc($account_query)) {
     $PAGIBIG = 0;
     $SSS = 0;
 
-    $check_query = mysqli_query($c, "SELECT * FROM account_info JOIN acc_deductions_check WHERE acc_info_id='{$row['acc_info_id']}'");
+    $check_query = mysqli_query($c, "SELECT * FROM account_info WHERE acc_info_id='{$row['acc_info_id']}'");
     $check_row = mysqli_fetch_assoc($check_query);
     $philhealth_check = $check_row['philhealth_check'];
     $gsis_check = $check_row['gsis_check'];
@@ -148,11 +148,16 @@ while ($row = mysqli_fetch_assoc($account_query)) {
 if ($sql) {
     ?>
     <script>
-        alert('Overtime rate successfully changed...');
+        alert('Overtime rate successfully updated.');
         window.location.href = '../home/home_income.php';
     </script>
     <?php
 } else {
-    echo "Not Successfull!";
+    ?>
+    <script>
+        alert('Overtime rate failed to update.');
+        window.location.href = '../home/home_income.php';
+    </script>
+    <?php
 }
 ?>

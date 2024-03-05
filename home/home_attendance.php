@@ -13,7 +13,7 @@ include("../add/add_attendance.php");
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description">
 
-    <title>Pixel Foundry - Income</title>
+    <title>Pixel Foundry - Attendance</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
         integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
@@ -118,7 +118,7 @@ include("../add/add_attendance.php");
 
 
 
-                                    $query = mysqli_query($conn, "SELECT * from attendance JOIN employee ON attendance.employee_id = employee.emp_id ORDER BY date asc") or die(mysqli_error());
+                                    $query = mysqli_query($conn, "SELECT * from attendance JOIN employee ON attendance.employee_id = employee.emp_id ORDER BY 'date' ASC") or die(mysqli_error());
                                     while ($row = mysqli_fetch_array($query)) {
                                         $lname = $row['lname'];
                                         $fname = $row['fname'];
@@ -297,7 +297,7 @@ include("../add/add_attendance.php");
                                 </div>
                                 <div class="form-group">
                                     <label>Overtime (hrs)</label>
-                                    <input type="text" name="overtime_hrs" class="form-control" placeholder="Overtime (hrs)"
+                                    <input type="text" name="overtime_hrs" class="form-control" value="<?php echo $row['overtime_hrs']; ?>"
                                         required="required">
                                 </div>
 

@@ -21,7 +21,12 @@ if ($sql) {
   </script>
   <?php
 } else {
-  
+  ?>
+  <script>
+    alert('Employee failed to update.');
+    window.location.href = '../home/home_employee.php';
+  </script>
+  <?php
 }
 
 mysqli_close($c);

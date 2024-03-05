@@ -36,7 +36,7 @@ if (isset($_POST['submit']) && !empty($_POST['lname']) && !empty($_POST['fname']
     ?>
     <script>
       alert('Invalid.');
-      window.location.href = '../index.php';
+      window.location.href = '../home/home_employee.php';
     </script>
     <?php
   }

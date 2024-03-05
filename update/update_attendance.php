@@ -19,7 +19,12 @@ if ($sql) {
     </script>
     <?php
 } else {
-
+    ?>
+    <script>
+        alert('Attendance failed to update.');
+        window.location.href = '../home/home_attendance.php';
+    </script>
+    <?php
 }
 
 mysqli_close($c);
