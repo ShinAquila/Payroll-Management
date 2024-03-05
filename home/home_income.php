@@ -72,6 +72,72 @@ while ($row = mysqli_fetch_array($query)) {
     .checkbox-label-padding {
       padding-left: 6%;
     }
+
+    .card {
+      border: none;
+      border-radius: 15px;
+      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .card-header {
+      border-top-left-radius: 15px;
+      border-top-right-radius: 15px;
+    }
+
+    .card-footer {
+      border-bottom-left-radius: 15px;
+      border-bottom-right-radius: 15px;
+    }
+
+    .btn-primary {
+      background-color: #007bff;
+      border-color: #007bff;
+    }
+
+    .btn-primary:hover {
+      background-color: #0056b3;
+      border-color: #0056b3;
+    }
+
+    .btn-danger {
+      background-color: #dc3545;
+      border-color: #dc3545;
+    }
+
+    .btn-danger:hover {
+      background-color: #c82333;
+      border-color: #bd2130;
+    }
+
+    .btn-success {
+      background-color: #28a745;
+      border-color: #28a745;
+    }
+
+    .btn-success:hover {
+      background-color: #218838;
+      border-color: #1e7e34;
+    }
+
+    .table-striped tbody tr:nth-of-type(odd) {
+      background-color: #f8f9fa;
+      /* Light gray */
+    }
+
+    .table-striped tbody tr:nth-of-type(even) {
+      background-color: #e9ecef;
+      /* Darker gray */
+    }
+
+    .bg-dark {
+      background-color: #343a40 !important;
+      /* Dark gray */
+    }
+
+    .text-white {
+      color: #ffffff !important;
+      /* White */
+    }
   </style>
 </head>
 
@@ -119,166 +185,105 @@ while ($row = mysqli_fetch_array($query)) {
 
 
   <div class="container">
-
-
     <br>
-    <div class="well bs-component">
-      <form class="form-horizontal">
-        <fieldset>
-          <div style="justify-content: space-between;">
-            <button type="button" data-toggle="modal" data-target="#addAccountIncome" class="btn btn-success">Add
-              New</button>
-            <div style="display: flex; flex-direction: column; align-items: flex-end;">
-              <button type="button" data-toggle="modal" data-target="#overtime" class="btn btn-primary">Modify</button>
-              <p>Overtime rate per hour: <big><b>
-                    <?php echo $rate; ?>.00
-                  </b></big></p>
-            </div>
-          </div>
+    <div class="card" style="width: 100%; ">
+      <div class="card-header bg-dark text-white">
+        <div class="d-flex justify-content-between align-items-center">
+          <h5 class="card-title mb-0">Employee Income Info</h5>
+          <button type="button" data-toggle="modal" data-target="#overtime" class="btn btn-primary">Modify</button>
 
+        </div>
+        <div class="d-flex justify-content-between align-items-center mt-2">
+          <button type="button" data-toggle="modal" data-target="#addAccountIncome" class="btn btn-success">Add
+            New</button>
 
-          <p align="center"><big><b>Employee Income Info</b></big></p>
-          <div class="table-responsive">
-            <form method="post" action="">
-              <table class="table table-bordered table-hover table-condensed" id="myTable">
-                <!-- <h3><b>Ordinance</b></h3> -->
-                <thead>
-                  <tr class="info">
-                    <th>
-                      <p align="center">Name</p>
-                    </th>
-                    <th>
-                      <p align="center">Start Pay Period</p>
-                    </th>
-                    <th>
-                      <p align="center">End Pay Period</p>
-                    </th>
-                    <th>
-                      <p align="center">Working Days</p>
-                    </th>
-                    <th>
-                      <p align="center">Salary Rate</p>
-                    </th>
-                    <th>
-                      <p align="center">Overtime Hours</p>
-                    </th>
-                    <th>
-                      <p align="center">Bonus</p>
-                    </th>
-                    <th>
-                      <p align="center">Gross Pay</p>
-                    </th>
-                    <th>
-                      <p align="center">Action</p>
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <?php
+          <p class="mb-0">Overtime rate per hour: <big><b>
+                <?php echo $rate; ?>.00
+              </b></big></p>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-bordered table-hover table-condensed" id="myTable" style="width: 99%">
+            <thead>
+              <tr class="bg-secondary text-white">
+                <th>Name</th>
+                <th style="width: 60px">Start Pay Period</th>
+                <th style="width: 60px">End Pay Period</th>
+                <th style="width: 50px">Working Days</th>
+                <th>Salary Rate</th>
+                <th style="width: 30px">Overtime Hours</th>
+                <th>Bonus</th>
+                <th>Gross Pay</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <?php
 
-                  $conn = mysqli_connect('localhost', 'root', '', 'payroll');
-                  if (!$conn) {
-                    die("Database Connection Failed" . mysqli_error());
-                  }
+              $conn = mysqli_connect('localhost', 'root', '', 'payroll');
+              if (!$conn) {
+                die("Database Connection Failed" . mysqli_error());
+              }
 
-                  $query = mysqli_query($conn, "SELECT * FROM employee JOIN account_info ON employee.emp_id = account_info.employee_id ORDER BY emp_id ASC") or die(mysqli_error());
-                  while ($row = mysqli_fetch_array($query)) {
-                    $lname = $row['lname'];
-                    $fname = $row['fname'];
-                    $total_overtime_hours = $row['total_overtime_hours'];
-                    $bonus = $row['bonus'];
-                    $total_gross_pay = $row['total_gross_pay'];
-                    $start_pay_period = $row['start_pay_period'];
-                    $end_pay_period = $row['end_pay_period'];
+              $query = mysqli_query($conn, "SELECT * FROM employee JOIN account_info ON employee.emp_id = account_info.employee_id ORDER BY emp_id ASC") or die(mysqli_error());
+              while ($row = mysqli_fetch_array($query)) {
+                $lname = $row['lname'];
+                $fname = $row['fname'];
+                $total_overtime_hours = $row['total_overtime_hours'];
+                $bonus = $row['bonus'];
+                $total_gross_pay = $row['total_gross_pay'];
+                $start_pay_period = $row['start_pay_period'];
+                $end_pay_period = $row['end_pay_period'];
 
-                    $salary_query = mysqli_query($conn, "SELECT * FROM department JOIN employee ON department.dept_id=employee.dept WHERE employee.emp_id = $row[emp_id]");
-                    $salary_row = mysqli_fetch_assoc($salary_query);
-                    $salary_rate = $salary_row['dept_salary_rate'];
-                    ?>
-
-                    <tr>
-                      <td align="center">
-                        <?php echo $row['lname'] ?>,
-                        <?php echo $row['fname'] ?>
-                      </td>
-                      <td align="center">
-                        <?php echo $start_pay_period ?>
-                      </td>
-                      <td align="center">
-                        <?php echo $end_pay_period ?>
-                      </td>
-                      <td align="center">
-                        <i style="margin-block: 1%; color: #2d76c4; cursor: pointer; font-size:2rem"
-                          class="fa-solid fa-circle-info" data-toggle="modal"
-                          data-target="#work_days_details_<?php echo $row['acc_info_id'] ?>"></i>
-                      </td>
-                      <td align="center">
-                        <?php echo $salary_rate ?>
-                      </td>
-                      <td align="center">
-                        <?php echo $total_overtime_hours ?>
-                      </td>
-                      <td align="center">
-                          <?php echo $bonus ?>
-                      </td>
-                      <td align="center"><b>
-                          <?php echo $total_gross_pay ?>
-                        </b>
-                      </td>
-                      <td align="center">
-                        <button type="button" class="btn btn-primary mb-2" data-toggle="modal"
-                          data-target="#update_income_<?php echo $row["acc_info_id"]; ?>"><i
-                            class="fa-solid fa-pen-to-square"></i></button>
-
-                        <button type="button" class="btn btn-danger" data-toggle="modal"
-                          data-target="#delete_income_<?php echo $row["acc_info_id"]; ?>"><i
-                            class="fa-solid fa-trash"></i></button>
-
-                      </td>
-                    </tr>
-
-
-
-
-
-                  <?php } ?>
-                </tbody>
-
-                <tr class="info">
-                  <th>
-                    <p align="center">Name</p>
-                  </th>
-                  <th>
-                    <p align="center">Start Pay Period</p>
-                  </th>
-                  <th>
-                    <p align="center">End Pay Period</p>
-                  </th>
-                  <th>
-                    <p align="center">Working Days</p>
-                  </th>
-                  <th>
-                    <p align="center">Salary Rate</p>
-                  </th>
-                  <th>
-                    <p align="center">Overtime Hours</p>
-                  </th>
-                  <th>
-                    <p align="center">Bonus</p>
-                  </th>
-                  <th>
-                    <p align="center">Gross Pay</p>
-                  </th>
-                  <th>
-                    <p align="center">Action</p>
-                  </th>
+                $salary_query = mysqli_query($conn, "SELECT * FROM department JOIN employee ON department.dept_id=employee.dept WHERE employee.emp_id = $row[emp_id]");
+                $salary_row = mysqli_fetch_assoc($salary_query);
+                $salary_rate = $salary_row['dept_salary_rate'];
+                ?>
+                <tr>
+                  <td>
+                    <?php echo $row['lname'] ?>,
+                    <?php echo $row['fname'] ?>
+                  </td>
+                  <td>
+                    <?php echo $start_pay_period ?>
+                  </td>
+                  <td>
+                    <?php echo $end_pay_period ?>
+                  </td>
+                  <td align="center">
+                    <i style="margin-block: 1%; color: #2d76c4; cursor: pointer; font-size:2rem"
+                      class="fa-solid fa-circle-info" data-toggle="modal"
+                      data-target="#work_days_details_<?php echo $row['acc_info_id'] ?>"></i>
+                  </td>
+                  <td>
+                    <?php echo $salary_rate ?>
+                  </td>
+                  <td>
+                    <?php echo $total_overtime_hours ?>
+                  </td>
+                  <td>
+                    <?php echo $bonus ?>
+                  </td>
+                  <td><b>
+                      <?php echo $total_gross_pay ?>
+                    </b></td>
+                  <td align="center">
+                    <button type="button" class="btn btn-primary mb-2" data-toggle="modal"
+                      data-target="#update_income_<?php echo $row["acc_info_id"]; ?>"><i
+                        class="fa-solid fa-pen-to-square"></i></button>
+                    <button type="button" class="btn btn-danger" data-toggle="modal"
+                      data-target="#delete_income_<?php echo $row["acc_info_id"]; ?>"><i
+                        class="fa-solid fa-trash"></i></button>
+                  </td>
                 </tr>
-              </table>
-            </form>
-          </div>
-        </fieldset>
-      </form>
+              <?php } ?>
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
+
 
     <!-- this modal is for ADDING an income -->
     <div class="modal fade" id="addAccountIncome" role="dialog">
@@ -557,11 +562,12 @@ while ($row = mysqli_fetch_array($query)) {
 
   <!-- FOR DataTable -->
   <script>
-    {
-      $(document).ready(function () {
-        $('#myTable').DataTable();
+    $(document).ready(function () {
+      $('#myTable').DataTable({
+        "paging": true,
+        "searching": true
       });
-    }
+    });
   </script>
 
   <!-- this function is for modal -->

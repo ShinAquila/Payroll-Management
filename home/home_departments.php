@@ -36,6 +36,72 @@ while ($row = mysqli_fetch_array($sql)) {
             padding: 2%;
             width: 100%;
         }
+
+        .card {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-header {
+            border-top-left-radius: 15px;
+            border-top-right-radius: 15px;
+        }
+
+        .card-footer {
+            border-bottom-left-radius: 15px;
+            border-bottom-right-radius: 15px;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
+
+        .btn-danger {
+            background-color: #dc3545;
+            border-color: #dc3545;
+        }
+
+        .btn-danger:hover {
+            background-color: #c82333;
+            border-color: #bd2130;
+        }
+
+        .btn-success {
+            background-color: #28a745;
+            border-color: #28a745;
+        }
+
+        .btn-success:hover {
+            background-color: #218838;
+            border-color: #1e7e34;
+        }
+
+        .table-striped tbody tr:nth-of-type(odd) {
+            background-color: #f8f9fa;
+            /* Light gray */
+        }
+
+        .table-striped tbody tr:nth-of-type(even) {
+            background-color: #e9ecef;
+            /* Darker gray */
+        }
+
+        .bg-dark {
+            background-color: #343a40 !important;
+            /* Dark gray */
+        }
+
+        .text-white {
+            color: #ffffff !important;
+            /* White */
+        }
     </style>
 </head>
 
@@ -84,79 +150,60 @@ while ($row = mysqli_fetch_array($sql)) {
     <div class="container">
 
         <br>
-        <div class="well bs-component">
-            <form class="form-horizontal">
-                <fieldset>
+        <div class="card" style="width: 70%; margin: 0 auto;">
+            <div class="card-header bg-dark text-white">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h5 class="card-title mb-0">List of Departments</h5>
                     <button type="button" data-toggle="modal" data-target="#addDepartment" class="btn btn-success">Add
                         New</button>
-                    <p align="center"><big><b>List of Departments</b></big></p>
-                    <div class="table-responsive">
-                        <form method="post" action="">
-                            <table class="table table-bordered table-hover table-condensed" id="myTable">
-                                <thead>
-                                    <tr class="info">
-                                        <th>
-                                            <p align="center">Department Name</p>
-                                        </th>
-                                        <th>
-                                            <p align="center">Salary Rate</p>
-                                        </th>
-                                        <th>
-                                            <p align="center">Action</p>
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <?php
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover table-condensed" id="myTable" style="width: 99%">
+                        <thead>
+                            <tr class="bg-secondary text-white">
+                                <th>Department Name</th>
+                                <th>Salary Rate</th>
+                                <th class="text-center">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php
+                            $conn = mysqli_connect('localhost', 'root', '', 'payroll');
+                            if (!$conn) {
+                                die("Database Connection Failed" . mysqli_error());
+                            }
 
-                                    $conn = mysqli_connect('localhost', 'root', '', 'payroll');
-                                    if (!$conn) {
-                                        die("Database Connection Failed" . mysqli_error());
-                                    }
-
-                                    $query = mysqli_query($conn, "SELECT * from department WHERE NOT dept_id=0 ORDER BY dept_id asc") or die(mysqli_error());
-                                    while ($row = mysqli_fetch_array($query)) {
-                                        $dept_id = $row['dept_id'];
-                                        $dept_name = $row['dept_name'];
-                                        $dept_salary_rate = $row['dept_salary_rate'];
-                                        ?>
-
-                                        <tr>
-                                            <td align="center">
-                                                <?php echo $dept_name ?>
-                                            </td>
-                                            <td align="center">
-                                                <?php echo $dept_salary_rate ?>
-                                            </td>
-                                            <td align="center">
-                                                <button type="button" class="btn btn-primary" data-toggle="modal"
-                                                    data-target="#update_department_<?php echo $row["dept_id"]; ?>"><i
-                                                        class="fa-solid fa-pen-to-square"></i></button>
-                                                <button type="button" class="btn btn-danger" data-toggle="modal"
-                                                    data-target="#delete_department_<?php echo $row["dept_id"]; ?>"><i
-                                                        class="fa-solid fa-trash"></i></button>
-                                            </td>
-                                        </tr>
-                                    <?php } ?>
-                                </tbody>
-
-                                <tr class="info">
-                                    <th>
-                                        <p align="center">Department Name</p>
-                                    </th>
-                                    <th>
-                                        <p align="center">Salary Rate</p>
-                                    </th>
-                                    <th>
-                                        <p align="center">Action</p>
-                                    </th>
+                            $query = mysqli_query($conn, "SELECT * from department WHERE NOT dept_id=0 ORDER BY dept_id asc") or die(mysqli_error());
+                            while ($row = mysqli_fetch_array($query)) {
+                                $dept_id = $row['dept_id'];
+                                $dept_name = $row['dept_name'];
+                                $dept_salary_rate = $row['dept_salary_rate'];
+                                ?>
+                                <tr>
+                                    <td>
+                                        <?php echo $dept_name ?>
+                                    </td>
+                                    <td>
+                                        <?php echo $dept_salary_rate ?>
+                                    </td>
+                                    <td align="center">
+                                        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal"
+                                            data-target="#update_department_<?php echo $row["dept_id"]; ?>"><i
+                                                class="fa-solid fa-pen-to-square"></i></button>
+                                        <button type="button" class="btn btn-danger btn-sm" data-toggle="modal"
+                                            data-target="#delete_department_<?php echo $row["dept_id"]; ?>"><i
+                                                class="fa-solid fa-trash"></i></button>
+                                    </td>
                                 </tr>
-                            </table>
-                        </form>
-                    </div>
-                </fieldset>
-            </form>
+                            <?php } ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
+
 
         <!-- this modal is for ADDING a department -->
         <div class="modal fade" id="addDepartment" role="dialog">
@@ -177,8 +224,8 @@ while ($row = mysqli_fetch_array($sql)) {
                             </div>
                             <div class="form-group">
                                 <label>Salary Rate:</label>
-                                <input type="text" name="dept_salary_rate" class="form-control" placeholder="Salary Rate"
-                                    required="required">
+                                <input type="text" name="dept_salary_rate" class="form-control"
+                                    placeholder="Salary Rate" required="required">
                             </div>
 
                             <div class="form-group" align="center">
@@ -304,11 +351,12 @@ while ($row = mysqli_fetch_array($sql)) {
 
     <!-- FOR DataTable -->
     <script>
-        {
-            $(document).ready(function () {
-                $('#myTable').DataTable();
+        $(document).ready(function () {
+            $('#myTable').DataTable({
+                "paging": true,
+                "searching": true
             });
-        }
+        });
     </script>
 
     <!-- this function is for modal -->

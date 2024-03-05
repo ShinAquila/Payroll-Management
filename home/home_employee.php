@@ -51,9 +51,76 @@ while ($row = mysqli_fetch_array($query4)) {
       margin-top: -2%;
     }
 
+
     .navbar {
       padding: 2%;
       width: 100%;
+    }
+
+    .card {
+      border: none;
+      border-radius: 15px;
+      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .card-header {
+      border-top-left-radius: 15px;
+      border-top-right-radius: 15px;
+    }
+
+    .card-footer {
+      border-bottom-left-radius: 15px;
+      border-bottom-right-radius: 15px;
+    }
+
+    .btn-primary {
+      background-color: #007bff;
+      border-color: #007bff;
+    }
+
+    .btn-primary:hover {
+      background-color: #0056b3;
+      border-color: #0056b3;
+    }
+
+    .btn-danger {
+      background-color: #dc3545;
+      border-color: #dc3545;
+    }
+
+    .btn-danger:hover {
+      background-color: #c82333;
+      border-color: #bd2130;
+    }
+
+    .btn-success {
+      background-color: #28a745;
+      border-color: #28a745;
+    }
+
+    .btn-success:hover {
+      background-color: #218838;
+      border-color: #1e7e34;
+    }
+
+    .table-striped tbody tr:nth-of-type(odd) {
+      background-color: #f8f9fa;
+      /* Light gray */
+    }
+
+    .table-striped tbody tr:nth-of-type(even) {
+      background-color: #e9ecef;
+      /* Darker gray */
+    }
+
+    .bg-dark {
+      background-color: #343a40 !important;
+      /* Dark gray */
+    }
+
+    .text-white {
+      color: #ffffff !important;
+      /* White */
     }
   </style>
 </head>
@@ -102,108 +169,74 @@ while ($row = mysqli_fetch_array($query4)) {
 
   <div class="container">
     <br>
-    <div class="well bs-component">
-      <form class="form-horizontal">
-        <fieldset>
+    <div class="card" style="width: 90%; margin: 0 auto;">
+      <div class="card-header bg-dark text-white">
+        <div class="d-flex justify-content-between align-items-center">
+          <h5 class="card-title mb-0">List of Employees</h5>
           <button type="button" data-toggle="modal" data-target="#addEmployee" class="btn btn-success">Add New</button>
-          <p align="center"><big><b>List of Employees</b></big></p>
-          <div class="table-responsive">
-            <form method="post" action="">
-              <table class="table table-bordered table-hover table-condensed" id="myTable">
-                <thead>
-                  <tr class="info">
-                    <th>
-                      <p align="center">Name</p>
-                    </th>
-                    <th>
-                      <p align="center">Gender</p>
-                    </th>
-                    <th>
-                      <p align="center">Email</p>
-                    </th>
-                    <th>
-                      <p align="center">Department</p>
-                    </th>
-                    <th>
-                      <p align="center">Action</p>
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <?php
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-bordered table-hover table-condensed" id="employeeTable" style="width: 99%">
+            <thead>
+              <tr class="bg-secondary text-white">
+                <th>Name</th>
+                <th>Gender</th>
+                <th>Email</th>
+                <th>Department</th>
+                <th class="text-center" style="width: 150px">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <?php
+              $conn = mysqli_connect('localhost', 'root', '', 'payroll');
+              if (!$conn) {
+                die("Database Connection Failed" . mysqli_error());
+              }
 
-                  $conn = mysqli_connect('localhost', 'root', '', 'payroll');
-                  if (!$conn) {
-                    die("Database Connection Failed" . mysqli_error());
-                  }
-
-
-
-                  $query = mysqli_query($conn, "select * from employee JOIN department ON employee.dept = department.dept_id ORDER BY emp_id asc") or die(mysqli_error());
-                  while ($row = mysqli_fetch_array($query)) {
-                    $id = $row['emp_id'];
-                    $lname = $row['lname'];
-                    $fname = $row['fname'];
-                    $email = $row['email'];
-                    $dept_id = $row['dept_id'];
-                    $dept_name = $row['dept_name'];
-                    ?>
-
-                    <tr>
-                      <td align="center">
-                        <?php echo $row['lname'] ?>,
-                        <?php echo $row['fname'] ?>
-                      </td>
-                      <td align="center">
-                        <?php echo $row['gender'] ?>
-                      </td>
-                      <td align="center">
-                        <?php echo $row['email'] ?>
-                      </td>
-                      <td align="center">
-                        <?php echo $row['dept_name'] ?>
-                      </td>
-                      <td align="center">
-                        <button type="button" class="btn btn-primary" data-toggle="modal"
-                          data-target="#update_employee_<?php echo $row["emp_id"]; ?>"><i
-                            class="fa-solid fa-pen-to-square"></i></button>
-
-                        <button type="button" class="btn btn-danger" data-toggle="modal"
-                          data-target="#delete_employee_<?php echo $row["emp_id"]; ?>"><i
-                            class="fa-solid fa-trash"></i></button>
-                      </td>
-                    </tr>
-
-
-
-
-
-                  <?php } ?>
-                </tbody>
-
-                <tr class="info">
-                  <th>
-                    <p align="center">Name</p>
-                  </th>
-                  <th>
-                    <p align="center">Gender</p>
-                  </th>
-                  <th>
-                    <p align="center">Email</p>
-                  </th>
-                  <th>
-                    <p align="center">Department</p>
-                  </th>
-                  <th>
-                    <p align="center">Action</p>
-                  </th>
+              $query = mysqli_query($conn, "select * from employee JOIN department ON employee.dept = department.dept_id ORDER BY emp_id asc") or die(mysqli_error());
+              while ($row = mysqli_fetch_array($query)) {
+                $id = $row['emp_id'];
+                $lname = $row['lname'];
+                $fname = $row['fname'];
+                $email = $row['email'];
+                $dept_id = $row['dept_id'];
+                $dept_name = $row['dept_name'];
+                ?>
+                <tr>
+                  <td>
+                    <?php echo $row['lname'] . ", " . $row['fname']; ?>
+                  </td>
+                  <td>
+                    <?php echo $row['gender']; ?>
+                  </td>
+                  <td>
+                    <?php echo $row['email']; ?>
+                  </td>
+                  <td>
+                    <?php echo $row['dept_name']; ?>
+                  </td>
+                  <td align="center"> <!-- Aligning Action buttons to center -->
+                    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal"
+                      data-target="#update_employee_<?php echo $row["emp_id"]; ?>">
+                      <i class="fa-solid fa-pen-to-square"></i>
+                    </button>
+                    <button type="button" class="btn btn-danger btn-sm" data-toggle="modal"
+                      data-target="#delete_employee_<?php echo $row["emp_id"]; ?>">
+                      <i class="fa-solid fa-trash"></i>
+                    </button>
+                  </td>
                 </tr>
-              </table>
-            </form>
-          </div>
-        </fieldset>
-      </form>
+              <?php } ?>
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
+
+
+
 
     <!-- Update Employee Modals -->
     <?php
@@ -417,12 +450,14 @@ while ($row = mysqli_fetch_array($query4)) {
 
   <!-- FOR DataTable -->
   <script>
-    {
-      $(document).ready(function () {
-        $('#myTable').DataTable();
+    $(document).ready(function () {
+      $('#employeeTable').DataTable({
+        "paging": true,
+        "searching": true
       });
-    }
+    });
   </script>
+
 
   <!-- this function is for modal -->
   <script>

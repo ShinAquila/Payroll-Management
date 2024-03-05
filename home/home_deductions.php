@@ -61,6 +61,72 @@ while ($row = mysqli_fetch_array($query5)) {
       padding: 2%;
       width: 100%;
     }
+
+    .card {
+      border: none;
+      border-radius: 15px;
+      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .card-header {
+      border-top-left-radius: 15px;
+      border-top-right-radius: 15px;
+    }
+
+    .card-footer {
+      border-bottom-left-radius: 15px;
+      border-bottom-right-radius: 15px;
+    }
+
+    .btn-primary {
+      background-color: #007bff;
+      border-color: #007bff;
+    }
+
+    .btn-primary:hover {
+      background-color: #0056b3;
+      border-color: #0056b3;
+    }
+
+    .btn-danger {
+      background-color: #dc3545;
+      border-color: #dc3545;
+    }
+
+    .btn-danger:hover {
+      background-color: #c82333;
+      border-color: #bd2130;
+    }
+
+    .btn-success {
+      background-color: #28a745;
+      border-color: #28a745;
+    }
+
+    .btn-success:hover {
+      background-color: #218838;
+      border-color: #1e7e34;
+    }
+
+    .table-striped tbody tr:nth-of-type(odd) {
+      background-color: #f8f9fa;
+      /* Light gray */
+    }
+
+    .table-striped tbody tr:nth-of-type(even) {
+      background-color: #e9ecef;
+      /* Darker gray */
+    }
+
+    .bg-dark {
+      background-color: #343a40 !important;
+      /* Dark gray */
+    }
+
+    .text-white {
+      color: #ffffff !important;
+      /* White */
+    }
   </style>
 </head>
 
@@ -109,232 +175,133 @@ while ($row = mysqli_fetch_array($query5)) {
   <div class="container">
     <br><br>
 
-    <div class="well bs-component">
-      <form class="form-horizontal">
-        <fieldset>
+    <div class="card" style="width: 70%; margin: 0 auto;">
+      <div class="card-header bg-dark text-white">
+        <div class="d-flex justify-content-between align-items-center">
+          <h5 class="card-title mb-0">List of Benefits</h5>
           <button type="button" data-toggle="modal" data-target="#deductions" class="btn btn-success">Update</button>
-          <p align="center"><big><b>List of Benefits</b></big></p>
-          <div class="table-responsive">
-            <form method="post" action="">
-              <table class="table table-bordered table-hover table-condensed" id="myTable">
-                <thead>
-                  <tr class="info">
-                    <th>
-                      <p align="center">Benefit Name</p>
-                    </th>
-                    <th>
-                      <p align="center">Benefit Percent</p>
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <?php
-
-                  $conn = mysqli_connect('localhost', 'root', '', 'payroll');
-                  if (!$conn) {
-                    die("Database Connection Failed" . mysqli_error());
-                  }
-
-                  $query = mysqli_query($conn, "SELECT * FROM deductions ORDER BY deduction_id ASC") or die(mysqli_error());
-                  while ($row = mysqli_fetch_array($query)) {
-                    $deduction_id = $row['deduction_id'];
-                    $deduction_name = $row['deduction_name'];
-                    $deduction_percent = $row['deduction_percent'];
-                    ?>
-
-                    <tr>
-                      <td align="center">
-                        <?php echo $deduction_name ?>
-                      </td>
-                      <td align="center">
-                        <?php echo $deduction_percent ?>%
-                      </td>
-                    </tr>
-
-                  <?php } ?>
-                </tbody>
-
-                <tr class="info">
-                  <th>
-                    <p align="center">Benefit Name</p>
-                  </th>
-                  <th>
-                    <p align="center">Benefit Percent</p>
-                  </th>
+        </div>
+      </div>
+      <div class="card-body" >
+        <div class="table-responsive">
+          <table class="table table-bordered table-hover table-condensed" id="myTable" >
+            <thead>
+              <tr class="bg-secondary text-white">
+                <th>Benefit Name</th>
+                <th>Benefit Percent</th>
+              </tr>
+            </thead>
+            <tbody>
+              <?php
+              $conn = mysqli_connect('localhost', 'root', '', 'payroll');
+              if (!$conn) {
+                die("Database Connection Failed" . mysqli_error());
+              }
+              $query = mysqli_query($conn, "SELECT * FROM deductions ORDER BY deduction_id ASC") or die(mysqli_error());
+              while ($row = mysqli_fetch_array($query)) {
+                $deduction_id = $row['deduction_id'];
+                $deduction_name = $row['deduction_name'];
+                $deduction_percent = $row['deduction_percent'];
+                ?>
+                <tr>
+                  <td>
+                    <?php echo $deduction_name ?>
+                  </td>
+                  <td>
+                    <?php echo $deduction_percent ?>%
+                  </td>
                 </tr>
-              </table>
-            </form>
-          </div>
-        </fieldset>
-      </form>
+              <?php } ?>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+ <br>
+
+    <div class="card" style="width: 70%; margin: 0 auto;">
+      <div class="card-header bg-dark text-white">
+        <div class="d-flex justify-content-between align-items-center">
+          <h5 class="card-title mb-0">List of Taxes</h5>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-bordered table-hover table-condensed" id="myTable" style="width: 100%">
+            <thead>
+              <tr class="bg-secondary text-white">
+                <th>Tax Bracket</th>
+                <th>Computation</th>
+                <th>Formula</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>≥ 28,300</td>
+                <td>Monthly</td>
+                <td>((Total Gross Pay - 20,833) * 0.15)</td>
+              </tr>
+              <tr>
+                <td>≥ 33,333</td>
+                <td>Monthly</td>
+                <td>((Total Gross Pay - 33,333) * 0.20) + 1,875</td>
+              </tr>
+              <tr>
+                <td>≥ 66,667</td>
+                <td>Monthly</td>
+                <td>((Total Gross Pay - 66,667) * 0.25) + 8,541.80</td>
+              </tr>
+              <tr>
+                <td>≥ 166,667</td>
+                <td>Monthly</td>
+                <td>((Total Gross Pay - 166,667) * 0.30) + 33,541.80</td>
+              </tr>
+              <tr>
+                <td>≥ 666,667</td>
+                <td>Monthly</td>
+                <td>((Total Gross Pay - 666,667) * 0.35) + 183,541.80</td>
+              </tr>
+              <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>≥ 10,417</td>
+                <td>Semi-Monthly</td>
+                <td>((Total Gross Pay - 10,417) * 0.15)</td>
+              </tr>
+              <tr>
+                <td>≥ 16,667</td>
+                <td>Semi-Monthly</td>
+                <td>((Total Gross Pay - 16,667) * 0.20) + 937.50</td>
+              </tr>
+              <tr>
+                <td>≥ 33,333</td>
+                <td>Semi-Monthly</td>
+                <td>((Total Gross Pay - 33,333) * 0.25) + 4,270.70</td>
+              </tr>
+              <tr>
+                <td>≥ 83,333</td>
+                <td>Semi-Monthly</td>
+                <td>((Total Gross Pay - 83,333) * 0.30) + 16,770.70</td>
+              </tr>
+              <tr>
+                <td>≥ 333,333</td>
+                <td>Semi-Monthly</td>
+                <td>((Total Gross Pay - 333,333) * 0.35) + 91,770.70</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
 
-    <div class="well bs-component">
-      <form class="form-horizontal">
-        <fieldset>
-          <p align="center"><big><b>List of Taxes</b></big></p>
-          <div class="table-responsive">
-            <form method="post" action="">
-              <table class="table table-bordered table-hover table-condensed" id="myTable">
-                <thead>
-                  <tr class="info">
-                    <th>
-                      <p align="center">Tax Bracket</p>
-                    </th>
-                    <th>
-                      <p align="center">Computation</p>
-                    </th>
-                    <th>
-                      <p align="center">Formula</p>
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td align="center">
-                      <p align="center">≥ 28,300</p>
-                    </td>
-                    <td align="center">
-                      <p align="center">Monthly</p>
-                    </td>
-                    <td align="center">
-                      <p align="center">((Total Gross Pay - 20,833) * 0.15)</p>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td align="center">
-                      <p align="center">≥ 33,333</p>
-                    </td>
-                    <td align="center">
-                      <p align="center">Monthly</p>
-                    </td>
-                    <td align="center">
-                      <p align="center">((Total Gross Pay - 33,333) * 0.20) + 1,875</p>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td align="center">
-                      <p align="center">≥ 66,667</p>
-                    </td>
-                    <td align="center">
-                      <p align="center">Monthly</p>
-                    </td>
-                    <td align="center">
-                      <p align="center">((Total Gross Pay - 66,667) * 0.25) + 8,541.80</p>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td align="center">
-                      <p align="center">≥ 166,667</p>
-                    </td>
-                    <td align="center">
-                      <p align="center">Monthly</p>
-                    </td>
-                    <td align="center">
-                      <p align="center">((Total Gross Pay - 166,667) * 0.30) + 33,541.80</p>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td align="center">
-                      <p align="center">≥ 666,667</p>
-                    </td>
-                    <td align="center">
-                      <p align="center">Monthly</p>
-                    </td>
-                    <td align="center">
-                      <p align="center">((Total Gross Pay - 666,667) * 0.35) + 183,541.80</p>
-                    </td>
-                  </tr>
-
-                  <tr>
-                    <td align="center">
-                      <p align="center"></p>
-                    </td>
-                    <td align="center">
-                      <p align="center"></p>
-                    </td>
-                    <td align="center">
-                      <p align="center"></p>
-                    </td>
-
-                  </tr>
-
-                  <tr>
-                    <td align="center">
-                      <p align="center">≥ 10,417</p>
-                    </td>
-                    <td align="center">
-                      <p align="center">Semi-Monthly</p>
-                    </td>
-                    <td align="center">
-                      <p align="center">((Total Gross Pay - 10,417) * 0.15)</p>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td align="center">
-                      <p align="center">≥ 16,667</p>
-                    </td>
-                    <td align="center">
-                      <p align="center">Semi-Monthly</p>
-                    </td>
-                    <td align="center">
-                      <p align="center">((Total Gross Pay - 16,667) * 0.20) + 937.50</p>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td align="center">
-                      <p align="center">≥ 33,333</p>
-                    </td>
-                    <td align="center">
-                      <p align="center">Semi-Monthly</p>
-                    </td>
-                    <td align="center">
-                      <p align="center">((Total Gross Pay - 33,333) * 0.25) + 4,270.70</p>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td align="center">
-                      <p align="center">≥ 83,333</p>
-                    </td>
-                    <td align="center">
-                      <p align="center">Semi-Monthly</p>
-                    </td>
-                    <td align="center">
-                      <p align="center">((Total Gross Pay - 83,333) * 0.30) + 16,770.70</p>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td align="center">
-                      <p align="center">≥ 333,333</p>
-                    </td>
-                    <td align="center">
-                      <p align="center">Semi-Monthly</p>
-                    </td>
-                    <td align="center">
-                      <p align="center">((Total Gross Pay - 333,333) * 0.35) + 91,770.70</p>
-                    </td>
-                  </tr>
-                </tbody>
-                <tr class="info">
-                  <th>
-                    <p align="center">Tax Bracket</p>
-                  </th>
-                  <th>
-                    <p align="center">Computation</p>
-                  </th>
-                  <th>
-                    <p align="center">Formula</p>
-                  </th>
-                </tr>
-              </table>
-            </form>
-          </div>
-        </fieldset>
-      </form>
-    </div>
+    <br>
 
 
 
+    <!-- Update Deductions-->
     <div class="modal fade" id="deductions" role="dialog">
       <div class="modal-dialog" style="max-width: 300px;">
         <!-- Modal content-->
@@ -406,13 +373,14 @@ while ($row = mysqli_fetch_array($query5)) {
   <script type="text/javascript" charset="utf-8" language="javascript" src="../assets/js/dataTables.min.js"></script>
 
   <!-- FOR DataTable -->
-  <script>
-    {
-      $(document).ready(function () {
-        $('#myTable').DataTable();
+  <!-- <script>
+    $(document).ready(function () {
+      $('#myTable').DataTable({
+        "paging": true,
+        "searching": true
       });
-    }
-  </script>
+    });
+  </script> -->
 
   <!-- this function is for modal -->
   <script>

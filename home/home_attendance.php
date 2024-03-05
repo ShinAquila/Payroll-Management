@@ -32,6 +32,72 @@ include("../add/add_attendance.php");
             padding: 2%;
             width: 100%;
         }
+
+        .card {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-header {
+            border-top-left-radius: 15px;
+            border-top-right-radius: 15px;
+        }
+
+        .card-footer {
+            border-bottom-left-radius: 15px;
+            border-bottom-right-radius: 15px;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
+
+        .btn-danger {
+            background-color: #dc3545;
+            border-color: #dc3545;
+        }
+
+        .btn-danger:hover {
+            background-color: #c82333;
+            border-color: #bd2130;
+        }
+
+        .btn-success {
+            background-color: #28a745;
+            border-color: #28a745;
+        }
+
+        .btn-success:hover {
+            background-color: #218838;
+            border-color: #1e7e34;
+        }
+
+        .table-striped tbody tr:nth-of-type(odd) {
+            background-color: #f8f9fa;
+            /* Light gray */
+        }
+
+        .table-striped tbody tr:nth-of-type(even) {
+            background-color: #e9ecef;
+            /* Darker gray */
+        }
+
+        .bg-dark {
+            background-color: #343a40 !important;
+            /* Dark gray */
+        }
+
+        .text-white {
+            color: #ffffff !important;
+            /* White */
+        }
     </style>
 </head>
 
@@ -79,113 +145,73 @@ include("../add/add_attendance.php");
 
     <div class="container">
         <br>
-        <div class="well bs-component">
-            <form class="form-horizontal">
-                <fieldset>
+        <div class="card" style="width: 90%; margin: 0 auto;">
+            <div class="card-header bg-dark text-white">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h5 class="card-title mb-0">List of Attendance</h5>
                     <button type="button" data-toggle="modal" data-target="#addAttendance" class="btn btn-success">Add
                         New</button>
-                    <p align="center"><big><b>List of Attendance</b></big></p>
-                    <div class="table-responsive">
-                        <form method="post" action="">
-                            <table class="table table-bordered table-hover table-condensed" id="myTable">
-                                <!-- <h3><b>Ordinance</b></h3> -->
-                                <thead>
-                                    <tr class="info">
-                                        <th>
-                                            <p align="center">Name</p>
-                                        </th>
-                                        <th>
-                                            <p align="center">Date</p>
-                                        </th>
-                                        <th>
-                                            <p align="center">Status</p>
-                                        </th>
-                                        <th>
-                                            <p align="center">Overtime (hrs)</p>
-                                        </th>
-                                        <th>
-                                            <p align="center">Action</p>
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <?php
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover table-condensed" id="myTable" style="width: 99%">
+                        <thead>
+                            <tr class="bg-secondary text-white">
+                                <th>Name</th>
+                                <th>Date</th>
+                                <th>Status</th>
+                                <th>Overtime (hrs)</th>
+                                <th class="text-center">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php
+                            $conn = mysqli_connect('localhost', 'root', '', 'payroll');
+                            if (!$conn) {
+                                die("Database Connection Failed" . mysqli_error());
+                            }
 
-                                    $conn = mysqli_connect('localhost', 'root', '', 'payroll');
-                                    if (!$conn) {
-                                        die("Database Connection Failed" . mysqli_error());
-                                    }
-
-
-
-                                    $query = mysqli_query($conn, "SELECT * from attendance JOIN employee ON attendance.employee_id = employee.emp_id ORDER BY 'date' ASC") or die(mysqli_error());
-                                    while ($row = mysqli_fetch_array($query)) {
-                                        $lname = $row['lname'];
-                                        $fname = $row['fname'];
-                                        $date = $row['date'];
-                                        $overtime_hrs = $row['overtime_hrs'];
-                                        $status = $row['status'];
-                                        ?>
-
-                                        <tr>
-                                            <td align="center">
-                                                <?php echo $row['lname'] ?>,
-                                                <?php echo $row['fname'] ?>
-                                                </a>
-                                            </td>
-                                            <td align="center">
-                                                <?php echo $date ?>
-                                                </a>
-                                            </td>
-                                            <td align="center">
-                                                <?php echo $status ?>
-                                                </a>
-                                            </td>
-                                            <td align="center">
-                                                <?php echo $overtime_hrs ?>
-                                                </a>
-                                            </td>
-                                            <td align="center">
-                                                <button type="button" class="btn btn-primary" data-toggle="modal"
-                                                    data-target="#update_attendance_<?php echo $row["attendance_id"]; ?>"><i
-                                                        class="fa-solid fa-pen-to-square"></i></button>
-                                                <button type="button" class="btn btn-danger" data-toggle="modal"
-                                                    data-target="#delete_attendance_<?php echo $row["attendance_id"]; ?>"><i
-                                                        class="fa-solid fa-trash"></i></button>
-
-
-                                            </td>
-                                        </tr>
-
-
-
-
-                                    <?php } ?>
-                                </tbody>
-
-                                <tr class="info">
-                                    <th>
-                                        <p align="center">Name</p>
-                                    </th>
-                                    <th>
-                                        <p align="center">Date</p>
-                                    </th>
-                                    <th>
-                                        <p align="center">Status</p>
-                                    </th>
-                                    <th>
-                                        <p align="center">Overtime (hrs)</p>
-                                    </th>
-                                    <th>
-                                        <p align="center">Action</p>
-                                    </th>
+                            $query = mysqli_query($conn, "SELECT * from attendance JOIN employee ON attendance.employee_id = employee.emp_id ORDER BY 'date' ASC") or die(mysqli_error());
+                            while ($row = mysqli_fetch_array($query)) {
+                                $lname = $row['lname'];
+                                $fname = $row['fname'];
+                                $date = $row['date'];
+                                $overtime_hrs = $row['overtime_hrs'];
+                                $status = $row['status'];
+                                ?>
+                                <tr>
+                                    <td>
+                                        <?php echo $row['lname'] . ", " . $row['fname']; ?>
+                                    </td>
+                                    <td>
+                                        <?php echo $date ?>
+                                    </td>
+                                    <td>
+                                        <?php echo $status ?>
+                                    </td>
+                                    <td>
+                                        <?php echo $overtime_hrs ?>
+                                    </td>
+                                    <td align="center">
+                                        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal"
+                                            data-target="#update_attendance_<?php echo $row["attendance_id"]; ?>">
+                                            <i class="fa-solid fa-pen-to-square"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-danger btn-sm" data-toggle="modal"
+                                            data-target="#delete_attendance_<?php echo $row["attendance_id"]; ?>">
+                                            <i class="fa-solid fa-trash"></i>
+                                        </button>
+                                    </td>
                                 </tr>
-                            </table>
-                        </form>
-                    </div>
-                </fieldset>
-            </form>
+                            <?php } ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
+
+
 
 
 
@@ -297,8 +323,8 @@ include("../add/add_attendance.php");
                                 </div>
                                 <div class="form-group">
                                     <label>Overtime (hrs)</label>
-                                    <input type="text" name="overtime_hrs" class="form-control" value="<?php echo $row['overtime_hrs']; ?>"
-                                        required="required">
+                                    <input type="text" name="overtime_hrs" class="form-control"
+                                        value="<?php echo $row['overtime_hrs']; ?>" required="required">
                                 </div>
 
                                 <button type="submit" class="btn btn-success">Submit</button>
@@ -383,11 +409,12 @@ include("../add/add_attendance.php");
 
     <!-- FOR DataTable -->
     <script>
-        {
-            $(document).ready(function () {
-                $('#myTable').DataTable();
+        $(document).ready(function () {
+            $('#myTable').DataTable({
+                "paging": true,
+                "searching": true
             });
-        }
+        });
     </script>
 
     <!-- this function is for modal -->

@@ -56,6 +56,72 @@ while ($row = mysqli_fetch_array($query)) {
     .circular-button:hover {
       background-color: #0056b3;
     }
+
+    .card {
+      border: none;
+      border-radius: 15px;
+      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .card-header {
+      border-top-left-radius: 15px;
+      border-top-right-radius: 15px;
+    }
+
+    .card-footer {
+      border-bottom-left-radius: 15px;
+      border-bottom-right-radius: 15px;
+    }
+
+    .btn-primary {
+      background-color: #007bff;
+      border-color: #007bff;
+    }
+
+    .btn-primary:hover {
+      background-color: #0056b3;
+      border-color: #0056b3;
+    }
+
+    .btn-danger {
+      background-color: #dc3545;
+      border-color: #dc3545;
+    }
+
+    .btn-danger:hover {
+      background-color: #c82333;
+      border-color: #bd2130;
+    }
+
+    .btn-success {
+      background-color: #28a745;
+      border-color: #28a745;
+    }
+
+    .btn-success:hover {
+      background-color: #218838;
+      border-color: #1e7e34;
+    }
+
+    .table-striped tbody tr:nth-of-type(odd) {
+      background-color: #f8f9fa;
+      /* Light gray */
+    }
+
+    .table-striped tbody tr:nth-of-type(even) {
+      background-color: #e9ecef;
+      /* Darker gray */
+    }
+
+    .bg-dark {
+      background-color: #343a40 !important;
+      /* Dark gray */
+    }
+
+    .text-white {
+      color: #ffffff !important;
+      /* White */
+    }
   </style>
 </head>
 
@@ -104,153 +170,139 @@ while ($row = mysqli_fetch_array($query)) {
   <div class="container">
 
     <br>
-    <div class="well bs-component">
-      <form class="form-horizontal">
-        <fieldset>
-          <p align="center"><big><b>Employee Salary Report</b></big></p>
-          <div class="table-responsive">
-            <form method="post" action="">
-              <table class="table table-bordered table-hover table-condensed" id="myTable">
-                <thead>
-                  <tr class="info">
-                    <th>
-                      <p align="center">Name</p>
-                    </th>
-                    <th>
-                      <p align="center">Start Pay Period</p>
-                    </th>
-                    <th>
-                      <p align="center">End Pay Period</p>
-                    </th>
-                    <th>
-                      <p align="center">Gross Pay</p>
-                    </th>
-                    <th>
-                      <p align="center">Deductions</p>
-                    </th>
-                    <th>
-                      <p align="center">Net Pay</p>
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <?php
-                  $query = mysqli_query($conn, "SELECT * from account_info JOIN employee ON account_info.employee_id = employee.emp_id");
-                  while ($row = mysqli_fetch_array($query)) {
-                    $lname = $row['lname'];
-                    $fname = $row['fname'];
-                    $benefits_deductions = $row['benefits_deductions'];
-                    $tax_deductions = $row['tax_deductions'];
-                    $total_deductions = $row['total_deductions'];
-                    $acc_info_id = $row['acc_info_id'];
-                    $total_gross_pay = $row['total_gross_pay'];
-                    $total_net_pay = $row['total_net_pay'];
-                    ?>
+    <div class="card">
+      <div class="card-header bg-dark text-white">
+        <div class="d-flex justify-content-between align-items-center">
+          <h5 class="card-title mb-0">Employee Salary Report</h5>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-bordered table-hover table-condensed" id="myTable" style="width: 99%">
+            <thead>
+              <tr class="bg-secondary text-white">
+                <th>Name</th>
+                <th>Start Pay Period</th>
+                <th>End Pay Period</th>
+                <th>Gross Pay</th>
+                <th>Deductions</th>
+                <th>Net Pay</th>
+              </tr>
+            </thead>
+            <tbody>
+              <?php
+              $query = mysqli_query($conn, "SELECT * from account_info JOIN employee ON account_info.employee_id = employee.emp_id");
+              while ($row = mysqli_fetch_array($query)) {
+                $lname = $row['lname'];
+                $fname = $row['fname'];
+                $benefits_deductions = $row['benefits_deductions'];
+                $tax_deductions = $row['tax_deductions'];
+                $total_deductions = $row['total_deductions'];
+                $acc_info_id = $row['acc_info_id'];
+                $total_gross_pay = $row['total_gross_pay'];
+                $total_net_pay = $row['total_net_pay'];
+                ?>
+                <tr>
+                  <td>
+                    <?php echo $lname . ", " . $fname; ?>
+                  </td>
+                  <td>
+                    <?php echo $row['start_pay_period']; ?>
+                  </td>
+                  <td>
+                    <?php echo $row['end_pay_period']; ?>
+                  </td>
+                  <td><big><b>
+                        <?php echo $total_gross_pay; ?>
+                      </b></big></td>
+                  <td style="position:relative; display:flex; justify-content: center;">
+                    <big><b>
+                        <?php echo $total_deductions; ?>
+                      </b></big>
+                    <i style="position: absolute; right: 1rem; margin-block: 1%; color: #2d76c4; cursor: pointer; font-size:2rem"
+                      class="fa-solid fa-circle-info" data-toggle="modal"
+                      data-target="#deduction_details_<?php echo $acc_info_id ?>"></i>
+                  </td>
+                  <td><big><b>
+                        <?php echo $total_net_pay; ?>
+                      </b></big></td>
+                </tr>
 
-                    <tr>
-                      <td align="center">
-                        <?php echo $lname ?>,
-                        <?php echo $fname ?>
-                      </td>
-                      <td align="center">
-                        <?php echo $row['start_pay_period']; ?>
-                      </td>
-                      <td align="center">
-                        <?php echo $row['end_pay_period']; ?>
-                      </td>
-                      <td align="center"><big><b>
-                            <?php echo $total_gross_pay ?>
-                          </b></big></td>
-                      <td style="position:relative; display:flex; justify-content: center;">
-                        <big><b>
-                            <?php echo $total_deductions ?>
-                          </b></big>
-                        <i style="position: absolute; right: 1rem; margin-block: 1%; color: #2d76c4; cursor: pointer; font-size:2rem"
-                          class="fa-solid fa-circle-info" data-toggle="modal"
-                          data-target="#deduction_details_<?php echo $acc_info_id ?>"></i>
-                      </td>
-                      <td align="center"><big><b>
-                            <?php echo $total_net_pay ?>
-                          </b></big></td>
-                    </tr>
+                <!-- Deduction Details Modal -->
+                <div class="modal fade" id="deduction_details_<?php echo $acc_info_id ?>" role="dialog">
+                  <div class="modal-dialog modal-sm" style="min-width: 400px">
+                    <div class="modal-content">
+                      <div class="modal-header" style="padding:7px 20px;">
+                        <button type="button" class="close" data-dismiss="modal" title="Close">&times;</button>
+                      </div>
+                      <h2 align="center"><b>Deduction Details</b></h2>
+                      <div class="modal-body" style="padding:40px 100px;">
+                        <div class="form-group">
+                          <label class="" for="benefits">Benefits</label>
+                          <div class="form-group s" style="margin-left: 5%;">
+                            <label class="" for="benefits">Selected:</label>
+                            <span id="benefits">
+                              <?php
+                              $check_query = mysqli_query($conn, "SELECT * FROM account_info WHERE acc_info_id='$acc_info_id'");
+                              $check_row = mysqli_fetch_assoc($check_query);
+                              $philhealth_check = $check_row['philhealth_check'];
+                              $gsis_check = $check_row['gsis_check'];
+                              $pagibig_check = $check_row['pagibig_check'];
+                              $sss_check = $check_row['sss_check'];
 
-                    <!-- Deduction Details Modal -->
-                    <div class="modal fade" id="deduction_details_<?php echo $acc_info_id ?>" role="dialog">
-                        <div class="modal-dialog modal-sm" style="min-width: 400px">
-                            <div class="modal-content">
-                                <div class="modal-header" style="padding:7px 20px;">
-                                    <button type="button" class="close" data-dismiss="modal" title="Close">&times;</button>
-                                </div>
-                                <h2 align="center"><b>Deduction Details</b></h2>
-                                <div class="modal-body" style="padding:40px 100px;">
-                                    <div class="form-group">
-                                        <label class="" for="benefits">Benefits</label>
-                                        <div class="form-group s" style="margin-left: 5%;">
-                                            <label class="" for="benefits">Selected:</label>
-                                            <span id="benefits">
-                                                <?php
-                                                $check_query = mysqli_query($conn, "SELECT * FROM account_info WHERE acc_info_id='$acc_info_id'");
-                                                $check_row = mysqli_fetch_assoc($check_query);
-                                                $philhealth_check = $check_row['philhealth_check'];
-                                                $gsis_check = $check_row['gsis_check'];
-                                                $pagibig_check = $check_row['pagibig_check'];
-                                                $sss_check = $check_row['sss_check'];
+                              $selected_benefits = array();
 
-                                                $benefits_deduction = 0;
-                                                $selected_benefits = array();
+                              if ($philhealth_check == 1) {
+                                $selected_benefits[] = "Philhealth";
+                              }
+                              if ($gsis_check == 1) {
+                                $selected_benefits[] = "GSIS";
+                              }
+                              if ($pagibig_check == 1) {
+                                $selected_benefits[] = "PAG-IBIG";
+                              }
+                              if ($sss_check == 1) {
+                                $selected_benefits[] = "SSS";
+                              }
 
-                                                if ($philhealth_check == 1) {
-                                                    $selected_benefits[] = "Philhealth";
-                                                }
-                                                if ($gsis_check == 1) {
-                                                    $selected_benefits[] = "GSIS";
-                                                }
-                                                if ($pagibig_check == 1) {
-                                                    $selected_benefits[] = "PAG-IBIG";
-                                                }
-                                                if ($sss_check == 1) {
-                                                    $selected_benefits[] = "SSS";
-                                                }
+                              echo implode(', ', $selected_benefits);
+                              ?>
+                            </span>
+                          </div>
 
-                                                echo implode(', ', $selected_benefits);
-                                                ?>
-                                            </span>
-                                        </div>
-
-                                        <div class="form-group s" style="margin-left: 5%;">
-                                            <label class="" for="benefits">Amount:</label>
-                                            <span id="benefits">
-                                                <?php echo $benefits_deductions; ?>
-                                            </span>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label class="" for="tax">Tax:</label>
-                                        <span id="tax">
-                                            <?php echo $tax_deductions; ?>
-                                        </span>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label class="" for="total_deductions">Total:</label>
-                                        <span id="total_deductions">
-                                            <?php echo $total_deductions; ?>
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
+                          <div class="form-group s" style="margin-left: 5%;">
+                            <label class="" for="benefits">Amount:</label>
+                            <span id="benefits">
+                              <?php echo $benefits_deductions; ?>
+                            </span>
+                          </div>
                         </div>
-                    </div>
 
-                  <?php } ?>
-                </tbody>
-              </table>
-            </form>
-          </div>
-        </fieldset>
-      </form>
+                        <div class="form-group">
+                          <label class="" for="tax">Tax:</label>
+                          <span id="tax">
+                            <?php echo $tax_deductions; ?>
+                          </span>
+                        </div>
+
+                        <div class="form-group">
+                          <label class="" for="total_deductions">Total:</label>
+                          <span id="total_deductions">
+                            <?php echo $total_deductions; ?>
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+              <?php } ?>
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
+
   </div>
 
 
