@@ -61,6 +61,9 @@ function addEmployeeIncome($conn, $selected_employee, $start_pay_period, $end_pa
     $salary_query = mysqli_query($conn, "SELECT * FROM department JOIN employee ON department.dept_id=employee.dept WHERE emp_id='$selected_employee'");
     $salary_row = mysqli_fetch_assoc($salary_query);
     $salary_rate = $salary_row['dept_salary_rate'];
+    $last_name = $salary_row['lname'];
+    $first_name = $salary_row['fname'];
+    $department = $salary_row['dept_name'];
 
     $total_gross_pay = ($salary_rate * $days_full_day) + (($salary_rate / 2) * $days_half_day) + $bonus + $overtime;
 
@@ -170,6 +173,8 @@ function addEmployeeIncome($conn, $selected_employee, $start_pay_period, $end_pa
 
     $sql = mysqli_query($conn, "INSERT INTO account_info(employee_id, days_full_day, days_half_day, days_absent, total_overtime_hours, bonus, start_pay_period, end_pay_period, total_gross_pay, benefits_deductions, tax_deductions, total_deductions, total_net_pay)VALUES('$selected_employee', '$days_full_day','$days_half_day','$days_absent','$total_overtime_hours','$bonus', '$start_pay_period', '$end_pay_period','$total_gross_pay','$benefits_deduction','$tax','$total_deduction','$total_net_pay')");
 
+    $sql_tohistory = mysqli_query($conn, "INSERT INTO salary_history(last_name, first_name, department, salary, overtime_hours, start_pay_period, end_pay_period, total_gross_pay, philhealth, gsis, pagibig, sss, total_benefits_deductions, total_tax_deductions, total_deductions, total_net_pay) VALUES ('$last_name', '$first_name', '$department', '$salary_rate', '$total_overtime_hours', '$start_pay_period', '$end_pay_period', '$total_gross_pay', '$philhealth', '$GSIS', '$PAGIBIG', '$SSS', '$benefits_deduction', '$tax', '$total_deduction', '$total_net_pay')");
+
     return $sql;
   }
 }
@@ -192,8 +197,8 @@ if (isset($_POST['submit']) != "") {
       if ($start_day != 1 || $end_day < 28) {
         ?>
         <script>
-          alert('Selected date is not enough to be a Monthly Pay');
-          window.location.href = '../home/home_income.php';
+          // alert('Selected date is not enough to be a Monthly Pay');
+          // window.location.href = '../home/home_income.php';
         </script>
         <?php
       } else if ($start_day == 1 || $end_day > 28) {
@@ -202,15 +207,15 @@ if (isset($_POST['submit']) != "") {
         if ($sql) {
           ?>
             <script>
-              alert('Employee Income successfully added.');
-              window.location.href = '../home/home_income.php';
+              // alert('Employee Income successfully added.');
+              // window.location.href = '../home/home_income.php';
             </script>
           <?php
         } else {
           ?>
             <script>
-              alert('Employee Income failed to be added.');
-              window.location.href = '../home/home_income.php';
+              // alert('Employee Income failed to be added.');
+              // window.location.href = '../home/home_income.php';
             </script>
           <?php
         }
@@ -221,23 +226,23 @@ if (isset($_POST['submit']) != "") {
       if ($sql) {
         ?>
           <script>
-            alert('Employee Income successfully added.');
-            window.location.href = '../home/home_income.php';
+            // alert('Employee Income successfully added.');
+            // window.location.href = '../home/home_income.php';
           </script>
         <?php
       } else {
         ?>
           <script>
-            alert('Employee Income failed to be added.');
-            window.location.href = '../home/home_income.php';
+            // alert('Employee Income failed to be added.');
+            // window.location.href = '../home/home_income.php';
           </script>
         <?php
       }
     }
     ?>
     <script>
-      alert('Selected date is not enough to be a 15 Day Pay');
-      window.location.href = '../home/home_income.php';
+      // alert('Selected date is not enough to be a 15 Day Pay');
+      // window.location.href = '../home/home_income.php';
     </script>
     <?php
   } else if ($start_day == 1 || $end_day == 15) {
@@ -246,15 +251,15 @@ if (isset($_POST['submit']) != "") {
     if ($sql) {
       ?>
         <script>
-          alert('Employee Income successfully added.');
-          window.location.href = '../home/home_income.php';
+          // alert('Employee Income successfully added.');
+          // window.location.href = '../home/home_income.php';
         </script>
       <?php
     } else {
       ?>
         <script>
-          alert('Employee Income failed to be added.');
-          window.location.href = '../home/home_income.php';
+          // alert('Employee Income failed to be added.');
+          // window.location.href = '../home/home_income.php';
         </script>
       <?php
     }
