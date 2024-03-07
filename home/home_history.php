@@ -21,7 +21,7 @@ while ($row = mysqli_fetch_array($query)) {
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description">
 
-  <title>Pixel Foundry - Report</title>
+  <title>Pixel Foundry - History</title>
   <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
     integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
@@ -154,10 +154,10 @@ while ($row = mysqli_fetch_array($query)) {
           <li class="nav-item">
             <a class="nav-link" href="home_income.php">Income</a>
           </li>
-          <li class="nav-item active">
+          <li class="nav-item">
             <a class="nav-link" href="home_salary.php">Report</a>
           </li>
-          <li class="nav-item">
+          <li class="nav-item active">
             <a class="nav-link" href="home_history.php">History</a>
           </li>
         </ul>
@@ -176,7 +176,7 @@ while ($row = mysqli_fetch_array($query)) {
     <div class="card">
       <div class="card-header bg-dark text-white">
         <div class="d-flex justify-content-between align-items-center">
-          <h5 class="card-title mb-0">Employee Salary Report</h5>
+          <h5 class="card-title mb-0">Salary History</h5>
         </div>
       </div>
       <div class="card-body">
@@ -185,50 +185,53 @@ while ($row = mysqli_fetch_array($query)) {
             <thead>
               <tr class="bg-secondary text-white">
                 <th>Name</th>
+                <th>Employee Details</th>
+
                 <th>Start Pay Period</th>
                 <th>End Pay Period</th>
-                <th>Gross Pay</th>
-                <th>Deductions</th>
-                <th>Net Pay</th>
+
+                <th>Salary Details</th>
+                <th>Action</th>
               </tr>
             </thead>
             <tbody>
               <?php
-              $query = mysqli_query($conn, "SELECT * from account_info JOIN employee ON account_info.employee_id = employee.emp_id");
+              $query = mysqli_query($conn, "SELECT * from salary_history");
               while ($row = mysqli_fetch_array($query)) {
-                $lname = $row['lname'];
-                $fname = $row['fname'];
-                $benefits_deductions = $row['benefits_deductions'];
-                $tax_deductions = $row['tax_deductions'];
-                $total_deductions = $row['total_deductions'];
-                $acc_info_id = $row['acc_info_id'];
-                $total_gross_pay = $row['total_gross_pay'];
-                $total_net_pay = $row['total_net_pay'];
+                $lname = $row['last_name'];
+                $fname = $row['first_name'];
                 ?>
                 <tr>
                   <td>
                     <?php echo $lname . ", " . $fname; ?>
                   </td>
+
+                  <td align="center">
+                    <i style="margin-block: 1%; color: #2d76c4; cursor: pointer; font-size:2rem"
+                      class="fa-solid fa-circle-info" data-toggle="modal"
+                      data-target="#employee_details_<?php echo $row['history_id'] ?>"></i>
+                  </td>
+
                   <td>
                     <?php echo $row['start_pay_period']; ?>
                   </td>
                   <td>
                     <?php echo $row['end_pay_period']; ?>
                   </td>
-                  <td><big><b>
-                        <?php echo $total_gross_pay; ?>
-                      </b></big></td>
-                  <td style="position:relative; display:flex; justify-content: center;">
-                    <big><b>
-                        <?php echo $total_deductions; ?>
-                      </b></big>
-                    <i style="position: absolute; right: 1rem; margin-block: 1%; color: #2d76c4; cursor: pointer; font-size:2rem"
+
+                  <td align="center">
+                    <i style="margin-block: 1%; color: #2d76c4; cursor: pointer; font-size:2rem"
                       class="fa-solid fa-circle-info" data-toggle="modal"
-                      data-target="#deduction_details_<?php echo $acc_info_id ?>"></i>
+                      data-target="#salary_details_<?php echo $row['history_id'] ?>"></i>
                   </td>
-                  <td><big><b>
-                        <?php echo $total_net_pay; ?>
-                      </b></big></td>
+
+                  <td align="center">
+                    <button type="button" class="btn btn-danger btn-sm" data-toggle="modal"
+                      data-target="#delete_history_<?php echo $row["history_id"]; ?>">
+                      <i class="fa-solid fa-trash"></i>
+                    </button>
+                  </td>
+
                 </tr>
               <?php } ?>
             </tbody>
@@ -239,19 +242,42 @@ while ($row = mysqli_fetch_array($query)) {
 
   </div>
 
-  <!-- Benefits Details Modal -->
+  <!-- Delete History Modals -->
   <?php
-  $query = mysqli_query($conn, "SELECT * FROM employee JOIN account_info ON employee.emp_id=account_info.employee_id ORDER BY emp_id ASC") or die(mysqli_error());
-  while ($row = mysqli_fetch_array($query)) {
-    $has_philhealth = $row['has_philhealth'];
-    $has_gsis = $row['has_gsis'];
-    $has_pagibig = $row['has_pagibig'];
-    $has_sss = $row['has_sss'];
-    $benefits_deductions = $row['benefits_deductions'];
-    $tax_deductions = $row['tax_deductions'];
-    $total_deductions = $row['total_deductions'];
+  $query1 = mysqli_query($conn, "SELECT * FROM salary_history") or die(mysqli_error());
+  while ($row = mysqli_fetch_array($query1)) {
     ?>
-    <div class="modal fade" id="deduction_details_<?php echo $row['acc_info_id'] ?>" role="dialog">
+    <div class="modal fade" id="delete_history_<?php echo $row["history_id"]; ?>" role="dialog">
+      <div class="modal-dialog" style="max-width: 400px;">
+        <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header" style="padding:7px 20px;">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+          </div>
+          <h3 class="modal-title" align="center" style="padding:10px"><b>Delete History</b></h3>
+          <div class="modal-body">
+            <p align="center">You are about to delete this history of:</p>
+            <p align="center">
+              <?php echo $row['last_name'] . ', ' . $row['first_name']; ?>
+            </p>
+            <p align="center" style="padding:20px">Are you sure you want to proceed?</p>
+            <div align="center">
+              <a href="../delete/delete_history.php?history_id=<?php echo $row["history_id"]; ?>" class="btn btn-danger">Delete</a>
+              <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  <?php } ?>
+
+  <!-- Employee Details Modal -->
+  <?php
+  $query = mysqli_query($conn, "SELECT * FROM salary_history") or die(mysqli_error());
+  while ($row = mysqli_fetch_array($query)) {
+    ?>
+    <div class="modal fade" id="employee_details_<?php echo $row['history_id'] ?>" role="dialog">
       <div class="modal-dialog" style="max-width: 400px;">
 
         <!-- Modal content-->
@@ -259,51 +285,84 @@ while ($row = mysqli_fetch_array($query)) {
           <div class="modal-header" style="padding:7px 20px;">
             <button type="button" class="close" data-dismiss="modal">&times;</button>
           </div>
-          <h3 class="modal-title" align="center" style="padding:10px"><b>Benefits Details</b></h3>
+          <h3 class="modal-title" align="center" style="padding:10px"><b>Employee Details</b></h3>
           <div class="modal-body" style="padding:20px 30px;">
 
-            <div style="text-align: center;">
-              <label class="" for="benefits">Selected Benefits</label>
-              <div class="modal-body">
+            <div class="form-group">
+              <label for="lname">Last Name:</label>
+              <input type="text" disabled class="form-control" id="lname" name="lname"
+                value="<?php echo $row['last_name']; ?>" required>
+            </div>
+            <div class="form-group">
+              <label for="fname">First Name:</label>
+              <input type="text" disabled class="form-control" id="fname" name="fname"
+                value="<?php echo $row['first_name']; ?>" required>
+            </div>
+            <div class="form-group">
+              <label for="dept">Department:</label>
+              <input type="text" disabled class="form-control" id="dept" name="dept"
+                value="<?php echo $row['department']; ?>" required>
+            </div>
+            <div class="form-group">
+              <label for="salary">Salary:</label>
+              <input type="text" disabled class="form-control" id="salary" name="salary"
+                value="<?php echo $row['salary']; ?>" required>
+            </div>
+            <div class="form-group">
+              <label for="overtime_hours">Total Overtime Hours:</label>
+              <input type="text" disabled class="form-control" id="overtime_hours" name="overtime_hours"
+                value="<?php echo $row['overtime_hours']; ?>" required>
+            </div>
 
-                <span id="benefits">
-                  <?php
-                  if ($has_philhealth == 1) {
-                    echo "<div>Philhealth</div>";
-                  }
-                  if ($has_gsis == 1) {
-                    echo "<div>GSIS</div>";
-                  }
-                  if ($has_pagibig == 1) {
-                    echo "<div>PAG-IBIG</div>";
-                  }
-                  if ($has_sss == 1) {
-                    echo "<div>SSS</div>";
-                  }
-                  ?>
-                </span>
-              </div>
-              <div class="form-group s" style="margin-left: 5%;">
-                <label class="" for="benefits">Total Benefits:</label>
-                <span id="benefits">
-                  <?php echo $benefits_deductions; ?>
-                </span>
-              </div>
 
-              <div class="form-group">
-                <label class="" for="tax">Tax:</label>
-                <span id="tax">
-                  <?php echo $tax_deductions; ?>
-                </span>
-              </div>
+          </div>
 
-              <div class="form-group">
-                <h3><b>Total</b></h3>
-                <!-- <label class="" for="total_deductions">Total:</label> -->
-                <span id="total_deductions">
-                  <?php echo $total_deductions; ?>
-                </span>
-              </div>
+        </div>
+      </div>
+
+    </div>
+  <?php } ?>
+
+  <!-- Salary Details Modal -->
+  <?php
+  $query = mysqli_query($conn, "SELECT * FROM salary_history") or die(mysqli_error());
+  while ($row = mysqli_fetch_array($query)) {
+    ?>
+    <div class="modal fade" id="salary_details_<?php echo $row['history_id'] ?>" role="dialog">
+      <div class="modal-dialog" style="max-width: 400px;">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header" style="padding:7px 20px;">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+          </div>
+          <h3 class="modal-title" align="center" style="padding:10px"><b>Salary Details</b></h3>
+          <div class="modal-body" style="padding:20px 30px;">
+
+            <div class="form-group">
+              <label for="total_benefits">Total Benefits Deduction:</label>
+              <input type="text" disabled class="form-control" id="total_benefits" name="total_benefits"
+                value="<?php echo $row['total_benefits_deductions']; ?>" required>
+            </div>
+            <div class="form-group">
+              <label for="total_tax">Total Tax Deduction:</label>
+              <input type="text" disabled class="form-control" id="total_tax" name="total_tax"
+                value="<?php echo $row['total_tax_deductions']; ?>" required>
+            </div>
+            <div class="form-group">
+              <label for="total_deduction">Total Deduction:</label>
+              <input type="text" disabled class="form-control" id="total_deduction" name="total_deduction"
+                value="<?php echo $row['total_deductions']; ?>" required>
+            </div>
+            <div class="form-group">
+              <label for="total_gross">Total Gross Pay:</label>
+              <input type="text" disabled class="form-control" id="total_gross" name="total_gross"
+                value="<?php echo $row['total_gross_pay']; ?>" required>
+            </div>
+            <div class="form-group">
+              <label for="total_net">Total Net Pay:</label>
+              <input type="text" disabled class="form-control" id="total_net" name="total_net"
+                value="<?php echo $row['total_net_pay']; ?>" required>
             </div>
 
 

@@ -133,6 +133,9 @@ include("../add/add_attendance.php");
                     <li class="nav-item">
                         <a class="nav-link" href="home_salary.php">Report</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="home_history.php">History</a>
+                    </li>
                 </ul>
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item">

@@ -162,6 +162,9 @@ while ($row = mysqli_fetch_array($query5)) {
           <li class="nav-item">
             <a class="nav-link" href="home_salary.php">Report</a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link" href="home_history.php">History</a>
+          </li>
         </ul>
         <ul class="navbar-nav ml-auto">
           <li class="nav-item">
@@ -182,9 +185,9 @@ while ($row = mysqli_fetch_array($query5)) {
           <button type="button" data-toggle="modal" data-target="#deductions" class="btn btn-success">Update</button>
         </div>
       </div>
-      <div class="card-body" >
+      <div class="card-body">
         <div class="table-responsive">
-          <table class="table table-bordered table-hover table-condensed" id="myTable" >
+          <table class="table table-bordered table-hover table-condensed" id="myTable">
             <thead>
               <tr class="bg-secondary text-white">
                 <th>Benefit Name</th>
@@ -217,7 +220,7 @@ while ($row = mysqli_fetch_array($query5)) {
         </div>
       </div>
     </div>
- <br>
+    <br>
 
     <div class="card" style="width: 70%; margin: 0 auto;">
       <div class="card-header bg-dark text-white">

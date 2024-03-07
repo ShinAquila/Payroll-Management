@@ -197,8 +197,8 @@ if (isset($_POST['submit']) != "") {
       if ($start_day != 1 || $end_day < 28) {
         ?>
         <script>
-          // alert('Selected date is not enough to be a Monthly Pay');
-          // window.location.href = '../home/home_income.php';
+          alert('Selected date is not enough to be a Monthly Pay');
+          window.location.href = '../home/home_income.php';
         </script>
         <?php
       } else if ($start_day == 1 || $end_day > 28) {
@@ -207,15 +207,15 @@ if (isset($_POST['submit']) != "") {
         if ($sql) {
           ?>
             <script>
-              // alert('Employee Income successfully added.');
-              // window.location.href = '../home/home_income.php';
+              alert('Employee Income successfully added.');
+              window.location.href = '../home/home_income.php';
             </script>
           <?php
         } else {
           ?>
             <script>
-              // alert('Employee Income failed to be added.');
-              // window.location.href = '../home/home_income.php';
+              alert('Employee Income failed to be added.');
+              window.location.href = '../home/home_income.php';
             </script>
           <?php
         }
@@ -226,23 +226,23 @@ if (isset($_POST['submit']) != "") {
       if ($sql) {
         ?>
           <script>
-            // alert('Employee Income successfully added.');
-            // window.location.href = '../home/home_income.php';
+            alert('Employee Income successfully added.');
+            window.location.href = '../home/home_income.php';
           </script>
         <?php
       } else {
         ?>
           <script>
-            // alert('Employee Income failed to be added.');
-            // window.location.href = '../home/home_income.php';
+            alert('Employee Income failed to be added.');
+            window.location.href = '../home/home_income.php';
           </script>
         <?php
       }
     }
     ?>
     <script>
-      // alert('Selected date is not enough to be a 15 Day Pay');
-      // window.location.href = '../home/home_income.php';
+      alert('Selected date is not enough to be a 15 Day Pay');
+      window.location.href = '../home/home_income.php';
     </script>
     <?php
   } else if ($start_day == 1 || $end_day == 15) {
@@ -251,15 +251,15 @@ if (isset($_POST['submit']) != "") {
     if ($sql) {
       ?>
         <script>
-          // alert('Employee Income successfully added.');
-          // window.location.href = '../home/home_income.php';
+          alert('Employee Income successfully added.');
+          window.location.href = '../home/home_income.php';
         </script>
       <?php
     } else {
       ?>
         <script>
-          // alert('Employee Income failed to be added.');
-          // window.location.href = '../home/home_income.php';
+          alert('Employee Income failed to be added.');
+          window.location.href = '../home/home_income.php';
         </script>
       <?php
     }
