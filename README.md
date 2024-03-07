@@ -8,7 +8,8 @@ Includes:
 * Employee Salary Report
 
 ## Entity Relationship Diagram
-![image](https://github.com/ShinAquila/Payroll-Management/assets/116891599/d8edebb0-1d00-4e8f-a94c-0c3fcc2d4d56)
+![payroll ERD drawio](https://github.com/ShinAquila/Payroll-Management/assets/116891599/0b42b4ec-d013-4318-b4ef-51c164346243)
+
 
 
 ## Images
