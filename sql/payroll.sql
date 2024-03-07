@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.1.1
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 07, 2024 at 05:07 AM
--- Server version: 10.4.21-MariaDB
--- PHP Version: 7.3.31
+-- Generation Time: Mar 07, 2024 at 06:18 AM
+-- Server version: 10.4.28-MariaDB
+-- PHP Version: 8.0.28
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -42,14 +42,7 @@ CREATE TABLE `account_info` (
   `total_net_pay` decimal(11,2) NOT NULL,
   `start_pay_period` date NOT NULL,
   `end_pay_period` date NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `account_info`
---
-
-INSERT INTO `account_info` (`acc_info_id`, `employee_id`, `days_full_day`, `days_half_day`, `days_absent`, `total_overtime_hours`, `bonus`, `benefits_deductions`, `tax_deductions`, `total_deductions`, `total_gross_pay`, `total_net_pay`, `start_pay_period`, `end_pay_period`) VALUES
-(120, 9, 21, 3, 3, 5, '1000.00', '8775.00', '6908.40', '15683.40', '58500.00', '42816.60', '2024-03-01', '2024-03-31');
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -63,7 +56,7 @@ CREATE TABLE `attendance` (
   `date` date NOT NULL,
   `status` varchar(50) NOT NULL,
   `overtime_hrs` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `attendance`
@@ -158,7 +151,7 @@ CREATE TABLE `deductions` (
   `deduction_id` int(5) NOT NULL,
   `deduction_name` varchar(100) NOT NULL,
   `deduction_percent` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
 -- Dumping data for table `deductions`
@@ -180,20 +173,20 @@ CREATE TABLE `department` (
   `dept_id` int(11) NOT NULL,
   `dept_name` varchar(250) DEFAULT NULL,
   `dept_salary_rate` decimal(11,2) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `department`
 --
 
 INSERT INTO `department` (`dept_id`, `dept_name`, `dept_salary_rate`) VALUES
-(0, 'NOT SET', '0.00'),
-(2, 'UX Designer', '2000.00'),
-(7, 'Software Developer', '3000.00'),
-(8, 'Mobile Developer', '2750.00'),
-(9, 'Database Manager', '2250.00'),
-(10, 'Web Developer', '3250.00'),
-(18, 'IT Technician', '2500.00');
+(0, 'NOT SET', 0.00),
+(2, 'UX Designer', 2000.00),
+(7, 'Software Developer', 3000.00),
+(8, 'Mobile Developer', 2750.00),
+(9, 'Database Manager', 2250.00),
+(10, 'Web Developer', 3250.00),
+(18, 'IT Technician', 2500.00);
 
 -- --------------------------------------------------------
 
@@ -212,7 +205,7 @@ CREATE TABLE `employee` (
   `has_gsis` int(5) NOT NULL,
   `has_pagibig` int(5) NOT NULL,
   `has_sss` int(5) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
 -- Dumping data for table `employee`
@@ -239,7 +232,7 @@ CREATE TABLE `overtime` (
   `ot_id` int(10) NOT NULL,
   `rate` int(10) NOT NULL,
   `none` int(2) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
 -- Dumping data for table `overtime`
@@ -272,14 +265,14 @@ CREATE TABLE `salary_history` (
   `total_tax_deductions` decimal(11,2) NOT NULL,
   `total_deductions` decimal(11,2) NOT NULL,
   `total_net_pay` decimal(11,2) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `salary_history`
 --
 
 INSERT INTO `salary_history` (`history_id`, `last_name`, `first_name`, `department`, `salary`, `overtime_hours`, `start_pay_period`, `end_pay_period`, `total_gross_pay`, `philhealth`, `gsis`, `pagibig`, `sss`, `total_benefits_deductions`, `total_tax_deductions`, `total_deductions`, `total_net_pay`) VALUES
-(1, 'Maglangit', 'Karen', 'IT Technician', '2500.00', 5, '2024-03-01', '2024-03-31', '58500.00', '1462.50', '2632.50', '585.00', '4095.00', '8775.00', '6908.40', '15683.40', '42816.60');
+(2, 'Sabit', 'Jessa', 'Software Developer', 3000.00, 5, '2024-02-01', '2024-02-15', 31750.00, 396.88, 0.00, 158.75, 0.00, 555.63, 3954.10, 4509.73, 27240.28);
 
 -- --------------------------------------------------------
 
@@ -291,7 +284,7 @@ CREATE TABLE `user` (
   `id` int(5) NOT NULL,
   `username` varchar(20) NOT NULL,
   `password` varchar(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
 -- Dumping data for table `user`
@@ -364,13 +357,13 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `account_info`
 --
 ALTER TABLE `account_info`
-  MODIFY `acc_info_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=121;
+  MODIFY `acc_info_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=122;
 
 --
 -- AUTO_INCREMENT for table `attendance`
 --
 ALTER TABLE `attendance`
-  MODIFY `attendance_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=87;
+  MODIFY `attendance_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=88;
 
 --
 -- AUTO_INCREMENT for table `deductions`
@@ -388,7 +381,7 @@ ALTER TABLE `department`
 -- AUTO_INCREMENT for table `employee`
 --
 ALTER TABLE `employee`
-  MODIFY `emp_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
+  MODIFY `emp_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
 
 --
 -- AUTO_INCREMENT for table `overtime`
@@ -400,7 +393,7 @@ ALTER TABLE `overtime`
 -- AUTO_INCREMENT for table `salary_history`
 --
 ALTER TABLE `salary_history`
-  MODIFY `history_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `history_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `user`

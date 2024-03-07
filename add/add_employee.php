@@ -22,25 +22,25 @@ if (isset($_POST['submit']) && !empty($_POST['lname']) && !empty($_POST['fname']
     exit; // Stop further execution
   }
 
-  $query1 = mysqli_query($c, "SELECT * from deductions WHERE deduction_id = 1");
+  $query1 = mysqli_query($conn, "SELECT * from deductions WHERE deduction_id = 1");
   while ($row = mysqli_fetch_array($query1)) {
     $philhealth_id = $row['deduction_id'];
     $philhealth_p = $row['deduction_percent'];
   }
 
-  $query3 = mysqli_query($c, "SELECT * from deductions WHERE deduction_id = 3");
+  $query3 = mysqli_query($conn, "SELECT * from deductions WHERE deduction_id = 3");
   while ($row = mysqli_fetch_array($query3)) {
     $gsis_id = $row['deduction_id'];
     $GSIS_p = $row['deduction_percent'];
   }
 
-  $query4 = mysqli_query($c, "SELECT * from deductions WHERE deduction_id = 4");
+  $query4 = mysqli_query($conn, "SELECT * from deductions WHERE deduction_id = 4");
   while ($row = mysqli_fetch_array($query4)) {
     $pagibig_id = $row['deduction_id'];
     $PAGIBIG_p = $row['deduction_percent'];
   }
 
-  $query5 = mysqli_query($c, "SELECT * from deductions WHERE deduction_id = 5");
+  $query5 = mysqli_query($conn, "SELECT * from deductions WHERE deduction_id = 5");
   while ($row = mysqli_fetch_array($query5)) {
     $sss_id = $row['deduction_id'];
     $SSS_p = $row['deduction_percent'];
