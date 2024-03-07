@@ -4,26 +4,22 @@ include("../add/add_employee.php");
 
 $query1 = mysqli_query($conn, "SELECT * from deductions WHERE deduction_id = 1");
 while ($row = mysqli_fetch_array($query1)) {
-  $id = $row['deduction_id'];
-  $philhealth = $row['deduction_percent'];
-}
-
-$query2 = mysqli_query($conn, "SELECT * from deductions WHERE deduction_id = 2");
-while ($row = mysqli_fetch_array($query2)) {
-  $id = $row['deduction_id'];
-  $BIR = $row['deduction_percent'];
+  $philhealth_id = $row['deduction_id'];
 }
 
 $query3 = mysqli_query($conn, "SELECT * from deductions WHERE deduction_id = 3");
 while ($row = mysqli_fetch_array($query3)) {
-  $id = $row['deduction_id'];
-  $GSIS = $row['deduction_percent'];
+  $gsis_id = $row['deduction_id'];
 }
 
 $query4 = mysqli_query($conn, "SELECT * from deductions WHERE deduction_id = 4");
 while ($row = mysqli_fetch_array($query4)) {
-  $id = $row['deduction_id'];
-  $PAGIBIG = $row['deduction_percent'];
+  $pagibig_id = $row['deduction_id'];
+}
+
+$query5 = mysqli_query($conn, "SELECT * from deductions WHERE deduction_id = 5");
+while ($row = mysqli_fetch_array($query5)) {
+  $sss_id = $row['deduction_id'];
 }
 ?>
 
@@ -185,6 +181,7 @@ while ($row = mysqli_fetch_array($query4)) {
                 <th>Gender</th>
                 <th>Email</th>
                 <th>Department</th>
+                <th>Benefits</th>
                 <th class="text-center" style="width: 150px">Action</th>
               </tr>
             </thead>
@@ -216,6 +213,11 @@ while ($row = mysqli_fetch_array($query4)) {
                   </td>
                   <td>
                     <?php echo $row['dept_name']; ?>
+                  </td>
+                  <td align="center">
+                    <i style="margin-block: 1%; color: #2d76c4; cursor: pointer; font-size:2rem"
+                      class="fa-solid fa-circle-info" data-toggle="modal"
+                      data-target="#benefits_details_<?php echo $row['emp_id'] ?>"></i>
                   </td>
                   <td align="center"> <!-- Aligning Action buttons to center -->
                     <button type="button" class="btn btn-primary btn-sm" data-toggle="modal"
@@ -302,6 +304,34 @@ while ($row = mysqli_fetch_array($query4)) {
                     mysqli_close($c);
                     ?>
                   </select>
+                </div>
+                <div class="form-group">
+                  <label>Benefits</label>
+
+                  <div class="form-check">
+                    <input type="checkbox" class="form-check-input" name="deduction_selected[]"
+                      value="<?php echo $philhealth_id; ?>">
+                    <label class="form-check-label" for="deduction_philhealth" style="padding-left:6%">PhilHealth
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <input type="checkbox" class="form-check-input" name="deduction_selected[]"
+                      value="<?php echo $gsis_id; ?>">
+                    <label class="form-check-label" for="deduction_gsis" style="padding-left:6%">GSIS
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <input type="checkbox" class="form-check-input" name="deduction_selected[]"
+                      value="<?php echo $pagibig_id; ?>">
+                    <label class="form-check-label" for="deduction_pagibig" style="padding-left:6%">PAG-IBIG
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <input type="checkbox" class="form-check-input" name="deduction_selected[]"
+                      value="<?php echo $sss_id; ?>">
+                    <label class="form-check-label" for="deduction_pagibig" style="padding-left:6%">SSS
+                    </label>
+                  </div>
                 </div>
                 <button type="submit" class="btn btn-success">Submit</button>
               </form>
@@ -393,6 +423,34 @@ while ($row = mysqli_fetch_array($query4)) {
                   ?>
                 </select>
               </div>
+              <div class="form-group">
+                <label>Benefits</label>
+
+                <div class="form-check">
+                  <input type="checkbox" class="form-check-input" name="deduction_selected[]"
+                    value="<?php echo $philhealth_id; ?>">
+                  <label class="form-check-label" for="deduction_philhealth" style="padding-left:6%">PhilHealth
+                  </label>
+                </div>
+                <div class="form-check">
+                  <input type="checkbox" class="form-check-input" name="deduction_selected[]"
+                    value="<?php echo $gsis_id; ?>">
+                  <label class="form-check-label" for="deduction_gsis" style="padding-left:6%">GSIS
+                  </label>
+                </div>
+                <div class="form-check">
+                  <input type="checkbox" class="form-check-input" name="deduction_selected[]"
+                    value="<?php echo $pagibig_id; ?>">
+                  <label class="form-check-label" for="deduction_pagibig" style="padding-left:6%">PAG-IBIG
+                  </label>
+                </div>
+                <div class="form-check">
+                  <input type="checkbox" class="form-check-input" name="deduction_selected[]"
+                    value="<?php echo $sss_id; ?>">
+                  <label class="form-check-label" for="deduction_pagibig" style="padding-left:6%">SSS
+                  </label>
+                </div>
+              </div>
               <div class="form-group" align="center">
                 <button type="submit" name="submit" class="btn btn-success">Submit</button>
                 <button type="reset" name="" class="btn btn-danger">Clear Fields</button>
@@ -405,11 +463,56 @@ while ($row = mysqli_fetch_array($query4)) {
     </div>
 
 
+    <!-- Benefits Details Modal -->
+    <?php
+    $query = mysqli_query($conn, "SELECT * FROM employee ORDER BY emp_id ASC") or die(mysqli_error());
+    while ($row = mysqli_fetch_array($query)) {
+      $has_philhealth = $row['has_philhealth'];
+      $has_gsis = $row['has_gsis'];
+      $has_pagibig = $row['has_pagibig'];
+      $has_sss = $row['has_sss'];
+      ?>
+      <div class="modal fade" id="benefits_details_<?php echo $row['emp_id'] ?>" role="dialog">
+        <div class="modal-dialog" style="max-width: 400px;">
 
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header" style="padding:7px 20px;">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <h3 class="modal-title" align="center" style="padding:10px"><b>Benefits Details</b></h3>
+            <div class="modal-body" style="padding:20px 30px;">
 
+              <div style="text-align: center;">
+                <label class="" for="benefits">Selected Benefits</label>
+                <div class="modal-body">
 
+                  <span id="benefits">
+                    <?php
+                    if ($has_philhealth == 1) {
+                      echo "<div>Philhealth</div>";
+                    }
+                    if ($has_gsis == 1) {
+                      echo "<div>GSIS</div>";
+                    }
+                    if ($has_pagibig == 1) {
+                      echo "<div>PAG-IBIG</div>";
+                    }
+                    if ($has_sss == 1) {
+                      echo "<div>SSS</div>";
+                    }
+                    ?>
+                  </span>
+                </div>
+              </div>
 
+            </div>
 
+          </div>
+        </div>
+
+      </div>
+    <?php } ?>
 
 
 

@@ -227,75 +227,6 @@ while ($row = mysqli_fetch_array($query)) {
                         <?php echo $total_net_pay; ?>
                       </b></big></td>
                 </tr>
-
-                <!-- Deduction Details Modal -->
-                <div class="modal fade" id="deduction_details_<?php echo $acc_info_id ?>" role="dialog">
-                  <div class="modal-dialog modal-sm" style="min-width: 400px">
-                    <div class="modal-content">
-                      <div class="modal-header" style="padding:7px 20px;">
-                        <button type="button" class="close" data-dismiss="modal" title="Close">&times;</button>
-                      </div>
-                      <h2 align="center"><b>Deduction Details</b></h2>
-                      <div class="modal-body" style="padding:40px 100px;">
-                        <div class="form-group">
-                          <label class="" for="benefits">Benefits</label>
-                          <div class="form-group s" style="margin-left: 5%;">
-                            <label class="" for="benefits">Selected:</label>
-                            <span id="benefits">
-                              <?php
-                              $check_query = mysqli_query($conn, "SELECT * FROM account_info WHERE acc_info_id='$acc_info_id'");
-                              $check_row = mysqli_fetch_assoc($check_query);
-                              $philhealth_check = $check_row['philhealth_check'];
-                              $gsis_check = $check_row['gsis_check'];
-                              $pagibig_check = $check_row['pagibig_check'];
-                              $sss_check = $check_row['sss_check'];
-
-                              $selected_benefits = array();
-
-                              if ($philhealth_check == 1) {
-                                $selected_benefits[] = "Philhealth";
-                              }
-                              if ($gsis_check == 1) {
-                                $selected_benefits[] = "GSIS";
-                              }
-                              if ($pagibig_check == 1) {
-                                $selected_benefits[] = "PAG-IBIG";
-                              }
-                              if ($sss_check == 1) {
-                                $selected_benefits[] = "SSS";
-                              }
-
-                              echo implode(', ', $selected_benefits);
-                              ?>
-                            </span>
-                          </div>
-
-                          <div class="form-group s" style="margin-left: 5%;">
-                            <label class="" for="benefits">Amount:</label>
-                            <span id="benefits">
-                              <?php echo $benefits_deductions; ?>
-                            </span>
-                          </div>
-                        </div>
-
-                        <div class="form-group">
-                          <label class="" for="tax">Tax:</label>
-                          <span id="tax">
-                            <?php echo $tax_deductions; ?>
-                          </span>
-                        </div>
-
-                        <div class="form-group">
-                          <label class="" for="total_deductions">Total:</label>
-                          <span id="total_deductions">
-                            <?php echo $total_deductions; ?>
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
               <?php } ?>
             </tbody>
           </table>
@@ -304,6 +235,83 @@ while ($row = mysqli_fetch_array($query)) {
     </div>
 
   </div>
+
+  <!-- Benefits Details Modal -->
+  <?php
+  $query = mysqli_query($conn, "SELECT * FROM employee JOIN account_info ON employee.emp_id=account_info.employee_id ORDER BY emp_id ASC") or die(mysqli_error());
+  while ($row = mysqli_fetch_array($query)) {
+    $has_philhealth = $row['has_philhealth'];
+    $has_gsis = $row['has_gsis'];
+    $has_pagibig = $row['has_pagibig'];
+    $has_sss = $row['has_sss'];
+    $benefits_deductions = $row['benefits_deductions'];
+    $tax_deductions = $row['tax_deductions'];
+    $total_deductions = $row['total_deductions'];
+    ?>
+    <div class="modal fade" id="deduction_details_<?php echo $row['acc_info_id'] ?>" role="dialog">
+      <div class="modal-dialog" style="max-width: 400px;">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header" style="padding:7px 20px;">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+          </div>
+          <h3 class="modal-title" align="center" style="padding:10px"><b>Benefits Details</b></h3>
+          <div class="modal-body" style="padding:20px 30px;">
+
+            <div style="text-align: center;">
+              <label class="" for="benefits">Selected Benefits</label>
+              <div class="modal-body">
+
+                <span id="benefits">
+                  <?php
+                  if ($has_philhealth == 1) {
+                    echo "<div>Philhealth</div>";
+                  }
+                  if ($has_gsis == 1) {
+                    echo "<div>GSIS</div>";
+                  }
+                  if ($has_pagibig == 1) {
+                    echo "<div>PAG-IBIG</div>";
+                  }
+                  if ($has_sss == 1) {
+                    echo "<div>SSS</div>";
+                  }
+                  ?>
+                </span>
+              </div>
+              <div class="form-group s" style="margin-left: 5%;">
+                <label class="" for="benefits">Total Benefits:</label>
+                <span id="benefits">
+                  <?php echo $benefits_deductions; ?>
+                </span>
+              </div>
+
+              <div class="form-group">
+              <label class="" for="tax">Tax:</label>
+              <span id="tax">
+                <?php echo $tax_deductions; ?>
+              </span>
+            </div>
+
+            <div class="form-group">
+              <h3><b>Total</b></h3>
+              <!-- <label class="" for="total_deductions">Total:</label> -->
+              <span id="total_deductions">
+                <?php echo $total_deductions; ?>
+              </span>
+            </div>
+            </div>
+            
+
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  <?php } ?>
+
 
 
   <!-- this modal is for my Colins -->

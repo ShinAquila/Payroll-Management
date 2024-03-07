@@ -37,31 +37,31 @@ $sql = mysqli_query($c, "UPDATE account_info SET total_overtime_hours = '$total_
 
 
 
-// 
-$query1 = mysqli_query($c, "SELECT * from deductions WHERE deduction_id = 1");
+
+$benefits_check_query = mysqli_query($c, "SELECT * from employee WHERE emp_id='$selected_employee'");
+while ($row = mysqli_fetch_array($benefits_check_query)) {
+  $has_philhealth = $row['has_philhealth'];
+  $has_gsis = $row['has_gsis'];
+  $has_pagibig = $row['has_pagibig'];
+  $has_sss = $row['has_sss'];
+}
+
+$query1 = mysqli_query($c, "SELECT * from deductions WHERE deduction_id=1");
 while ($row = mysqli_fetch_array($query1)) {
-  $id = $row['deduction_id'];
   $philhealth_p = $row['deduction_percent'];
 }
-
-$query3 = mysqli_query($c, "SELECT * from deductions WHERE deduction_id = 3");
+$query2 = mysqli_query($c, "SELECT * from deductions WHERE deduction_id=3");
+while ($row = mysqli_fetch_array($query2)) {
+  $gsis_p = $row['deduction_percent'];
+}
+$query3 = mysqli_query($c, "SELECT * from deductions WHERE deduction_id=4");
 while ($row = mysqli_fetch_array($query3)) {
-  $id = $row['deduction_id'];
-  $GSIS_p = $row['deduction_percent'];
+  $pagibig_p = $row['deduction_percent'];
 }
-
-$query4 = mysqli_query($c, "SELECT * from deductions WHERE deduction_id = 4");
+$query4 = mysqli_query($c, "SELECT * from deductions WHERE deduction_id=5");
 while ($row = mysqli_fetch_array($query4)) {
-  $id = $row['deduction_id'];
-  $PAGIBIG_p = $row['deduction_percent'];
+  $sss_p = $row['deduction_percent'];
 }
-
-$query5 = mysqli_query($c, "SELECT * from deductions WHERE deduction_id = 5");
-while ($row = mysqli_fetch_array($query5)) {
-  $id = $row['deduction_id'];
-  $SSS_p = $row['deduction_percent'];
-}
-
 
 
 
@@ -94,62 +94,44 @@ if ($worked_days > 15) {
 
 // 
 
-$philhealth_check = 0;
-$gsis_check = 0;
-$pagibig_check = 0;
-$sss_check = 0;
-
 $philhealth = 0;
 $GSIS = 0;
 $PAGIBIG = 0;
 $SSS = 0;
 $benefits_deduction = 0;
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-  $selected_deductions = $_POST['deduction_selected'];
-  if (in_array($philhealth_p, $selected_deductions)) {
-    $philhealth = ($total_gross_pay * ($philhealth_p / 100)) / 2;
-    if ($worked_days <= 15) {
-      $philhealth = $philhealth / 2;
-    }
-    $benefits_deduction += $philhealth;
-    $philhealth_check = "1";
-  } else {
-    $philhealth_check = "0";
-  }
 
 
-  if (in_array($GSIS_p, $selected_deductions)) {
-    $GSIS = ($total_gross_pay * ($GSIS_p / 100)) / 2;
-    if ($worked_days <= 15) {
-      $GSIS = $GSIS / 2;
-    }
-    $benefits_deduction += $GSIS;
-    $gsis_check = "1";
-  } else {
-    $gsis_check = "0";
+if ($has_philhealth == 1) {
+  $philhealth = ($total_gross_pay * ($philhealth_p / 100)) / 2;
+  if ($worked_days <= 15) {
+    $philhealth = $philhealth / 2;
   }
+  $benefits_deduction += $philhealth;
+}
 
-  if (in_array($PAGIBIG_p, $selected_deductions)) {
-    $PAGIBIG = ($total_gross_pay * ($PAGIBIG_p / 100)) / 2;
-    if ($worked_days <= 15) {
-      $PAGIBIG = $PAGIBIG / 2;
-    }
-    $benefits_deduction += $PAGIBIG;
-    $pagibig_check = "1";
-  } else {
-    $pagibig_check = "0";
-  }
 
-  if (in_array($SSS_p, $selected_deductions)) {
-    $SSS = ($total_gross_pay * ($SSS_p / 100)) / 2;
-    if ($worked_days <= 15) {
-      $SSS = $SSS / 2;
-    }
-    $benefits_deduction += $SSS;
-    $sss_check = "1";
-  } else {
-    $sss_check = "0";
+if ($has_gsis == 1) {
+  $GSIS = ($total_gross_pay * ($gsis_p / 100)) / 2;
+  if ($worked_days <= 15) {
+    $GSIS = $GSIS / 2;
   }
+  $benefits_deduction += $GSIS;
+}
+
+if ($has_pagibig == 1) {
+  $PAGIBIG = ($total_gross_pay * ($pagibig_p / 100)) / 2;
+  if ($worked_days <= 15) {
+    $PAGIBIG = $PAGIBIG / 2;
+  }
+  $benefits_deduction += $PAGIBIG;
+}
+
+if ($has_sss == 1) {
+  $SSS = ($total_gross_pay * ($sss_p / 100)) / 2;
+  if ($worked_days <= 15) {
+    $SSS = $SSS / 2;
+  }
+  $benefits_deduction += $SSS;
 }
 
 $total_deduction = $benefits_deduction + $tax;
@@ -157,7 +139,7 @@ $total_net_pay = $total_gross_pay - $total_deduction;
 
 
 
-$sql = mysqli_query($c, "UPDATE account_info SET philhealth_check=$philhealth_check, gsis_check=$gsis_check, pagibig_check=$pagibig_check, sss_check=$sss_check, total_deductions = $total_deduction, benefits_deductions = $benefits_deduction, tax_deductions = $tax, total_net_pay = $total_net_pay WHERE acc_info_id='$acc_id'");
+$sql = mysqli_query($c, "UPDATE account_info SET total_deductions = $total_deduction, benefits_deductions = $benefits_deduction, tax_deductions = $tax, total_net_pay = $total_net_pay WHERE acc_info_id='$acc_id'");
 
 if ($sql) {
   ?>

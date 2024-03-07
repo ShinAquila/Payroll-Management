@@ -5,25 +5,25 @@ include("../add/add_income.php");
 $query1 = mysqli_query($conn, "SELECT * from deductions WHERE deduction_id = 1");
 while ($row = mysqli_fetch_array($query1)) {
   $id = $row['deduction_id'];
-  $philhealth_p = $row['deduction_percent'];
+  $philhealth_id = $row['deduction_id'];
 }
 
 $query3 = mysqli_query($conn, "SELECT * from deductions WHERE deduction_id = 3");
 while ($row = mysqli_fetch_array($query3)) {
   $id = $row['deduction_id'];
-  $GSIS_p = $row['deduction_percent'];
+  $gsis_id = $row['deduction_id'];
 }
 
 $query4 = mysqli_query($conn, "SELECT * from deductions WHERE deduction_id = 4");
 while ($row = mysqli_fetch_array($query4)) {
   $id = $row['deduction_id'];
-  $PAGIBIG_p = $row['deduction_percent'];
+  $pagibig_id = $row['deduction_id'];
 }
 
 $query5 = mysqli_query($conn, "SELECT * from deductions WHERE deduction_id = 5");
 while ($row = mysqli_fetch_array($query5)) {
   $id = $row['deduction_id'];
-  $SSS_p = $row['deduction_percent'];
+  $sss_id = $row['deduction_id'];
 }
 
 
@@ -419,34 +419,6 @@ while ($row = mysqli_fetch_array($query)) {
                 <input name="id" type="hidden" value="<?php echo $row['acc_info_id']; ?>" />
 
 
-                <div class="form-group">
-                  <label>Deductions</label>
-
-                  <div class="form-check">
-                    <input type="checkbox" class="form-check-input" name="deduction_selected[]"
-                      value="<?php echo $philhealth_p; ?>">
-                    <label class="form-check-label" for="deduction_philhealth" style="padding-left:6%">PhilHealth
-                    </label>
-                  </div>
-                  <div class="form-check">
-                    <input type="checkbox" class="form-check-input" name="deduction_selected[]"
-                      value="<?php echo $GSIS_p; ?>">
-                    <label class="form-check-label" for="deduction_gsis" style="padding-left:6%">GSIS
-                    </label>
-                  </div>
-                  <div class="form-check">
-                    <input type="checkbox" class="form-check-input" name="deduction_selected[]"
-                      value="<?php echo $PAGIBIG_p; ?>">
-                    <label class="form-check-label" for="deduction_pagibig" style="padding-left:6%">PAG-IBIG
-                    </label>
-                  </div>
-                  <div class="form-check">
-                    <input type="checkbox" class="form-check-input" name="deduction_selected[]"
-                      value="<?php echo $SSS_p; ?>">
-                    <label class="form-check-label" for="deduction_pagibig" style="padding-left:6%">SSS
-                    </label>
-                  </div>
-                </div>
                 <div class="form-group">
                   <label>Bonus</label>
                   <input type="text" name="bonus" class="form-control" value="<?php echo $row['bonus']; ?>"
