@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 04, 2024 at 03:32 AM
+-- Generation Time: Mar 07, 2024 at 05:07 AM
 -- Server version: 10.4.21-MariaDB
 -- PHP Version: 7.3.31
 
@@ -35,10 +35,6 @@ CREATE TABLE `account_info` (
   `days_absent` int(11) NOT NULL,
   `total_overtime_hours` int(11) NOT NULL,
   `bonus` decimal(11,2) NOT NULL,
-  `philhealth_check` int(11) NOT NULL,
-  `gsis_check` int(11) NOT NULL,
-  `pagibig_check` int(11) NOT NULL,
-  `sss_check` int(11) NOT NULL,
   `benefits_deductions` decimal(11,2) NOT NULL,
   `tax_deductions` decimal(11,2) NOT NULL,
   `total_deductions` decimal(11,2) NOT NULL,
@@ -52,10 +48,8 @@ CREATE TABLE `account_info` (
 -- Dumping data for table `account_info`
 --
 
-INSERT INTO `account_info` (`acc_info_id`, `employee_id`, `days_full_day`, `days_half_day`, `days_absent`, `total_overtime_hours`, `bonus`, `philhealth_check`, `gsis_check`, `pagibig_check`, `sss_check`, `benefits_deductions`, `tax_deductions`, `total_deductions`, `total_gross_pay`, `total_net_pay`, `start_pay_period`, `end_pay_period`) VALUES
-(102, 6, 9, 2, 2, 5, '500.00', 1, 0, 0, 1, '1496.25', '3904.10', '5400.35', '31500.00', '26099.65', '2024-02-01', '2024-02-15'),
-(105, 6, 9, 2, 1, 2, '500.00', 1, 0, 0, 1, '1467.75', '3784.10', '5251.85', '30900.00', '25648.15', '2024-02-16', '2024-02-29'),
-(106, 6, 18, 4, 3, 7, '1000.00', 1, 0, 0, 1, '5928.00', '7688.40', '13616.40', '62400.00', '48783.60', '2024-02-01', '2024-02-29');
+INSERT INTO `account_info` (`acc_info_id`, `employee_id`, `days_full_day`, `days_half_day`, `days_absent`, `total_overtime_hours`, `bonus`, `benefits_deductions`, `tax_deductions`, `total_deductions`, `total_gross_pay`, `total_net_pay`, `start_pay_period`, `end_pay_period`) VALUES
+(120, 9, 21, 3, 3, 5, '1000.00', '8775.00', '6908.40', '15683.40', '58500.00', '42816.60', '2024-03-01', '2024-03-31');
 
 -- --------------------------------------------------------
 
@@ -213,35 +207,27 @@ CREATE TABLE `employee` (
   `fname` varchar(20) NOT NULL,
   `gender` varchar(6) NOT NULL,
   `email` varchar(100) NOT NULL,
-  `dept` int(30) NOT NULL
+  `dept` int(30) NOT NULL,
+  `has_philhealth` int(5) NOT NULL,
+  `has_gsis` int(5) NOT NULL,
+  `has_pagibig` int(5) NOT NULL,
+  `has_sss` int(5) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `employee`
 --
 
-INSERT INTO `employee` (`emp_id`, `lname`, `fname`, `gender`, `email`, `dept`) VALUES
-(6, 'Sabit', 'Jessa', 'Female', 'sabit@gmail.com', 7),
-(8, 'Pasadas', 'Renz', 'Male', 'pasadas@gmail.com', 10),
-(9, 'Maglangit', 'Karen', 'Female', 'maglangit@gmail.com', 18),
-(11, 'Leonida', 'Fritzie Apple', 'Male', 'leonida@gmail.com', 2),
-(13, 'Corpuz', 'Allan', 'Male', 'corpuz@gmail.com', 10),
-(14, 'Bueno', 'Kyll John', 'Male', 'bueno@gmail.com', 2),
-(15, 'Albarracin', 'Brent', 'Male', 'albarracin@gmail.com', 7),
-(17, 'Rivera', 'Vincent Ace', 'Male', 'ace@gmail.com', 9),
-(18, 'Cardo', 'Dalisay', 'Male', 'CardoDali@gmail.com', 9),
-(19, 'Sy', 'Leisha', 'Female', 'Leishy@gmail.com', 10),
-(20, 'Hens', 'Kelra', 'Male', 'KelraHel@gmail.com', 8),
-(21, 'Max', 'Lisha', 'Female', 'Lishamax@gmail.com', 2),
-(22, 'Pacquaio', 'Manny', 'Male', 'pacman@gmail.com', 2),
-(23, 'Tate', 'Lesley', 'Female', 'LesleyTate@gmail.com', 18),
-(24, 'Donut', 'Boi', 'Male', 'Nadonut@gmail.com', 18),
-(25, 'Lazada', 'Renz', 'Male', 'renzshopping@gmail.com', 8),
-(27, 'Corn', 'Dog', 'Other', 'corndog@gmail.com', 10),
-(28, 'Rojin', 'Carl', 'Male', 'carlrojin@gmail.com', 18),
-(31, 'Penduko', 'Pedro', 'Male', 'penduko@gmail.com', 8),
-(32, 'Bravo', 'Johnny', 'Male', 'fafa@gmail.com', 8),
-(37, 'Bravo', 'S', 'Other', 's@gmail.com', 7);
+INSERT INTO `employee` (`emp_id`, `lname`, `fname`, `gender`, `email`, `dept`, `has_philhealth`, `has_gsis`, `has_pagibig`, `has_sss`) VALUES
+(6, 'Sabit', 'Jessa', 'Female', 'sabit@gmail.com', 7, 1, 0, 1, 0),
+(9, 'Maglangit', 'Karen', 'Female', 'maglangit@gmail.com', 18, 1, 1, 1, 1),
+(11, 'Leonida', 'Fritzie Apple', 'Male', 'leonida@gmail.com', 2, 0, 0, 1, 0),
+(13, 'Corpuz', 'Allan', 'Male', 'corpuz@gmail.com', 10, 1, 0, 1, 1),
+(14, 'Bueno', 'Kyll John', 'Male', 'bueno@gmail.com', 2, 0, 0, 1, 0),
+(15, 'Albarracin', 'Brent', 'Male', 'albarracin@gmail.com', 7, 1, 0, 0, 0),
+(17, 'Rivera', 'Vincent Ace', 'Male', 'ace@gmail.com', 9, 0, 0, 1, 1),
+(18, 'Cardo', 'Dalisay', 'Male', 'CardoDali@gmail.com', 9, 1, 0, 0, 0),
+(32, 'Bravo', 'Johnny', 'Male', 'fafa@gmail.com', 8, 0, 0, 0, 1);
 
 -- --------------------------------------------------------
 
@@ -260,7 +246,40 @@ CREATE TABLE `overtime` (
 --
 
 INSERT INTO `overtime` (`ot_id`, `rate`, `none`) VALUES
-(1, 200, 0);
+(1, 250, 0);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `salary_history`
+--
+
+CREATE TABLE `salary_history` (
+  `history_id` int(11) NOT NULL,
+  `last_name` varchar(250) NOT NULL,
+  `first_name` varchar(250) NOT NULL,
+  `department` varchar(250) NOT NULL,
+  `salary` decimal(11,2) NOT NULL,
+  `overtime_hours` int(5) NOT NULL,
+  `start_pay_period` date NOT NULL,
+  `end_pay_period` date NOT NULL,
+  `total_gross_pay` decimal(11,2) NOT NULL,
+  `philhealth` decimal(11,2) NOT NULL,
+  `gsis` decimal(11,2) NOT NULL,
+  `pagibig` decimal(11,2) NOT NULL,
+  `sss` decimal(11,2) NOT NULL,
+  `total_benefits_deductions` decimal(11,2) NOT NULL,
+  `total_tax_deductions` decimal(11,2) NOT NULL,
+  `total_deductions` decimal(11,2) NOT NULL,
+  `total_net_pay` decimal(11,2) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `salary_history`
+--
+
+INSERT INTO `salary_history` (`history_id`, `last_name`, `first_name`, `department`, `salary`, `overtime_hours`, `start_pay_period`, `end_pay_period`, `total_gross_pay`, `philhealth`, `gsis`, `pagibig`, `sss`, `total_benefits_deductions`, `total_tax_deductions`, `total_deductions`, `total_net_pay`) VALUES
+(1, 'Maglangit', 'Karen', 'IT Technician', '2500.00', 5, '2024-03-01', '2024-03-31', '58500.00', '1462.50', '2632.50', '585.00', '4095.00', '8775.00', '6908.40', '15683.40', '42816.60');
 
 -- --------------------------------------------------------
 
@@ -326,6 +345,12 @@ ALTER TABLE `overtime`
   ADD PRIMARY KEY (`ot_id`);
 
 --
+-- Indexes for table `salary_history`
+--
+ALTER TABLE `salary_history`
+  ADD PRIMARY KEY (`history_id`);
+
+--
 -- Indexes for table `user`
 --
 ALTER TABLE `user`
@@ -339,7 +364,7 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `account_info`
 --
 ALTER TABLE `account_info`
-  MODIFY `acc_info_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=107;
+  MODIFY `acc_info_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=121;
 
 --
 -- AUTO_INCREMENT for table `attendance`
@@ -363,13 +388,19 @@ ALTER TABLE `department`
 -- AUTO_INCREMENT for table `employee`
 --
 ALTER TABLE `employee`
-  MODIFY `emp_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
+  MODIFY `emp_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
 
 --
 -- AUTO_INCREMENT for table `overtime`
 --
 ALTER TABLE `overtime`
   MODIFY `ot_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `salary_history`
+--
+ALTER TABLE `salary_history`
+  MODIFY `history_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `user`
