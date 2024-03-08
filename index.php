@@ -19,7 +19,7 @@ if (!$conn) {
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description">
 
-  <title>Pixel Foundry - Income</title>
+  <title>Pixel Foundry - Home</title>
   <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
   <link href="assets/css/justified-nav.css" rel="stylesheet">
   <link href="assets/css/bootstrap.min.css" rel="stylesheet">
@@ -69,6 +69,9 @@ if (!$conn) {
           </li>
           <li class="nav-item">
             <a class="nav-link" href="home/home_salary.php">Report</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="home/home_history.php">History</a>
           </li>
         </ul>
         <ul class="navbar-nav ml-auto">
